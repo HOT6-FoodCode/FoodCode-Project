@@ -4,10 +4,11 @@ const StrFooter = styled.footer`
   display: flex;
   padding: 20px;
   position: fixed;
-  width: 100%;
   justify-content: space-between;
   align-items: center;
   bottom: 0;
+  left: 40px;
+  right: 40px;
   p {
     font-size: 14px;
   }
