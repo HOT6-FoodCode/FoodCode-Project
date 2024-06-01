@@ -38,6 +38,12 @@ const DropdownButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  svg {
+    color: #868e96;
+    &:hover {
+      color: black;
+    }
+  }
 `;
 
 const dropdownAnimation = keyframes`
@@ -55,7 +61,7 @@ const DropdownMenu = styled.ul`
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: white;
+
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -66,6 +72,18 @@ const DropdownMenu = styled.ul`
   visibility: hidden;
   transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+  li:first-child {
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10px;
+      width: 80%;
+      height: 1px;
+      background-color: #1a4999;
+    }
+  }
   ${({ isOpen }) =>
     isOpen &&
     css`
@@ -78,7 +96,15 @@ const DropdownMenu = styled.ul`
 
 const DropdownMenuItem = styled.li`
   padding: 10px 20px;
+  color: #1a4999;
+  font-weight: bold;
   cursor: pointer;
+
+  a {
+    color: #1a4999;
+    font-weight: bold;
+  }
+
   &:hover {
     background-color: #f5f5f5;
   }

@@ -1,4 +1,5 @@
 import MainPage from '../../pages/MainPage/MainPage';
+import Footer from '../common/Footer';
 import Header from '../common/Header';
 
 function MainLayout() {
@@ -8,6 +9,7 @@ function MainLayout() {
       <main>
         <MainPage />
       </main>
+      <Footer />
     </>
   );
 }

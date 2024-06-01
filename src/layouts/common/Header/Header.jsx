@@ -21,16 +21,16 @@ function Header() {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handdleClickOutside = (event) => {
+  const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsDropdownOpen(false);
     }
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handdleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handdleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
   return (
@@ -67,10 +67,10 @@ function Header() {
                   </DropdownButton>
                   {isDropdownOpen && (
                     <DropdownMenu isOpen={isDropdownOpen}>
-                      <DropdownMenuItem onClick={() => setIsLoggedIn(false)}>로그아웃</DropdownMenuItem>
                       <DropdownMenuItem>
-                        <Link to="/mypage">마이페이지</Link>
+                        <Link to="/mypage">My Page</Link>
                       </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setIsLoggedIn(false)}>Log Out</DropdownMenuItem>
                     </DropdownMenu>
                   )}
                 </div>
