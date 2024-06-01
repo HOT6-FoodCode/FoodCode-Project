@@ -3,12 +3,10 @@ import styled from 'styled-components';
 const StrFooter = styled.footer`
   display: flex;
   padding: 20px;
-  position: fixed;
   justify-content: space-between;
   align-items: center;
-  bottom: 0;
-  left: 40px;
-  right: 40px;
+  margin-left: 40px;
+  margin-right: 40px;
   p {
     font-size: 14px;
   }

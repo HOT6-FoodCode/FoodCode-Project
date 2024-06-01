@@ -1,4 +1,4 @@
-import MainPage from '../../pages/MainPage/MainPage';
+import { Outlet } from 'react-router-dom';
 import Footer from '../common/Footer';
 import Header from '../common/Header';
 
@@ -7,7 +7,7 @@ function MainLayout() {
     <>
       <Header />
       <main>
-        <MainPage />
+        <Outlet />
       </main>
       <Footer />
     </>

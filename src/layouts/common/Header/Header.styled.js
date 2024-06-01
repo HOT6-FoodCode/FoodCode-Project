@@ -6,7 +6,7 @@ const LogoImg = styled.img`
 `;
 
 const HeaderWrapDiv = styled.div`
-  margin: 36px 65px 60px 65px;
+  margin: 36px 65px 0px 65px;
   display: flex;
   justify-content: space-between;
   align-items: center;
