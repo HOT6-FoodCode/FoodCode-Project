@@ -80,7 +80,7 @@ const DropdownMenu = styled.ul`
       bottom: 0;
       left: 10px;
       width: 80%;
-      height: 1px;
+      height: 2.5px;
       background-color: #1a4999;
     }
   }

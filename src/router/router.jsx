@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
-import MainLayout from '../layouts/MainLayout/MainLayout';
+import PostList from '../components/posts/PostList';
+import MainLayout from '../layouts/MainLayout';
 import MainPage from '../pages/MainPage/MainPage';
 
 const router = createBrowserRouter([
@@ -9,7 +10,21 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <MainPage />
+        element: <MainPage />,
+        children: [
+          {
+            path: 'trending',
+            element: <PostList sorting="trending" />
+          },
+          {
+            path: 'recent',
+            element: <PostList sorting="recent" />
+          },
+          {
+            path: 'follow',
+            element: <PostList sorting="follow" />
+          }
+        ]
       }
     ]
   }

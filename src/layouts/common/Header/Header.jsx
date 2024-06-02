@@ -13,6 +13,7 @@ import {
 } from './Header.styled';
 
 function Header() {
+  console.log('헤더');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
