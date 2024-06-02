@@ -3,6 +3,7 @@ import styled, { css, keyframes } from 'styled-components';
 const LogoImg = styled.img`
   width: 350px;
   height: auto;
+  margin-right: 10px;
 `;
 
 const HeaderWrapDiv = styled.div`
@@ -20,6 +21,14 @@ const StrBtn = styled.button`
   font-size: 18px;
   width: 120px;
   height: 48px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    /* background-color: white;
+    color: #1b4b9c; */
+    background-color: #3b6fbf;
+    /* #0a2f6d */
+  }
 `;
 
 const StrNavWrapDiv = styled.div`
