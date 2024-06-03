@@ -83,7 +83,13 @@ const StUserLabel = styled.label`
 const StUserValue = styled.p`
   margin-left: 10px;
 `;
-
+const StPostListTitle = styled.p`
+  font-size: 1.5rem;
+  width: 180px;
+  border-bottom: 3px solid #ECC8CA;
+  padding-bottom: 10px;
+  font-weight: 700;
+`;
 
 
 
@@ -100,5 +106,5 @@ export {
   StUserContents,
   StUserLabel,
   StUserValue,
-
+  StPostListTitle
 };

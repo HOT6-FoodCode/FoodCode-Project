@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import MainPage from '../pages/MainPage/MainPage';
-import PostDetailPage from '../pages/PostDetailPage/PostDetailPage';
+//import PostDetailPage from '../pages/PostDetailPage/PostDetailPage';
 import { MyPage } from '../pages/MyPage';
 import MainLayout from '../layouts/MainLayout/MainLayout';
 import PostList from '../components/posts/PostList';
@@ -35,7 +35,13 @@ const router = createBrowserRouter([
       },
       {
         path: '/mypage',
-        element: <MyPage />
+        element: <MyPage />,
+        children: [
+          {
+            path: '',
+            element: <PostList sorting="myPost" />
+          }
+        ]
       }
     ]
   }

@@ -12,10 +12,9 @@ import {
   StUserContents,
   StUserLabel,
   StUserValue,
+  StPostListTitle
 } from './MyPage.styled';
-// import FetchData from '../../components/posts/FetchData';
-import UserPostList from '../../components/mypage/userPost/userPostList/UserPostList';
-
+import PostList from '../../components/posts/PostList';
 
 
 const MyPage = () => {
@@ -48,14 +47,12 @@ const MyPage = () => {
       </StDivProfile>
       <StPostDiv>
         {/* <StMyPostdiv> */}
-          
           {/* <FetchData /> */}
           {/* <UserPostList />
         </StMyPostdiv> */}
         <StMyPostdiv>
-          
-          <UserPostList myPost={true} />
-          <UserPostList myPost={false} />
+          <StPostListTitle>내가 쓴 게시물</StPostListTitle>
+          <PostList sorting='myPost' />
         </StMyPostdiv>
       </StPostDiv>
     </StMyPageWrapper>
