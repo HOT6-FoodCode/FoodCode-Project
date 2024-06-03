@@ -1,4 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
+
+import LoginForm from '../components/LoginForm';
 import PostList from '../components/posts/PostList';
 import MainLayout from '../layouts/MainLayout';
 import MainPage from '../pages/MainPage/MainPage';
@@ -25,6 +27,10 @@ const router = createBrowserRouter([
             element: <PostList sorting="follow" />
           }
         ]
+      },
+      {
+        path: '/login',
+        element: <LoginForm />
       }
     ]
   }

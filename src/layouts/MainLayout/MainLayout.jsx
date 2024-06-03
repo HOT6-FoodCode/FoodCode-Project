@@ -7,9 +7,9 @@ function MainLayout() {
   return (
     <Wrapper>
       <Header />
-      <main>
+      <Main>
         <Outlet />
-      </main>
+      </Main>
       <Footer />
     </Wrapper>
   );
@@ -19,6 +19,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+`;
+
+const Main = styled.div`
+  min-height: 70vh;
 `;
 
 export default MainLayout;

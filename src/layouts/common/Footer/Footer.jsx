@@ -6,7 +6,7 @@ function Footer() {
     <StrFooter>
       <p>Copyright © FoodCode. All Rights Reserved. | spartacodingclub | 이가현, 임종하, 복예린, 조현경, 최예진</p>
       <div>
-        <Link href="https://github.com/HOT6-FoodCode/FoodCode-Project">
+        <Link to="https://github.com/HOT6-FoodCode/FoodCode-Project">
           <StrIcon
             height="27"
             width="27"
