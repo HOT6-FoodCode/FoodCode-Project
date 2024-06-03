@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchPosts } from '../../../api/api.post';
+import { fetchPosts } from '../../../api/post.api';
 import PostItem from '../PostItem';
 import { PostGrid } from './PostList.styled';
 
