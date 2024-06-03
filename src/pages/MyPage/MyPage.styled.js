@@ -2,31 +2,7 @@ import styled from 'styled-components';
 
 const StMyPageWrapper = styled.div`
   padding: 30px;
-  margin: 0 30px;
-`;
-
-const StBtnDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  margin: 10px;
-`;
-const StBtn = styled.button`
-  cursor: pointer;
-  flex: 0.5 0.5 0;
-  max-width: 60px;
-  width: 100%;
-  height: 32px;
-  border-radius: 6px;
-  border: none;
-  background-color: #3b82f6;
-  color: white;
-  &:hover {
-    background-color: #2563eb;
-  }
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin: 25px 30px;
 `;
 
 const StPostDiv = styled.div`
@@ -43,6 +19,7 @@ const StMyPostdiv = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 const StDivProfile = styled.div`
   display: flex;
   flex-direction: column;
@@ -61,11 +38,13 @@ const StTitle = styled.div`
   font-weight: 700;
   margin-left: 20px;
 `;
+
 const StAccount = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
 `;
+
 const StUserInfoImg = styled.div`
   display: flex;
   flex-direction: column;
@@ -85,14 +64,6 @@ const StUserImg = styled.img`
   margin-left: 20px;
 `;
 
-// const StUserImgUpdateBtn = styled.button`
-//   width: 150px;
-//   height: 30px;
-//   background-color: #eeeae1;
-//   border-radius: 5px;
-//   margin-left: 20px;
-//   border: none;
-// `;
 const StUserInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -124,8 +95,6 @@ const StPostListTitle = styled.p`
 
 export {
   StMyPageWrapper,
-  StBtnDiv,
-  StBtn,
   StPostDiv,
   StMyPostdiv,
   StDivProfile,
@@ -134,7 +103,6 @@ export {
   StAccount,
   StUserInfoImg,
   StUserInfo,
-  // StUserImgUpdateBtn,
   StUserContents,
   StUserLabel,
   StUserValue,
