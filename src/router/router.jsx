@@ -1,9 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
-
+import MainPage from '../pages/MainPage/MainPage';
+import PostDetailPage from '../pages/PostDetailPage/PostDetailPage';
+import { MyPage } from '../pages/MyPage';
+import MainLayout from '../layouts/MainLayout/MainLayout';
 import PostList from '../components/posts/PostList';
 import LoginForm from '../components/ui/LoginForm';
-import MainLayout from '../layouts/MainLayout';
-import MainPage from '../pages/MainPage/MainPage';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <LoginForm />
+      },
+      {
+        path: '/mypage',
+        element: <MyPage />
       }
     ]
   }
