@@ -50,7 +50,7 @@ function Header() {
             {isLoggedIn ? (
               <>
                 <Link to="/login">
-                  <StrBtn>Write</StrBtn>
+                  <StrBtn to="/comment">Write</StrBtn>
                 </Link>
 
                 <Link to="/mypage">

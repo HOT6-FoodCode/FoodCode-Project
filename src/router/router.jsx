@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import PostList from '../components/posts/PostList';
 import MainLayout from '../layouts/MainLayout';
 import MainPage from '../pages/MainPage/MainPage';
+import Comment from '../pages/Comment/Comment';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
             element: <PostList sorting="follow" />
           }
         ]
+      },
+      {
+        path: '/comment',
+        element: <Comment />
       }
     ]
   }
