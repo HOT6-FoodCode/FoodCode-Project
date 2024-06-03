@@ -20,8 +20,16 @@ function MainPage() {
           label="트렌딩"
           icon={TrendingIcon}
         />
-        <LinkButton className={isActive('/recent') ? 'active' : ''} to="/recent" label="최신" icon={RecentIcon} />
-        <LinkButton className={isActive('/follow') ? 'active' : ''} to="/follow" label="팔로우" icon={FollowIcon} />
+        <LinkButton 
+          className={isActive('/recent') ? 'active' : ''} 
+          to="/recent" 
+          label="최신" 
+          icon={RecentIcon} />
+        <LinkButton 
+          className={isActive('/follow') ? 'active' : ''} 
+          to="/follow" 
+          label="팔로우" 
+          icon={FollowIcon} />
       </StrLinkWrapDiv>
       <StrDiv>{location.pathname === '/' ? <PostList sorting="trending" /> : <Outlet />}</StrDiv>
     </MainContainer>
