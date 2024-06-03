@@ -1,6 +1,8 @@
 /* http://meyerweb.com/eric/tools/css/reset/ 
+
   v2.0 | 20110126
   License: none (public domain)
+
 */
 
 html,
@@ -111,6 +113,7 @@ body {
 ol,
 ul {
   list-style: none;
+
 }
 blockquote,
 q {
@@ -136,6 +139,11 @@ button {
   padding: 0;
   overflow: visible;
 }
+
+a {
+  text-decoration: none;
+}
+
 
 * {
   box-sizing: border-box;
