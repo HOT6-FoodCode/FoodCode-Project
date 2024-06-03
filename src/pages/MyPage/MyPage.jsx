@@ -12,7 +12,6 @@ import {
   StUserContents,
   StUserLabel,
   StUserValue,
-  StPostListTitle,
 } from './MyPage.styled';
 // import FetchData from '../../components/posts/FetchData';
 import UserPostList from '../../components/mypage/userPost/userPostList/UserPostList';
@@ -21,6 +20,7 @@ import UserPostList from '../../components/mypage/userPost/userPostList/UserPost
 
 const MyPage = () => {
   //const navigate = useNavigate();
+
 
   return (
     <StMyPageWrapper>
@@ -47,14 +47,15 @@ const MyPage = () => {
         </StAccount>
       </StDivProfile>
       <StPostDiv>
-        <StMyPostdiv>
-          <StPostListTitle color="#ECC8CA">내가 쓴 게시물</StPostListTitle>
+        {/* <StMyPostdiv> */}
+          
           {/* <FetchData /> */}
-          <UserPostList />
-        </StMyPostdiv>
+          {/* <UserPostList />
+        </StMyPostdiv> */}
         <StMyPostdiv>
-          <StPostListTitle $color="blue">팔로우 한 게시물</StPostListTitle>
-          <UserPostList />
+          
+          <UserPostList myPost={true} />
+          <UserPostList myPost={false} />
         </StMyPostdiv>
       </StPostDiv>
     </StMyPageWrapper>
