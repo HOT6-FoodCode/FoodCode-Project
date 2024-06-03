@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-
-import api from '../../../api/api';
+import { fetchPosts } from '../../../api/api.post';
 import PostItem from '../PostItem';
+import { PostGrid } from './PostList.styled';
 import { PostGrid } from './PostList.styled';
 
 const PostList = ({ sorting }) => {
@@ -9,10 +9,14 @@ const PostList = ({ sorting }) => {
 
   useEffect(() => {
     const getPosts = async () => {
-      const fetchedPosts = await api.posts.fetchPosts();
+      const fetchedPosts = await fetchPosts();
       let sortedPosts = [...fetchedPosts];
       if (sorting === 'recent') {
         sortedPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        console.log(sortedPosts);
+      } else if (sorting === 'myPost') {
+        sortedPosts = sortedPosts.filter(post => post.id === 6); // 임시 조건 부여
+        console.log(sortedPosts);
       }
       setPosts(sortedPosts);
     };
