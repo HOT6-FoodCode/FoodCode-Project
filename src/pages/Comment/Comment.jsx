@@ -9,7 +9,7 @@ function comment ( ) {
         <>
             <Link to='./comment'></Link>
             <StCommentForm>
-
+                <div> 상세페이지 입니다.</div>
             </StCommentForm>
         </>
     );
