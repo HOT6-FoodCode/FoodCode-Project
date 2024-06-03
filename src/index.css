@@ -1,6 +1,8 @@
 /* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
+
+  v2.0 | 20110126
+  License: none (public domain)
+
 */
 
 html,
@@ -111,6 +113,7 @@ body {
 ol,
 ul {
   list-style: none;
+
 }
 blockquote,
 q {
@@ -120,10 +123,28 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
+  content: '';
   content: none;
 }
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+button {
+  background: inherit;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  overflow: visible;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+* {
+  box-sizing: border-box;
 }
