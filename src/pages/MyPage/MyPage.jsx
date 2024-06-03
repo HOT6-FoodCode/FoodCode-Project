@@ -15,7 +15,6 @@ import {
   StPostListTitle,
 } from './MyPage.styled';
 // import FetchData from '../../components/posts/FetchData';
-import UserPostItem from '../../components/mypage/userPost/userPostItem/UserPostItem'
 import UserPostList from '../../components/mypage/userPost/userPostList/UserPostList';
 
 
@@ -25,10 +24,6 @@ const MyPage = () => {
 
   return (
     <StMyPageWrapper>
-      {/* <StBtnDiv>
-        <StBtn onClick={() => navigate('/')}>Home</StBtn>
-        <StBtn onClick={() => navigate(-1)}>뒤로가기</StBtn>
-      </StBtnDiv> */}
       <StDivProfile>
         <StTitle>Profile</StTitle>
         <StAccount>
