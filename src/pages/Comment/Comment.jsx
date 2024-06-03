@@ -2,6 +2,8 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {
     StCommentForm,
+    DetailForm,
+    StCommentWrite,
 } from './Comment.styled';
 
 function comment ( ) {
@@ -9,7 +11,8 @@ function comment ( ) {
         <>
             <Link to='./comment'></Link>
             <StCommentForm>
-                <div> 상세페이지 입니다.</div>
+                <DetailForm> 상세페이지 입니다.</DetailForm>
+                <StCommentWrite>댓글 창 입니다.</StCommentWrite>
             </StCommentForm>
         </>
     );
