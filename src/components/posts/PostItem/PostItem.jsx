@@ -1,10 +1,11 @@
-import { incrementViewCount } from '../../../api/post.api';
+import api from '../../../api/api';
 import { CardImage, Content, ContentWrapDiv, PostCard, Rating, Title } from './PostItem.styled';
 
 const PostItem = ({ postId, image, title, content, rating }) => {
   const handleClick = () => {
     console.log('선택된 postId', postId);
-    incrementViewCount(postId);
+
+    api.posts.incrementViewCount(postId);
   };
   return (
     <PostCard onClick={handleClick}>

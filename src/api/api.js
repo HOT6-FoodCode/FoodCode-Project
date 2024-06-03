@@ -1,11 +1,10 @@
 import AuthAPI from './auth.api';
+import PostsAPI from './post.api';
 
 class API {
-  auth;
-  posts;
-
   constructor() {
-    this.auth = AuthAPI;
+    this.auth = new AuthAPI();
+    this.posts = new PostsAPI();
   }
 }
 
