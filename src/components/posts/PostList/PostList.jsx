@@ -13,10 +13,9 @@ const PostList = ({ sorting }) => {
       let sortedPosts = [...fetchedPosts];
       if (sorting === 'recent') {
         sortedPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-        console.log(sortedPosts);
       } else if (sorting === 'myPost') {
         sortedPosts = sortedPosts.filter(post => post.id === 6); // 임시 조건 부여
-        console.log(sortedPosts);
+        //console.log(sortedPosts);
       }
       setPosts(sortedPosts);
     };

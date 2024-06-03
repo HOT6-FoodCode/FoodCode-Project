@@ -1,4 +1,3 @@
-//import { useNavigate } from 'react-router-dom';
 //import UserImgUpdate from '../../components/mypage/userInfo/UserImgUpdate';
 import {
   StMyPageWrapper,
@@ -18,8 +17,6 @@ import PostList from '../../components/posts/PostList';
 
 
 const MyPage = () => {
-  //const navigate = useNavigate();
-
 
   return (
     <StMyPageWrapper>
@@ -46,10 +43,6 @@ const MyPage = () => {
         </StAccount>
       </StDivProfile>
       <StPostDiv>
-        {/* <StMyPostdiv> */}
-          {/* <FetchData /> */}
-          {/* <UserPostList />
-        </StMyPostdiv> */}
         <StMyPostdiv>
           <StPostListTitle>내가 쓴 게시물</StPostListTitle>
           <PostList sorting='myPost' />
