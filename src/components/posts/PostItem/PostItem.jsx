@@ -1,70 +1,24 @@
-import styled from 'styled-components';
+import api from '../../../api/api';
+import { CardImage, Content, ContentWrapDiv, PostCard, Rating, Title } from './PostItem.styled';
 
-const PostItem = ({ imageSrc, title, description, rating, tag, place }) => {
+const PostItem = ({ postId, image, title, content, rating }) => {
+  const handleClick = () => {
+    console.log('선택된 postId', postId);
+
+    api.posts.incrementViewCount(postId);
+  };
   return (
-    <PostCard>
-      <Image src={imageSrc} alt={title} />
-      <Content>
+    <PostCard onClick={handleClick}>
+      <CardImage src={image} alt={title} />
+      <ContentWrapDiv>
         <Title>{title}</Title>
-        <Description>{description}</Description>
+        <Content>{content}</Content>
         <div>
-          <Rating>
-            ⭐ {rating} {tag} {place}
-          </Rating>
+          <Rating>⭐ {rating}</Rating>
         </div>
-      </Content>
+      </ContentWrapDiv>
     </PostCard>
   );
 };
 
 export default PostItem;
-const PostCard = styled.div`
-  width: 330px;
-  height: 310px;
-  border-radius: 30px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  @media (max-width: 1240px) {
-    width: 380px;
-  }
-  @media (max-width: 940px) {
-    width: 480px;
-  }
-`;
-
-const Image = styled.img`
-  width: 100%;
-  height: 60%;
-  object-fit: cover;
-`;
-
-const Content = styled.div`
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 40%;
-`;
-
-const Title = styled.h3`
-  margin: 0;
-  font-size: 1.2em;
-  font-weight: 600;
-  margin-bottom: 10px;
-`;
-
-const Description = styled.p`
-  margin: 5px 0;
-  color: black;
-  font-size: 0.9em;
-  margin-bottom: 10px;
-`;
-
-const Rating = styled.div`
-  font-size: 0.9em;
-  color: #777;
-`;
