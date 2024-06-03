@@ -113,23 +113,6 @@ const StUserValue = styled.p`
   margin-left: 10px;
 `;
 
-const StPostList = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px; 
-`;
-
-const StPostItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 280px;
-  height: 250px;
-  border-radius: 50px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-  margin: 20px 20px 10px 20px;
-`;
 const StPostListTitle = styled.p`
   font-size: 1.5rem;
   width: 180px;
@@ -137,25 +120,7 @@ const StPostListTitle = styled.p`
   padding-bottom: 10px;
   font-weight: 700;
 `;
-const StPostItemText = styled.div`
-  padding: 15px;
-  line-height: 30px;
-  margin-left: 13px;
-`;
-const StPostItemTextStarCategory = styled.div`
-  display: flex;
-  flex-direction: row;
-  column-gap: 10px;
-`;
-const StPostItemReview = styled.p`
-  width: 230px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-`;
-const StPostItemImg = styled.img`
-  height: 50%;
-`
+
 
 export {
   StMyPageWrapper,
@@ -173,11 +138,5 @@ export {
   StUserContents,
   StUserLabel,
   StUserValue,
-  StPostList,
-  StPostItem,
   StPostListTitle,
-  StPostItemText,
-  StPostItemTextStarCategory,
-  StPostItemReview,
-  StPostItemImg
 };
