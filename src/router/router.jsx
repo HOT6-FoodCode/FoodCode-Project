@@ -1,7 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
-import PostList from '../components/posts/PostList';
-import MainLayout from '../layouts/MainLayout';
 import MainPage from '../pages/MainPage/MainPage';
+import PostDetailPage from '../pages/PostDetailPage/PostDetailPage';
+import { MyPage } from '../pages/MyPage';
+import LoginPage from '../pages/LoginPage/LoginPage';
+import MainLayout from '../layouts/MainLayout/MainLayout';
+import PostList from '../components/posts/PostList';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +28,10 @@ const router = createBrowserRouter([
             element: <PostList sorting="follow" />
           }
         ]
+      },
+      {
+        path: '/mypage',
+        element: <MyPage />
       }
     ]
   }
