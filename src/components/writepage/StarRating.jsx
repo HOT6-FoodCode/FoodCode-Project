@@ -1,26 +1,21 @@
-// src/components/StarRating.js
 import React, { useState } from 'react';
 import styled from 'styled-components';
-// import { supabase } from '../supabaseClient';
+// import supabase from '../../api/supabaseAPI';
 
-const StarRating = () => {
-  const [rating, setRating] = useState(0);
+const StarRating = ({ rating, setRating }) => {
   const [hover, setHover] = useState(0);
 
-  //   const handleClick = async (ratingValue) => {
-  //     setRating(ratingValue);
-  //     // Supabase에 별점 저장
-  //     const { data, error } = await supabase
-  //       .from('star')
-  //       .insert([{ rating: ratingValue }]);
+  // const handleClick = async (ratingValue) => {
+  //   setRating(ratingValue);
+  //   // Supabase에 별점 저장
+  //   const { data, error } = await supabase.from('posting').insert([{ rating: ratingValue }]);
 
-  //     if (error) {
-  //       console.error('error=> ', error);
-  //     } else {
-  //       console.log('data=> ', data);
-  //     }
-  //   };
-  // onClick={() => handleClick(ratingValue)}
+  //   if (error) {
+  //     console.error('error=> ', error);
+  //   } else {
+  //     console.log('data=> ', data);
+  //   }
+  // };
 
   return (
     <StStarRating>
@@ -28,7 +23,7 @@ const StarRating = () => {
         const ratingValue = index + 1;
         return (
           <label key={index}>
-            <StInputRadio type="radio" name="rating" value={ratingValue} />
+            <StInputRadio type="radio" name="rating" value={ratingValue} onChange={(e) => setRating(e.target.value)} />
             <StStar
               onMouseEnter={() => setHover(ratingValue)}
               onMouseLeave={() => setHover(0)}

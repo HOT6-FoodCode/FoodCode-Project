@@ -1,11 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
-import MainPage from '../pages/MainPage/MainPage';
-import PostDetailPage from '../pages/PostDetailPage/PostDetailPage';
-import { MyPage } from '../pages/MyPage';
-import LoginPage from '../pages/LoginPage/LoginPage';
-import MainLayout from '../layouts/MainLayout/MainLayout';
+
+import LoginForm from '../components/LoginForm';
 import PostList from '../components/posts/PostList';
 import WritePage from '../pages/WritePage/WritePage';
+import MainLayout from '../layouts/MainLayout';
+import MainPage from '../pages/MainPage/MainPage';
 
 const router = createBrowserRouter([
   {
@@ -31,11 +30,11 @@ const router = createBrowserRouter([
         ]
       },
       {
-        path: '/mypage',
-        element: <MyPage />
+        path: '/login',
+        element: <LoginForm />
       },
       {
-        path: '/writepage',
+        path: '/write',
         element: <WritePage />
       }
     ]

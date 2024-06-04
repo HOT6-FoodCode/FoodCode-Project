@@ -1,10 +1,6 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 
-function ImageUpload() {
-  const [images, setImages] = useState([]);
-  // 이미지 상대경로 저장
-
+function ImageUpload({ images, setImages }) {
   const handleAddImages = (event) => {
     const imageLists = event.target.files;
     let imageUrlLists = [...images];
@@ -14,8 +10,8 @@ function ImageUpload() {
       imageUrlLists.push(currentImageUrl);
     }
 
-    if (imageUrlLists.length > 3) {
-      imageUrlLists = imageUrlLists.slice(0, 3);
+    if (imageUrlLists.length > 4) {
+      imageUrlLists = imageUrlLists.slice(0, 4);
     }
     setImages(imageUrlLists);
   };

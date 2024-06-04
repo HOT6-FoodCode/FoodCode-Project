@@ -49,7 +49,7 @@ function Header() {
           <StrNavWrapDiv>
             {isLoggedIn ? (
               <>
-                <Link to="/login">
+                <Link to="/write">
                   <StrBtn>Write</StrBtn>
                 </Link>
 
