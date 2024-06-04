@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+
 import api from '../../../api/api';
 import PostItem from '../PostItem';
 import { PostGrid } from './PostList.styled';
 
-const PostList = ({ sorting, userId }) => {
+const PostList = ({ sorting, userId}) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -12,9 +13,9 @@ const PostList = ({ sorting, userId }) => {
       let sortedPosts = [...fetchedPosts];
       if (sorting === 'recent') {
         sortedPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      } else if (sorting === 'myPost') {
-        sortedPosts = sortedPosts.filter(post => post.userId === userId); 
-        //console.log(sortedPosts);
+      }else if (sorting === 'myPost') {
+        sortedPosts = sortedPosts.filter(post => post.userId === userId); // 임시 조건 부여
+        console.log(sortedPosts);
       }
       setPosts(sortedPosts);
     };
