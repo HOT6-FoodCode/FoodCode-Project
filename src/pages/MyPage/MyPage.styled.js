@@ -44,16 +44,7 @@ const StAccount = styled.div`
   margin-left: 50px;
   margin-top: 20px;
 `;
-const StUserInfoImg = styled.div`
-  display: flex;
-  flex-direction: column;
-  border: none;
-  width: 200px;
-  height: 200px;
-  margin: 0px 50px 10px 30px;
-  align-items: center;
-  justify-content: center;
-`;
+
 const StUserImg = styled.img`
   width: 100px;
   height: 100px;
@@ -138,7 +129,6 @@ export {
   StUserImg,
   StTitle,
   StAccount,
-  StUserInfoImg,
   StPostList,
   StPostItem,
   StPostListTitle,
