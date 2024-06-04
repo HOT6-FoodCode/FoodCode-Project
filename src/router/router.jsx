@@ -5,6 +5,7 @@ import PostList from '../components/posts/PostList';
 import WritePage from '../pages/WritePage/WritePage';
 import MainLayout from '../layouts/MainLayout';
 import MainPage from '../pages/MainPage/MainPage';
+import PostDetailPage from '../pages/PostDetailPage/PostDetailPage';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: '/write',
         element: <WritePage />
+      },
+      {
+        path: '/postDetail/:id',
+        element: <PostDetailPage />
       }
     ]
   }
