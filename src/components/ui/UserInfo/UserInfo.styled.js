@@ -4,13 +4,14 @@ const StUserInfoContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 20px;
-  
+  column-gap: 20px;
 `;
 const StUserInfo = styled.div`
   display: flex;
   flex-direction: column;
   line-height: 30px;
   letter-spacing: 2px;
+  margin-top: 10px;
 `;
 const StUserContents = styled.div`
   display: flex;
@@ -45,6 +46,7 @@ const StUserImgUpdateLabel = styled.label`
   align-items: center;
   font-size: 13px;
   font-weight: 700;
+  margin-top: 10px;
 `
 const StUserImgUpdateInput = styled.input`
   display: none;
