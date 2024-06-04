@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { fetchPosts } from '../../../api/api.post';
+
+import api from '../../../api/api';
 import PostItem from '../PostItem';
 import { PostGrid } from './PostList.styled';
 
@@ -8,7 +9,7 @@ const PostList = ({ sorting }) => {
 
   useEffect(() => {
     const getPosts = async () => {
-      const fetchedPosts = await fetchPosts();
+      const fetchedPosts = await api.posts.fetchPosts();
       let sortedPosts = [...fetchedPosts];
       if (sorting === 'recent') {
         sortedPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
