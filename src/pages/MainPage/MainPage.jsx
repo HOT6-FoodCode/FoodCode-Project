@@ -8,13 +8,20 @@ import PostList from '../../components/posts/PostList';
 
 function MainPage() {
   const location = useLocation();
-  console.log('메인');
+
+  const isActive = (path) => location.pathname === path || (location.pathname === '/' && path === '/trending');
+
   return (
     <MainContainer>
       <StrLinkWrapDiv>
-        <LinkButton to="/trending" label="트렌딩" icon={TrendingIcon} />
-        <LinkButton to="/recent" label="최신" icon={RecentIcon} />
-        <LinkButton to="/follow" label="팔로우" icon={FollowIcon} />
+        <LinkButton
+          className={isActive('/trending') ? 'active' : ''}
+          to="/trending"
+          label="트렌딩"
+          icon={TrendingIcon}
+        />
+        <LinkButton className={isActive('/recent') ? 'active' : ''} to="/recent" label="최신" icon={RecentIcon} />
+        <LinkButton className={isActive('/follow') ? 'active' : ''} to="/follow" label="팔로우" icon={FollowIcon} />
       </StrLinkWrapDiv>
       <StrDiv>{location.pathname === '/' ? <PostList sorting="trending" /> : <Outlet />}</StrDiv>
     </MainContainer>
@@ -22,15 +29,18 @@ function MainPage() {
 }
 
 export default MainPage;
+
 const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 const StrLinkWrapDiv = styled.div`
   display: flex;
   margin: 60px 0px 40px 115px;
   gap: 10px;
 `;
+
 const StrDiv = styled.div`
   display: flex;
   justify-content: center;

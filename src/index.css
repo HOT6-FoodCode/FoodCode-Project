@@ -113,7 +113,6 @@ body {
 ol,
 ul {
   list-style: none;
-
 }
 blockquote,
 q {
@@ -140,11 +139,10 @@ button {
   overflow: visible;
 }
 
-a {
-  text-decoration: none;
-}
-
-
 * {
   box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
 }
