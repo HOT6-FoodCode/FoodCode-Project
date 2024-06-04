@@ -1,7 +1,7 @@
 import supabase from './supabaseAPI';
 
 class AuthAPI {
-  async sighUp(email, password, nickname, profilePictureFile) {
+  async signUp(email, password, nickname, profilePictureFile) {
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password });
     if (signUpError) {
       throw signUpError;

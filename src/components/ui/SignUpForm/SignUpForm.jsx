@@ -1,39 +1,47 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { signIn, signOut } from '../../../redux/slices/authSlice';
+import { signUp } from '../../../redux/slices/authSlice';
 import styled from 'styled-components';
+import loginPerson from '../../../assets/icons/user-large-solid.svg';
 import loginEmail from '../../../assets/icons/envelope-regular.svg';
 import loginPassword from '../../../assets/icons/unlock-keyhole-solid.svg';
 
-const LoginForm = () => {
+const SignUpForm = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [profilePictureFile, setProfilePictureFile] = useState(null);
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
-  const handleSignIn = async () => {
+  const handleSignUp = async () => {
     try {
-      await dispatch(signIn({ email, password })).unwrap();
-      alert('로그인 되었습니다.');
+      await dispatch(signUp({ email, password, username, profilePictureFile })).unwrap();
+      setUsername('');
       setPassword('');
       setEmail('');
+      setProfilePictureFile(null);
+      console.log('회원가입이 완료되었습니다.');
     } catch (error) {
-      console.error('로그인 중 오류 발생:', error);
+      console.error('회원가입 중 오류 발생:', error.message || error);
     }
-  };
-
-  // header 로그아웃 부분에 사용
-  const handleSignOut = () => {
-    dispatch(signOut());
-    alert('로그아웃 되었습니다.');
   };
 
   return (
     <StFormWrapper>
       <StLoginH2>Welcome!</StLoginH2>
       <StInputBox>
+        <StInputImg src={loginPerson}></StInputImg>
+        <StInputField
+          type="text"
+          placeholder="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </StInputBox>
+      <StInputBox>
         <StInputImg src={loginEmail}></StInputImg>
-        <StInputField type="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <StInputField type="email" placeholder="e-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
       </StInputBox>
       <StInputBox>
         <StInputImg src={loginPassword}></StInputImg>
@@ -43,18 +51,22 @@ const LoginForm = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        {/* {비밀번호 에러 && <p>8자 이상의 영문 대소문자, 숫자, 특수문자(!@#$%^_)만 사용 가능합니다.</p>} */}
+        {/* <StInputField type="file" onChange={(e) => setProfilePictureFile(e.target.files[0])} /> */}
       </StInputBox>
-      <StLoginBtn type="submit" onClick={handleSignIn}>
-        Login
+
+      <StLoginBtn type="submit" onClick={handleSignUp}>
+        Sign Up
       </StLoginBtn>
+
       {auth.status === 'loading' && <p>로딩 중...</p>}
-      {auth.error && <p>에러: {auth.error}</p>}
+      {auth.error && <p>에러가 발생했습니다.</p>}
       {auth.user && <p>환영합니다, {auth.user.email}님!</p>}
     </StFormWrapper>
   );
 };
 
-export default LoginForm;
+export default SignUpForm;
 
 const StFormWrapper = styled.div`
   display: flex;

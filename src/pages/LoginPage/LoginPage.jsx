@@ -1,7 +1,11 @@
-// import Auth from '../../components/ui/Auth';
+import { Outlet } from 'react-router-dom';
 
 const Login = () => {
-  return <>{/* <Auth /> */}</>;
+  return (
+    <>
+      <Outlet />
+    </>
+  );
 };
 
 export default Login;
