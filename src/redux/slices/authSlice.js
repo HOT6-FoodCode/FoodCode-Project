@@ -1,18 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../api/api';
+import api from '../../api';
 
 // 회원가입 비동기 작업 정의
 export const signUp = createAsyncThunk(
   'auth/signUp',
-  async ({ email, password, nickname, profilePictureFile }, { rejectWithValue }) => {
+  async ({ email, password, username, profilePictureFile }, { rejectWithValue }) => {
     try {
-      console.log(nickname);
-      const signUpData = await api.auth.signUp(email, password, nickname, profilePictureFile);
-      console.log('signUpData', signUpData);
+      const signUpData = await api.auth.signUp(email, password, username, profilePictureFile);
       return signUpData.user;
     } catch (error) {
       return rejectWithValue(error.message);
-      // rejectWithValue(`Custom error message: ${error.message}`);
     }
   }
 );

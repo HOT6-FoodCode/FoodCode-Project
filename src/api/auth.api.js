@@ -1,55 +1,52 @@
 import supabase from './supabaseAPI';
 
 class AuthAPI {
-  async signUp(email, password, nickname, profilePictureFile) {
-    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password });
-    if (signUpError) {
-      throw signUpError;
+  async signUp(email, password, nickname) {
+    try {
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password });
+      if (signUpError) {
+        throw new Error(signUpError.message);
+      }
+      const userId = signUpData.user.id;
+
+      // 사진 URL 생성
+      const profilePictureUrl = `${
+        import.meta.env.VITE_SUPABASE_URL
+      }/storage/v1/object/public/profile-pictures/default-profile.jpg`;
+
+      // 추가 정보 저장
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .insert([{ id: userId, nickname, profilePictureUrl }]);
+
+      if (userError) {
+        throw new Error(userError.message);
+      }
+
+      return { signUpData, userData };
+    } catch (error) {
+      throw new Error(`Sign-up failed: ${error.message}`);
     }
-    const userId = signUpData.user.id;
-    console.log(profilePictureFile);
-    console.log(profilePictureFile.name);
-    // 프로필 사진 업로드
-    const fileName = `${userId}/${Date.now()}_${profilePictureFile.name}`;
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('profile-pictures')
-      .upload(fileName, profilePictureFile, {
-        cacheControl: '3600',
-        upsert: false,
-        metadata: { owner: userId }
-      });
-
-    if (uploadError) {
-      throw uploadError;
-    }
-
-    const profilePictureUrl = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/profile-pictures/${
-      uploadData.path
-    }`;
-
-    // 추가 정보 저장
-    const { data: userData, error: userError } = await supabase
-      .from('user')
-      .insert([{ id: userId, nickname, profile_picture: null }]);
-
-    if (userError) {
-      throw userError;
-    }
-
-    return { signUpData, userData };
   }
   async signIn(email, password) {
-    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-    if (signInError) {
-      throw signInError;
+    try {
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (signInError) throw new Error(signInError.message);
+
+      return signInData;
+    } catch (error) {
+      throw new Error(`Sign-in failed: ${error.message}`);
     }
-    return signInData;
   }
 
   async signOut() {
-    const { error: signOutError } = await supabase.auth.signOut();
-    if (signOutError) {
-      throw signOutError;
+    try {
+      const { error: signOutError } = await supabase.auth.signOut();
+
+      if (signOutError) throw new Error(signOutError.message);
+    } catch (error) {
+      throw new Error(`Sign-out failed: ${error.message}`);
     }
   }
 }
