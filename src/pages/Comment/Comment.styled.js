@@ -32,8 +32,7 @@ const StCommentTitle = styled.div`
     align-items: center;
     padding: 10px;
     margin: 30px;
-    border: 3px solid #C3C3C3;
-    border-radius: 10px;
+    border: none;
 `;
 
 const StUserProfileImg = styled.div`
@@ -42,7 +41,7 @@ const StUserProfileImg = styled.div`
     width: 60px;
     height: 60px;
     padding: 10px;
-    margin: 10px;
+    margin-left: 30px ;
 `;
 
 const StCommentWrite = styled.div`
@@ -55,16 +54,33 @@ const StCommentWrite = styled.div`
 `;
 
 const StWriteButton = styled.button`
+    button-type: submit;
     border: 1px solid #C3C3C3;
     border-radius: 2px;
     padding: 5px;
+    margin: 25px 0px 0px 10px;
 `;
 
 const StCommentList = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;    
     padding: 10px;
     margin: 30px;
     border: 3px solid #C3C3C3;
     border-radius: 10px;    
+`;
+
+const StCommentItem = styled.div`
+    display: flex;
+    justify-content: start;
+    align-items: center;    
+    border: 2px solid #C3C3C3;
+    border-radius: 10px;
+    width: 80%;
+    height: 100px;
+    padding: 10px;
+    margin: 10px;
 `;
 export {
     StDetailPage,
@@ -75,4 +91,5 @@ export {
     StCommentWrite,
     StWriteButton,
     StCommentList,
+    StCommentItem,
 };
