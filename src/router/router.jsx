@@ -44,6 +44,16 @@ const router = createBrowserRouter([
             element: <SignUpForm />
           }
         ]
+      },
+      {
+        path: '/mypage/:userId',
+        element: <MyPagee />,
+        children: [
+          {
+            path: '',
+            element: <PostList sorting="myPost" />
+          }
+        ]
       }
     ]
   }
