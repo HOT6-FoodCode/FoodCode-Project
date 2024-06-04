@@ -7,6 +7,7 @@ import LoginPage from '../pages/LoginPage/LoginPage';
 import MainPage from '../pages/MainPage/MainPage';
 import LoginForm from '../components/ui/LoginForm/LoginForm';
 import SignUpForm from '../components/ui/SignUpForm/SignUpForm';
+import { MyPage } from '../pages/MyPage';
 
 const router = createBrowserRouter([
   {
@@ -46,8 +47,8 @@ const router = createBrowserRouter([
         ]
       },
       {
-        path: '/mypage/:userId',
-        element: <MyPagee />,
+        path: '/mypage',
+        element: <MyPage />,
         children: [
           {
             path: '',
