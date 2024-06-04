@@ -7,7 +7,8 @@ class AuthAPI {
       throw signUpError;
     }
     const userId = signUpData.user.id;
-
+    console.log(profilePictureFile);
+    console.log(profilePictureFile.name);
     // 프로필 사진 업로드
     const fileName = `${userId}/${Date.now()}_${profilePictureFile.name}`;
     const { data: uploadData, error: uploadError } = await supabase.storage
@@ -29,7 +30,7 @@ class AuthAPI {
     // 추가 정보 저장
     const { data: userData, error: userError } = await supabase
       .from('user')
-      .insert([{ id: userId, nickname, profile_picture: profilePictureUrl }]);
+      .insert([{ id: userId, nickname, profile_picture: null }]);
 
     if (userError) {
       throw userError;

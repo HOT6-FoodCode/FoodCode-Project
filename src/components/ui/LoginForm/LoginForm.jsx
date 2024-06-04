@@ -4,21 +4,30 @@ import { signIn, signOut } from '../../../redux/slices/authSlice';
 import styled from 'styled-components';
 import loginEmail from '../../../assets/icons/envelope-regular.svg';
 import loginPassword from '../../../assets/icons/unlock-keyhole-solid.svg';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (event) => {
+    event.preventDefault();
     try {
       await dispatch(signIn({ email, password })).unwrap();
-      alert('로그인 되었습니다.');
       setPassword('');
       setEmail('');
+      alert('로그인 되었습니다.');
+      navigate('/');
     } catch (error) {
       console.error('로그인 중 오류 발생:', error);
+      console.log(auth.user);
+      // 유효성 검사
+      // (1) 유저 이메일 맞지 않는 경우
+      // (2) 유저 비밀번호 맞지 않는 경우
+      alert('로그인 도중 오류가 발생했습니다.');
     }
   };
 
@@ -48,7 +57,6 @@ const LoginForm = () => {
         Login
       </StLoginBtn>
       {auth.status === 'loading' && <p>로딩 중...</p>}
-      {auth.error && <p>에러: {auth.error}</p>}
       {auth.user && <p>환영합니다, {auth.user.email}님!</p>}
     </StFormWrapper>
   );
@@ -65,6 +73,7 @@ const StFormWrapper = styled.div`
   width: 300px;
   height: 100%;
   gap: 10px;
+  color: black;
 `;
 
 const StLoginH2 = styled.h2`
@@ -81,6 +90,9 @@ const StInputBox = styled.div`
   display: flex;
   gap: 12px;
   padding: 0px 20px;
+  ::placeholder {
+    color: black;
+  }
 `;
 
 const StInputImg = styled.img`

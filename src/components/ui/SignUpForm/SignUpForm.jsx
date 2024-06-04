@@ -5,24 +5,53 @@ import styled from 'styled-components';
 import loginPerson from '../../../assets/icons/user-large-solid.svg';
 import loginEmail from '../../../assets/icons/envelope-regular.svg';
 import loginPassword from '../../../assets/icons/unlock-keyhole-solid.svg';
+import { useNavigate } from 'react-router-dom';
+import { getUserErrorMessage } from '../../auth/getUserErrorMessage';
 
 const SignUpForm = () => {
-  const [username, setUsername] = useState('');
+  const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [profilePictureFile, setProfilePictureFile] = useState(null);
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  // const [error, setError] = useState('');
 
-  const handleSignUp = async () => {
+  // const validatePassword = (pwd) => {
+  //   const isValid = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^_]).{8,}$/.test(pwd);
+  //   // 8자 이상이 되지 않는 경우
+  //   if (pwd.length < 8) {
+  //     // setError('8자 이상의 영문 대소문자, 숫자, 특수문자(!@#$%^_) 사용 가능합니다.');
+  //     setError('8자 이상의 비밀번호를 입력해주세요.');
+  //   } else if (/^(?=.*[!@#$%^_])$/.test(pwd)) {
+  //     setError('적어도 하나 이상의 특수문자를 사용해주세요.');
+  //   } else {
+  //     setError('');
+  //   }
+  //   return isValid;
+  // };
+
+  // const handleChangePassword = (e) => {
+  //   const { value } = e.target;
+  //   setPassword(value);
+  //   if (password) {
+  //     validatePassword(value);
+  //   } else if (!password) {
+  //     setError('');
+  //   }
+  // };
+
+  const handleSignUp = async (event) => {
+    event.preventDefault();
     try {
-      await dispatch(signUp({ email, password, username, profilePictureFile })).unwrap();
-      setUsername('');
+      await dispatch(signUp({ email, password, nickname })).unwrap();
+      setNickname('');
       setPassword('');
       setEmail('');
-      setProfilePictureFile(null);
-      console.log('회원가입이 완료되었습니다.');
+      console.log(`회원가입이 완료되었습니다.환영합니다, ${auth.user.email}님!`);
+      navigate('/');
     } catch (error) {
+      event.preventDefault();
       console.error('회원가입 중 오류 발생:', error.message || error);
     }
   };
@@ -35,8 +64,8 @@ const SignUpForm = () => {
         <StInputField
           type="text"
           placeholder="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
         />
       </StInputBox>
       <StInputBox>
@@ -51,17 +80,13 @@ const SignUpForm = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {/* {비밀번호 에러 && <p>8자 이상의 영문 대소문자, 숫자, 특수문자(!@#$%^_)만 사용 가능합니다.</p>} */}
-        {/* <StInputField type="file" onChange={(e) => setProfilePictureFile(e.target.files[0])} /> */}
       </StInputBox>
-
+      {auth.error && <p>{getUserErrorMessage(auth.error)}</p>}
       <StLoginBtn type="submit" onClick={handleSignUp}>
         Sign Up
       </StLoginBtn>
-
       {auth.status === 'loading' && <p>로딩 중...</p>}
-      {auth.error && <p>에러가 발생했습니다.</p>}
-      {auth.user && <p>환영합니다, {auth.user.email}님!</p>}
+      {/* {auth.user && <p>환영합니다, {auth.user.email}님!</p>} */}
     </StFormWrapper>
   );
 };
@@ -93,6 +118,9 @@ const StInputBox = styled.div`
   display: flex;
   gap: 12px;
   padding: 0px 20px;
+  ::placeholder {
+    color: black;
+  }
 `;
 
 const StInputImg = styled.img`
