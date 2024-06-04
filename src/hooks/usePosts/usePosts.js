@@ -10,7 +10,7 @@ const usePosts = (sorting) => {
   const [visiblePosts, setVisiblePosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const auth = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const getPosts = async () => {
@@ -19,11 +19,14 @@ const usePosts = (sorting) => {
         let fetchedPosts = [];
 
         if (sorting === 'follow') {
-          if (!auth.user) {
+          if (!user) {
             setLoading(false);
             return;
           }
-          fetchedPosts = await api.posts.fetchFollowingPosts(auth.user.id);
+          // 팔로워 ID 가져오기
+          const followingIds = await api.follow.getFollowingIds(user.id);
+          // 팔로워 ID 배열로 순회해서 데이터에 추가
+          fetchedPosts = await api.posts.fetchFollowingPosts(followingIds);
         } else {
           fetchedPosts = await api.posts.fetchPosts();
         }
@@ -41,13 +44,13 @@ const usePosts = (sorting) => {
     };
 
     getPosts();
-  }, [sorting, auth.user, page]);
+  }, [sorting, user, page]);
 
   const loadMorePosts = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  return { posts, visiblePosts, loading, loadMorePosts, auth };
+  return { posts, visiblePosts, loading, loadMorePosts, user };
 };
 
 export default usePosts;
