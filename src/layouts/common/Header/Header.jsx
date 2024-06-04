@@ -11,12 +11,18 @@ import {
   StrNavWrapDiv,
   UserImg
 } from './Header.styled';
+import { useSelector } from 'react-redux';
+import api from '../../../api';
 
 function Header() {
   console.log('헤더');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const userData = useSelector((state) => state.auth.user);
+  const [user, setUser] = useState(null);
+  console.log(userData);
+  const id = userData ? userData.id : null;
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -34,6 +40,23 @@ function Header() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const userProfile = await api.user.getUserProfile(id);
+        setIsLoggedIn(true);
+        setUser(userProfile);
+      } catch (error) {
+        console.error('Failed to fetch user profile:', error.message);
+      }
+    };
+
+    if (id) {
+      fetchUserProfile();
+    }
+  }, [id]);
+
   return (
     <header>
       <HeaderWrapDiv>
@@ -43,7 +66,7 @@ function Header() {
           </Link>
         </h1>
         {/* 지울 내용 */}
-        <StrBtn onClick={() => setIsLoggedIn((pervState) => !pervState)}>토글</StrBtn>
+        <StrBtn onClick={() => setIsLoggedIn((prevState) => !prevState)}>토글</StrBtn>
 
         <nav>
           <StrNavWrapDiv>
@@ -55,7 +78,7 @@ function Header() {
 
                 <Link to="/mypage">
                   <UserImg
-                    src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg"
+                    src={user && user.profilePictureUrl || 'https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg'}
                     alt="User"
                   />
                 </Link>
