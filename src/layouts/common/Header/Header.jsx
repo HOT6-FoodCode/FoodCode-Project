@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import api from '../../../api';
+import { profileDefaultUrl } from '../../../api/supabaseAPI';
 import mainLogo from '../../../assets/logo.png';
-import FollowButton from '../../../components/common/FollowButton';
+import useDropdown from '../../../hooks/useDropdown/useDropdown';
 import { signOut } from '../../../redux/slices/authSlice';
 import {
   DropdownButton,
@@ -18,45 +19,42 @@ import {
 
 function Header() {
   console.log('헤더');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const [profilePictureUrl, setProfilePictureUrl] = useState(null);
+  const { isOpen, ref, toggle } = useDropdown();
 
-  const toggleDropdown = useCallback(() => {
-    setIsDropdownOpen((prevState) => !prevState);
-  }, []);
+  useEffect(() => {
+    if (user) {
+      const fetchUserProfile = async () => {
+        try {
+          const userProfile = await api.user.getUserProfile(user.id);
+          setProfilePictureUrl(userProfile.profilePictureUrl);
+        } catch (error) {
+          console.error('Failed to fetch user profile', error);
+        }
+      };
 
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsDropdownOpen(false);
+      fetchUserProfile();
     }
-  };
+  }, [user]);
 
   const handleLogout = async () => {
     dispatch(signOut());
   };
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   const handleWrite = () => {
-    const userId = user?.id;
-    const title = '테스트';
-    const content = '내용';
-    const image = 'url';
-    const rating = '4.5';
-
-    if (userId) {
-      const data = api.posts.createPost(userId, title, content, image, rating);
-      console.log(data);
-    } else {
-      console.error('User ID is undefined');
-    }
+    // const userId = user?.id;
+    // const title = '테스트3';
+    // const content = '내용3';
+    // const image = 'url';
+    // const rating = '1.2';
+    // if (userId) {
+    //   const data = api.posts.createPost(userId, title, content, image, rating);
+    //   console.log(data);
+    // } else {
+    //   console.error('User ID is undefined');
+    // }
   };
 
   return (
@@ -72,24 +70,20 @@ function Header() {
           <StrNavWrapDiv>
             {user ? (
               <>
-                <FollowButton id={'e6450a1f-d01e-482c-a2d7-81ff06aecfc1'} />
                 <StrBtn onClick={handleWrite}>Write</StrBtn>
 
                 <Link to="/mypage">
-                  <UserImg
-                    src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg"
-                    alt="User"
-                  />
+                  <UserImg src={profilePictureUrl ?? `${profileDefaultUrl}`} alt="User" />
                 </Link>
 
-                <div ref={dropdownRef}>
-                  <DropdownButton onClick={toggleDropdown}>
+                <div ref={ref}>
+                  <DropdownButton onClick={toggle}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12 15L6 9H18L12 15Z" fill="currentColor" />
                     </svg>
                   </DropdownButton>
-                  {isDropdownOpen && (
-                    <DropdownMenu isOpen={isDropdownOpen}>
+                  {isOpen && (
+                    <DropdownMenu $isOpen={isOpen}>
                       <DropdownMenuItem>
                         <Link to="/mypage">My Page</Link>
                       </DropdownMenuItem>

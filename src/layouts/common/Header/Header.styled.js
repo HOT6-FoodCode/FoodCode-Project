@@ -40,7 +40,9 @@ const StrNavWrapDiv = styled.div`
 
 const UserImg = styled.img`
   width: 48px;
-  height: auto;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
 `;
 
 const DropdownButton = styled.button`
@@ -93,8 +95,8 @@ const DropdownMenu = styled.ul`
       background-color: #1a4999;
     }
   }
-  ${({ isOpen }) =>
-    isOpen &&
+  ${({ $isOpen }) =>
+    $isOpen &&
     css`
       opacity: 1;
       visibility: visible;
