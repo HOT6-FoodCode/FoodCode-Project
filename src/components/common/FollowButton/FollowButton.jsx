@@ -4,30 +4,48 @@ import api from '../../../api';
 
 function FollowButton({ followerId }) {
   const [isFollowing, setIsFollowing] = useState(false);
-  const auth = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const checkFollowStatus = async () => {
-      if (auth.user) {
-        const followingId = auth.user.id;
-        const isFollowing = await api.follow.isFollowing(followingId, followerId);
-        setIsFollowing(isFollowing);
+      if (user && followerId) {
+        const followingId = user.id;
+
+        try {
+          const isFollowing = await api.follow.isFollowing(followingId, followerId);
+          setIsFollowing(isFollowing);
+        } catch (error) {
+          console.error('Failed to check follow status:', error);
+        }
       }
     };
 
     checkFollowStatus();
-  }, [auth.user, followerId]);
+  }, [user, followerId]);
 
   const handleToggleFollow = async () => {
-    if (auth.user) {
-      const followingId = auth.user.id;
-      const result = await api.follow.toggleFollowUser(followingId, followerId);
-      setIsFollowing(result.action === 'follow');
+    if (user && followerId) {
+      const followingId = user.id;
+
+      if (followingId === followerId) {
+        console.log('Cannot follow yourself');
+        return;
+      }
+      try {
+        const result = await api.follow.toggleFollowUser(followingId, followerId);
+        setIsFollowing(result.action === 'follow');
+      } catch (error) {
+        console.error('Failed to toggle follow status:', error);
+      }
     } else {
-      console.log('링크로 로그인 페이지 이동 or 알림 고민중');
+      console.log('user or followerId is not defined');
+      // console.log 팝업으로 바꿀 예정
     }
   };
-  return <button onClick={handleToggleFollow}> {isFollowing ? 'Unfollow' : 'Follow'}</button>;
+  if (!user) {
+    return null;
+  }
+  return <button onClick={handleToggleFollow}>{isFollowing ? 'Unfollow' : 'Follow'}</button>;
 }
 
 export default FollowButton;

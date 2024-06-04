@@ -3,21 +3,33 @@ import supabase from './supabaseAPI';
 class FollowAPI {
   // 팔로우 상태 확인 프라이빗 메서드
   async _checkFollowStatus(followingId, followerId) {
+    if (!followingId || !followerId) {
+      throw new Error('Invalid user IDs');
+    }
+
     const { data: existingFollow, error: checkError } = await supabase
       .from('follows')
       .select('*')
       .eq('following_id', followingId)
       .eq('follower_id', followerId)
-      .single();
+      .limit(1);
 
-    if (checkError && !checkError.message.includes('No rows found')) {
+    if (checkError) {
       throw new Error(checkError.message);
     }
 
-    return existingFollow;
+    return existingFollow.length > 0 ? existingFollow[0] : null;
   }
   // 팔로우 상태 토글 메서드
   async toggleFollowUser(followingId, followerId) {
+    if (!followingId || !followerId) {
+      throw new Error('Invalid user IDs');
+    }
+
+    if (followingId === followerId) {
+      throw new Error('Cannot follow yourself');
+    }
+
     try {
       const existingFollow = await this._checkFollowStatus(followingId, followerId);
 
@@ -50,7 +62,7 @@ class FollowAPI {
   async isFollowing(followingId, followerId) {
     try {
       const existingFollow = await this._checkFollowStatus(followingId, followerId);
-      console.log(existingFollow);
+
       return existingFollow ? true : false;
     } catch (error) {
       throw new Error(`Failed to check follow status: ${error.message}`);
