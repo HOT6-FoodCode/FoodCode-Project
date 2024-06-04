@@ -12,7 +12,7 @@ class AuthAPI {
       // 사진 URL 생성
       const profilePictureUrl = `${
         import.meta.env.VITE_SUPABASE_URL
-      }/storage/v1/object/public/profile-pictures/${userId}/default-profile.jpg`;
+      }/storage/v1/object/public/profile-pictures/default-profile.jpg`;
 
       // 추가 정보 저장
       const { data: userData, error: userError } = await supabase
