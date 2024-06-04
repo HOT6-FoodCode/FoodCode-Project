@@ -1,6 +1,8 @@
 /* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
+
+  v2.0 | 20110126
+  License: none (public domain)
+
 */
 
 html,
@@ -105,25 +107,9 @@ nav,
 section {
   display: block;
 }
-/* HTML5 display-role reset for older browsers */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-  display: block;
-}
 body {
   line-height: 1;
   font-family: 'Wanted Sans Variable', 'Wanted Sans', -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI',
-    'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    sans-serif;
 }
 ol,
 ul {
@@ -145,7 +131,6 @@ table {
   border-spacing: 0;
 }
 
-
 button {
   background: inherit;
   border: none;
@@ -157,10 +142,6 @@ button {
 
 * {
   box-sizing: border-box;
-}
-
-a {
-  text-decoration: none;
 }
 
 a {
