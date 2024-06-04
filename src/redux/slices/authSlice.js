@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../api/api';
+import api from '../../api';
 
 // 회원가입 비동기 작업 정의
 export const signUp = createAsyncThunk('auth/signUp', async ({ email, password, nickname }, { rejectWithValue }) => {
@@ -12,21 +12,23 @@ export const signUp = createAsyncThunk('auth/signUp', async ({ email, password, 
 });
 
 // 로그인 비동기 작업 정의
-export const signIn = createAsyncThunk('auth/signIn', async ({ email, password, username }, { rejectWithValue }) => {
-  const { user, error } = await api.auth.signIn({
-    email,
-    password,
-    username
-  });
-  if (error) return rejectWithValue(error.message); // 에러 발생 시 리젝트
-  return user; // 성공 시 유저 정보 반환
+export const signIn = createAsyncThunk('auth/signIn', async ({ email, password }, { rejectWithValue }) => {
+  try {
+    const signInData = await api.auth.signIn(email, password);
+    return signInData.user;
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
 });
 
 // 로그아웃 비동기 작업 정의
 export const signOut = createAsyncThunk('auth/signOut', async (_, { rejectWithValue }) => {
-  const { error } = await api.auth.signOut();
-  if (error) return rejectWithValue(error.message); // 에러 발생 시 리젝트
-  return {}; // 성공 시 빈 객체 반환
+  try {
+    await api.auth.signOut();
+    return {};
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
 });
 
 const authSlice = createSlice({
