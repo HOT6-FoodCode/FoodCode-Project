@@ -27,7 +27,7 @@ class AuthAPI {
 
       if (signInError) throw new Error(signInError.message);
 
-      return signInData;
+      return signInData.user;
     } catch (error) {
       throw new Error(`Sign-in failed: ${error.message}`);
     }
@@ -44,10 +44,16 @@ class AuthAPI {
   }
 
   async getUser() {
-    const {
-      data: { session }
-    } = await supabase.auth.getSession();
-    return session ? session.user : null;
+    try {
+      const {
+        data: { session },
+        error
+      } = await supabase.auth.getSession();
+      if (error) throw new Error(error.message);
+      return session.user;
+    } catch (error) {
+      throw new Error(`Get user failed: ${error.message}`);
+    }
   }
 }
 

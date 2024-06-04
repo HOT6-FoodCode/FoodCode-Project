@@ -4,8 +4,8 @@ import api from '../../api';
 // 회원가입 비동기 작업 정의
 export const signUp = createAsyncThunk('auth/signUp', async ({ email, password, nickname }, { rejectWithValue }) => {
   try {
-    const signUpData = await api.auth.signUp(email, password, nickname);
-    return signUpData.user;
+    const user = await api.auth.signUp(email, password, nickname);
+    return user;
   } catch (error) {
     return rejectWithValue(error.message);
   }
@@ -14,8 +14,8 @@ export const signUp = createAsyncThunk('auth/signUp', async ({ email, password, 
 // 로그인 비동기 작업 정의
 export const signIn = createAsyncThunk('auth/signIn', async ({ email, password }, { rejectWithValue }) => {
   try {
-    const signInData = await api.auth.signIn(email, password);
-    return signInData.user;
+    const user = await api.auth.signIn(email, password);
+    return user;
   } catch (error) {
     return rejectWithValue(error.message);
   }

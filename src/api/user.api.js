@@ -5,7 +5,7 @@ class UserAPI {
     try {
       const { data, error } = await supabase
         .from('users')
-        .select('id, email, nickname, profilePictureUrl')
+        .select('id, nickname, profilePictureUrl')
         .eq('id', userId)
         .single();
 

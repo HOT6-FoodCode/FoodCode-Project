@@ -14,15 +14,22 @@ class PostsAPI {
       throw new Error(`Failed to fetch posts: ${error.message}`);
     }
   }
-  async fetchFollowingPosts(followingIds) {
+  async fetchFollowingPosts(userIdArray) {
     try {
-      const { data, error } = await supabase.from('posts').select('*').in('user_id', followingIds);
+      let fetchedPosts = [];
 
-      if (error) {
-        throw error;
+      //  배열로 순회해서 follower_id에 해당하는 게시글  가져오기
+      for (const userId of userIdArray) {
+        const { data, error } = await supabase.from('posts').select('*').eq('user_id', userId);
+
+        if (error) {
+          throw error;
+        }
+
+        fetchedPosts.push(...data);
       }
 
-      return data;
+      return fetchedPosts;
     } catch (error) {
       throw new Error(`Failed to fetch following posts: ${error.message}`);
     }
