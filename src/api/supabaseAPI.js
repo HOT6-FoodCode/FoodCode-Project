@@ -4,5 +4,8 @@ const SUPABASE_PROJECT_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_KEY;
 
 const supabase = createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_KEY);
-
+// 사진 URL 생성
+export const profileDefaultUrl = `${
+  import.meta.env.VITE_SUPABASE_URL
+}/storage/v1/object/public/profile-pictures/default-profile.jpg`;
 export default supabase;

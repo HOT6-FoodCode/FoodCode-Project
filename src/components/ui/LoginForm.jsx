@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import { signIn, signUp } from '../../redux/slices/authSlice';
 
 function LoginForm() {
-  const [username, setUsername] = useState('');
+  const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [profilePictureFile, setProfilePictureFile] = useState(null);
+
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
@@ -15,11 +15,11 @@ function LoginForm() {
     event.preventDefault();
 
     try {
-      await dispatch(signUp({ email, password, username, profilePictureFile })).unwrap();
-      setUsername('');
+      await dispatch(signUp({ email, password, nickname })).unwrap();
+      setNickname('');
       setPassword('');
       setEmail('');
-      setProfilePictureFile(null);
+
       console.log('회원가입이 완료되었습니다.');
     } catch (error) {
       console.error('회원가입 중 오류 발생:', error.message || error);
@@ -41,8 +41,8 @@ function LoginForm() {
         <StInputField
           type="text"
           placeholder="nickname"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
         />
         <StInputField type="email" placeholder="e-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
         <StInputField
@@ -57,11 +57,27 @@ function LoginForm() {
         <button onClick={handleSignIn}>Login</button>
       </div>
       {auth.status === 'loading' && <p>로딩 중...</p>}
-      {auth.error && <p>에러가 발생했습니다.</p>}
+      {auth.error && <p>{getUserErrorMessage(auth.error)}</p>}
       {auth.user && <p>환영합니다, {auth.user.email}님!</p>}
     </StFormWrapper>
   );
 }
+
+const getUserErrorMessage = (error) => {
+  if (error.includes('User already registered')) {
+    return console.log('중복된 이메일입니다.');
+  } else if (error.includes('duplicate key value violates unique constraint "unique_nickname"')) {
+    return '중복된 닉네임입니다.';
+  } else if (error.includes('Unable to validate email address: invalid format')) {
+    return '이메일 형식에 맞게 제출해주세요.';
+  } else if (error.includes('Anonymous sign-ins are disabled')) {
+    return '입력창에 내용을 모두 입력해주세요.';
+  } else if (error.includes('Password should be at least 6 characters.')) {
+    return '비밀번호는 최소 6글자 이상 입력해주세요.';
+  } else {
+    return '잘못된 이메일 또는 비밀번호를 입력했습니다.';
+  }
+};
 
 export default LoginForm;
 

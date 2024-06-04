@@ -9,15 +9,8 @@ class AuthAPI {
       }
       const userId = signUpData.user.id;
 
-      // 사진 URL 생성
-      const profilePictureUrl = `${
-        import.meta.env.VITE_SUPABASE_URL
-      }/storage/v1/object/public/profile-pictures/default-profile.jpg`;
-
       // 추가 정보 저장
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .insert([{ id: userId, nickname, profilePictureUrl }]);
+      const { data: userData, error: userError } = await supabase.from('users').insert([{ id: userId, nickname }]);
 
       if (userError) {
         throw new Error(userError.message);
