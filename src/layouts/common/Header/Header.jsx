@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import api from '../../../api';
 import mainLogo from '../../../assets/logo.png';
 import {
   DropdownButton,
@@ -11,18 +13,23 @@ import {
   StrNavWrapDiv,
   UserImg
 } from './Header.styled';
-import { useSelector } from 'react-redux';
-import api from '../../../api';
+import { userDataUpdate } from '../../../redux/slices/userSlice';
+
 
 function Header() {
   console.log('헤더');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const userData = useSelector((state) => state.auth.user);
-  const [user, setUser] = useState(null);
-  console.log(userData);
-  const id = userData ? userData.id : null;
+  
+  const userProfileData = useSelector((state) => state.user.userProfile);
+  console.log('상태확인, Header', userProfileData);
+  const dispatch  = useDispatch();
+  const id = userProfileData ? userProfileData.id : null;
+  //const user = useSelector((state) => state.auth.user);
+  //const [userData, setUserData] = useState(null);
+  //console.log(userData);
+  //const id = user ? user.id : null;
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -45,17 +52,18 @@ function Header() {
     const fetchUserProfile = async () => {
       try {
         const userProfile = await api.user.getUserProfile(id);
+        dispatch(userDataUpdate(userProfile));
         setIsLoggedIn(true);
-        setUser(userProfile);
       } catch (error) {
         console.error('Failed to fetch user profile:', error.message);
       }
     };
 
-    if (id) {
+    if (id && userProfileData && userProfileData.profilePictureUrl) { // 여기를 수정했습니다.
       fetchUserProfile();
     }
-  }, [id]);
+  }, [id, dispatch]); 
+
 
   return (
     <header>
@@ -78,7 +86,7 @@ function Header() {
 
                 <Link to="/mypage">
                   <UserImg
-                    src={user && user.profilePictureUrl || 'https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg'}
+                    src={userProfileData ? userProfileData.profilePictureUrl : 'https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg'}
                     alt="User"
                   />
                 </Link>
