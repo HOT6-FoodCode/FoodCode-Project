@@ -2,17 +2,14 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../api';
 
 // 회원가입 비동기 작업 정의
-export const signUp = createAsyncThunk(
-  'auth/signUp',
-  async ({ email, password, username, profilePictureFile }, { rejectWithValue }) => {
-    try {
-      const signUpData = await api.auth.signUp(email, password, username, profilePictureFile);
-      return signUpData.user;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
+export const signUp = createAsyncThunk('auth/signUp', async ({ email, password, nickname }, { rejectWithValue }) => {
+  try {
+    const signUpData = await api.auth.signUp(email, password, nickname);
+    return signUpData.user;
+  } catch (error) {
+    return rejectWithValue(error.message);
   }
-);
+});
 
 // 로그인 비동기 작업 정의
 export const signIn = createAsyncThunk('auth/signIn', async ({ email, password }, { rejectWithValue }) => {
