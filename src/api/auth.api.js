@@ -1,7 +1,7 @@
 import supabase from './supabaseAPI';
 
 class AuthAPI {
-  async sighUp(email, password, nickname, profilePictureFile) {
+  async signUp(email, password, nickname, profilePictureFile) {
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password });
     if (signUpError) {
       throw signUpError;
@@ -9,29 +9,37 @@ class AuthAPI {
     const userId = signUpData.user.id;
 
     // 프로필 사진 업로드
-    const fileName = `${userId}/${Date.now()}_${profilePictureFile.name}`;
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('profile-pictures')
-      .upload(fileName, profilePictureFile, {
-        cacheControl: '3600',
-        upsert: false,
-        metadata: { owner: userId }
-      });
+    let profilePictureUrl = null;
+    if (profilePictureFile) {
+      const fileName = `${userId}/${Date.now()}_${profilePictureFile.name}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('profile-pictures')
+        .upload(fileName, profilePictureFile, {
+          cacheControl: '3600',
+          upsert: false,
+          metadata: { owner: userId }
+        });
 
-    if (uploadError) {
-      throw uploadError;
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      profilePictureUrl = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/profile-pictures/${
+        uploadData.path
+      }`;
+    } else {
+      profilePictureUrl = `${
+        import.meta.env.VITE_SUPABASE_URL
+      }/storage/v1/object/public/profile-pictures/default-profile.jpg`;
     }
-
-    const profilePictureUrl = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/profile-pictures/${
-      uploadData.path
-    }`;
 
     // 추가 정보 저장
     const { data: userData, error: userError } = await supabase
-      .from('user')
-      .insert([{ id: userId, nickname, profile_picture: profilePictureUrl }]);
+      .from('users')
+      .insert([{ id: userId, nickname, profilePictureUrl }]);
 
     if (userError) {
+      console.error('User data insertion error:', userError);
       throw userError;
     }
 
