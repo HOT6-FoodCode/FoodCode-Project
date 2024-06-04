@@ -5,6 +5,7 @@ import { MyPage } from '../pages/MyPage';
 import LoginPage from '../pages/LoginPage/LoginPage';
 import MainLayout from '../layouts/MainLayout/MainLayout';
 import PostList from '../components/posts/PostList';
+import WritePage from '../pages/WritePage/WritePage';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: '/mypage',
         element: <MyPage />
+      },
+      {
+        path: '/writepage',
+        element: <WritePage />
       }
     ]
   }
