@@ -1,4 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
+
+import LoginForm from '../components/LoginForm';
 import PostList from '../components/posts/PostList';
 import MainLayout from '../layouts/MainLayout';
 import MainPage from '../pages/MainPage/MainPage';
@@ -29,27 +31,9 @@ const router = createBrowserRouter([
           }
         ]
       },
-      // {
-      //   path: '/loginpage',
-      //   element: <LoginPage />
-      //   children: [
-      //     {
-      //       path: '/login',
-      //       element: <LoginForm />
-      //     },
-      //     {
-      //       path: '/signup',
-      //       element: <RegisterForm />
-      //     }
-      //   ]
-      // }
       {
         path: '/login',
         element: <LoginForm />
-      },
-      {
-        path: '/signup',
-        element: <RegisterForm />
       }
     ]
   }

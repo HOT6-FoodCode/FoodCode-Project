@@ -1,72 +1,9 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import supabase from '../../supabaseClient';
-
-// const initialState = [
-//   {
-//     user: null,
-//     session: null,
-//     status: 'idle',
-//     error: null
-//   },
-//   {
-//     user: null,
-//     status: 'idle',
-//     error: null
-//   }
-// ];
-
-// // GitHub 로그인 및 회원가입 비동기 작업 정의
-// export const signInWithGitHub = createAsyncThunk('auth/signInWithGitHub', async (_, { rejectWithValue }) => {
-//   const { error } = await supabase.auth.signInWithOAuth({
-//     provider: 'github'
-//   });
-//   if (error) {
-//     return rejectWithValue(error.message);
-//   }
-// });
-
-// const authSlice = createSlice({
-//   name: 'auth',
-//   initialState: {
-//     user: null,
-//     session: null,
-//     status: 'idle',
-//     error: null
-//   },
-//   reducers: {
-//     setUser: (state, action) => {
-//       state.user = action.payload.user;
-//       state.session = action.payload.session;
-//     },
-//     signOut: (state) => {
-//       state.user = null;
-//       state.session = null;
-//     }
-//   },
-//   extraReducers: (builder) => {
-//     builder
-//       .addCase(signInWithGitHub.pending, (state) => {
-//         state.status = 'loading';
-//       })
-//       .addCase(signInWithGitHub.fulfilled, (state, action) => {
-//         state.status = 'succeeded';
-//         state.user = action.payload.user;
-//         state.session = action.payload.session;
-//       })
-//       .addCase(signInWithGitHub.rejected, (state, action) => {
-//         state.status = 'failed';
-//         state.error = action.payload;
-//       });
-//   }
-// });
-
-// export const { setUser, signOut } = authSlice.actions;
-
-// export default authSlice.reducer;
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import api from '../../api/api';
 
 // 회원가입 비동기 작업 정의
 export const signUp = createAsyncThunk('auth/signUp', async ({ email, password, username }, { rejectWithValue }) => {
-  const { user, error } = await supabase.auth.signUp({
+  const { user, error } = await api.auth.signUp({
     email,
     password,
     username
@@ -77,7 +14,7 @@ export const signUp = createAsyncThunk('auth/signUp', async ({ email, password, 
 
 // 로그인 비동기 작업 정의
 export const signIn = createAsyncThunk('auth/signIn', async ({ email, password, username }, { rejectWithValue }) => {
-  const { user, error } = await supabase.auth.signIn({
+  const { user, error } = await api.auth.signIn({
     email,
     password,
     username
@@ -88,7 +25,7 @@ export const signIn = createAsyncThunk('auth/signIn', async ({ email, password, 
 
 // 로그아웃 비동기 작업 정의
 export const signOut = createAsyncThunk('auth/signOut', async (_, { rejectWithValue }) => {
-  const { error } = await supabase.auth.signOut();
+  const { error } = await api.auth.signOut();
   if (error) return rejectWithValue(error.message); // 에러 발생 시 리젝트
   return {}; // 성공 시 빈 객체 반환
 });
