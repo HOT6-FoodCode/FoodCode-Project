@@ -1,7 +1,4 @@
 export const getUserErrorMessage = (error) => {
-  //   const errorMessage = error.message;
-  console.log(error);
-
   if (error.includes('User already registered')) {
     return '중복된 이메일입니다.';
   } else if (error.includes('duplicate key value violates unique constraint "unique_nickname"')) {

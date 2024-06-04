@@ -17,6 +17,7 @@ function MainLayout() {
 
 const Wrapper = styled.div`
   width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -24,8 +25,7 @@ const Wrapper = styled.div`
 
 const Main = styled.div`
   min-height: 70vh;
-  /* display: flex; */
-  /* align-items: center; */
+  height: 100%;
 `;
 
 export default MainLayout;
