@@ -1,66 +1,11 @@
-import { useEffect, useState } from 'react';
-
-import { useSelector } from 'react-redux';
-import api from '../../../api/api';
-
+import usePosts from '../../../hooks/usePosts/usePosts';
 import Skeleton from '../../../layouts/common/Skeleton';
 import PostItem from '../PostItem';
 import { Message, PostGrid } from './PostList.styled';
 
-const POSTS_PER_PAGE = 12;
-
 const PostList = ({ sorting }) => {
-  const [posts, setPosts] = useState([]);
-  const [visiblePosts, setVisiblePosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const auth = useSelector((state) => state.auth);
+  const { posts, visiblePosts, loading, loadMorePosts, auth } = usePosts(sorting);
 
-  useEffect(() => {
-    const getPosts = async () => {
-      setLoading(true);
-      try {
-        let fetchedPosts = await api.posts.fetchPosts();
-        let sortedPosts = [...fetchedPosts];
-
-        if (sorting === 'recent') {
-          sortedPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-        } else if (sorting === 'follow') {
-          if (!auth.user) {
-            setLoading(false);
-            return;
-          }
-          const followingIds = await api.follow.getFollowingIds(auth.user.id);
-          if (followingIds.length === 0) {
-            setLoading(false);
-            setPosts([]);
-            setVisiblePosts([]);
-            return;
-          }
-          sortedPosts = sortedPosts
-            .filter((post) => followingIds.includes(post.user_id))
-            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-        } else if (sorting === 'trending') {
-          sortedPosts.sort((a, b) => b.views * 0.5 + b.rating * 1.5 - (a.views * 0.5 + a.rating * 1.5));
-        }
-
-        setPosts(sortedPosts);
-        setVisiblePosts(sortedPosts.slice(0, page * POSTS_PER_PAGE));
-      } catch (error) {
-        console.error('Failed to fetch posts:', error);
-        setPosts([]);
-        setVisiblePosts([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getPosts();
-  }, [sorting, auth.user, page]);
-
-  const loadMorePosts = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
   if (!auth.user && sorting === 'follow') {
     return (
       <Message>

@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import api from '../../../api';
 import mainLogo from '../../../assets/logo.png';
+import FollowButton from '../../../components/common/FollowButton';
 import { signOut } from '../../../redux/slices/authSlice';
 import {
   DropdownButton,
@@ -42,7 +44,20 @@ function Header() {
     };
   }, []);
 
-  console.log('user', user);
+  const handleWrite = () => {
+    const userId = user?.id;
+    const title = '테스트';
+    const content = '내용';
+    const image = 'url';
+    const rating = '4.5';
+
+    if (userId) {
+      const data = api.posts.createPost(userId, title, content, image, rating);
+      console.log(data);
+    } else {
+      console.error('User ID is undefined');
+    }
+  };
 
   return (
     <header>
@@ -57,9 +72,8 @@ function Header() {
           <StrNavWrapDiv>
             {user ? (
               <>
-                <Link to="/login">
-                  <StrBtn>Write</StrBtn>
-                </Link>
+                <FollowButton id={'e6450a1f-d01e-482c-a2d7-81ff06aecfc1'} />
+                <StrBtn onClick={handleWrite}>Write</StrBtn>
 
                 <Link to="/mypage">
                   <UserImg

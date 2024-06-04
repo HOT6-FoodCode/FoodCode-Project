@@ -14,8 +14,21 @@ class PostsAPI {
       throw new Error(`Failed to fetch posts: ${error.message}`);
     }
   }
+  async fetchFollowingPosts(followingIds) {
+    try {
+      const { data, error } = await supabase.from('posts').select('*').in('user_id', followingIds);
 
-  async createPost(userId, title, context, image, rating) {
+      if (error) {
+        throw error;
+      }
+
+      return data;
+    } catch (error) {
+      throw new Error(`Failed to fetch following posts: ${error.message}`);
+    }
+  }
+
+  async createPost(userId, title, content, image, rating) {
     try {
       // 닉네임 가져오기
       const { data: userData, error: userError } = await supabase.from('users').select('nickname').eq('id', userId);
@@ -24,12 +37,17 @@ class PostsAPI {
         throw userError;
       }
 
+      if (!userData || userData.length === 0) {
+        throw new Error('User not found');
+      }
+
       const nickname = userData[0].nickname;
 
+      console.log(nickname, userData);
       // posts 테이블에 등록
       const { data, error } = await supabase
         .from('posts')
-        .insert([{ user_id: userId, nickname, title, context, image, views: 0, rating }]);
+        .insert([{ user_id: userId, nickname, title, content, image, views: 0, rating }]);
 
       if (error) {
         throw error;
@@ -51,9 +69,9 @@ class PostsAPI {
     }
   }
 
-  async editPost(postId, title, context, image) {
+  async editPost(postId, title, content, image) {
     try {
-      const { error } = await supabase.from('posts').update({ title, context, image }).eq('id', postId);
+      const { error } = await supabase.from('posts').update({ title, content, image }).eq('id', postId);
 
       if (error) throw error;
     } catch (error) {

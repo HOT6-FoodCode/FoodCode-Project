@@ -50,6 +50,7 @@ class FollowAPI {
   async isFollowing(followingId, followerId) {
     try {
       const existingFollow = await this._checkFollowStatus(followingId, followerId);
+      console.log(existingFollow);
       return existingFollow ? true : false;
     } catch (error) {
       throw new Error(`Failed to check follow status: ${error.message}`);

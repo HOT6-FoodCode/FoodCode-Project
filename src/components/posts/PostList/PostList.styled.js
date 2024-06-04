@@ -19,7 +19,7 @@ export const PostGrid = styled.div`
 export const Message = styled.div`
   display: flex;
   width: 100vh;
-  height: 50vh;
+  height: 75vh;
   justify-content: center;
   align-items: center;
   text-align: center;
