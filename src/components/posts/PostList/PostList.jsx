@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { fetchPosts } from '../../../api/api.post';
 import PostItem from '../PostItem';
 import { PostGrid } from './PostList.styled';
-import { PostGrid } from './PostList.styled';
 
 const PostList = ({ sorting }) => {
   const [posts, setPosts] = useState([]);

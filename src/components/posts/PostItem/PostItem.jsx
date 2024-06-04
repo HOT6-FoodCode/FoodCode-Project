@@ -1,7 +1,5 @@
-import { incrementViewCount } from '../../../api/api.post';
 import { CardImage, Content, ContentWrapDiv, PostCard, Rating, Title } from './PostItem.styled';
 import api from '../../../api/api';
-import { CardImage, Content, ContentWrapDiv, PostCard, Rating, Title } from './PostItem.styled';
 
 const PostItem = ({ postId, image, title, content, rating }) => {
   const handleClick = () => {
