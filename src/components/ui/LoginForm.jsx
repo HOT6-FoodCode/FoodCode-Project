@@ -1,21 +1,35 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { signUp } from '../redux/slices/authSlice';
+import { signIn, signUp } from '../../redux/slices/authSlice';
 
 function LoginForm() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [profilePictureFile, setProfilePictureFile] = useState(null);
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
-  const handleSignUp = () => {
-    dispatch(signUp({ email, password, username }));
-    setUsername('');
-    setPassword('');
-    setEmail('');
-    console('회원가입이 완료되었습니다.');
+  const handleSignUp = async () => {
+    try {
+      await dispatch(signUp({ email, password, username, profilePictureFile })).unwrap();
+      setUsername('');
+      setPassword('');
+      setEmail('');
+      setProfilePictureFile(null);
+      console.log('회원가입이 완료되었습니다.');
+    } catch (error) {
+      console.error('회원가입 중 오류 발생:', error.message || error);
+    }
+  };
+
+  const handleSignIn = async () => {
+    try {
+      await dispatch(signIn({ email, password })).unwrap();
+    } catch (error) {
+      console.error('로그인 중 오류 발생:', error);
+    }
   };
 
   return (
@@ -24,7 +38,7 @@ function LoginForm() {
       <StInputBox>
         <StInputField
           type="text"
-          placeholder="username"
+          placeholder="nickname"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -35,12 +49,14 @@ function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <StInputField type="file" onChange={(e) => setProfilePictureFile(e.target.files[0])} />
       </StInputBox>
       <div>
-        <button onClick={handleSignUp}>Login</button>
+        <button onClick={handleSignUp}>Sign Up</button>
+        <button onClick={handleSignIn}>Login</button>
       </div>
       {auth.status === 'loading' && <p>로딩 중...</p>}
-      {auth.error && <p>에러: {auth.error}</p>}
+      {auth.error && <p>에러가 발생했습니다.</p>}
       {auth.user && <p>환영합니다, {auth.user.email}님!</p>}
     </StFormWrapper>
   );
@@ -60,7 +76,6 @@ const StFormWrapper = styled.div`
 `;
 
 const StInputBox = styled.div`
-  /* width 하드코딩 사이즈 수정 */
   width: 100%;
   display: flex;
   flex-direction: column;
