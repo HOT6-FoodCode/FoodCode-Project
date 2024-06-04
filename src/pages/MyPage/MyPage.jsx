@@ -1,4 +1,3 @@
-//import UserImgUpdate from '../../components/mypage/userInfo/UserImgUpdate';
 import {
   StMyPageWrapper,
   StPostDiv,
@@ -6,46 +5,29 @@ import {
   StDivProfile,
   StTitle,
   StAccount,
-  StUserInfoImg,
-  StUserInfo,
-  StUserContents,
-  StUserLabel,
-  StUserValue,
   StPostListTitle
 } from './MyPage.styled';
 import PostList from '../../components/posts/PostList';
-
+import UserInfo from '../../components/ui/UserInfo/UserInfo';
+import { useParams } from 'react-router-dom';
 
 const MyPage = () => {
+  const params = useParams();
+  console.log('params', params);
+  //const userId = 'b3a9af59-c376-4036-b98d-718661a3c7cc';
 
   return (
     <StMyPageWrapper>
       <StDivProfile>
         <StTitle>Profile</StTitle>
         <StAccount>
-          <StUserInfoImg>
-            {/* <UserImgUpdate /> */}
-          </StUserInfoImg>
-          <StUserInfo>
-            <StUserContents>
-              <StUserLabel>닉네임</StUserLabel>
-              <StUserValue>nickname</StUserValue>
-            </StUserContents>
-            <StUserContents>
-              <StUserLabel>아이디</StUserLabel>
-              <StUserValue>id</StUserValue>
-            </StUserContents>
-            <StUserContents>
-              <StUserLabel>비밀번호</StUserLabel>
-              <StUserValue>******</StUserValue>
-            </StUserContents>
-          </StUserInfo>
+            <UserInfo userId={params.userId} />
         </StAccount>
       </StDivProfile>
       <StPostDiv>
         <StMyPostdiv>
           <StPostListTitle>내가 쓴 게시물</StPostListTitle>
-          <PostList sorting='myPost' />
+          <PostList sorting='myPost' userId={params.userId}/>
         </StMyPostdiv>
       </StPostDiv>
     </StMyPageWrapper>
