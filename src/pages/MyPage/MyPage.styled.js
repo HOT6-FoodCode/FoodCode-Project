@@ -113,6 +113,23 @@ const StPostItemImg = styled.img`
   height: 50%;
 `
 
+const StNotLogInView = styled.div`
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  background-color: #f8f9fa;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 100px auto;
+  border-radius: 20px;
+`;
+const StNotLogInViewText = styled.p`
+  font-size: 1.3rem;
+  line-height: 30px;
+  text-align: center;
+`
+
 export {
   StMyPageWrapper,
   StPostDiv,
@@ -129,5 +146,7 @@ export {
   StPostItemTextStarCategory,
   StPostItemReview,
   StPostItemImg,
-  StUserInfo
+  StUserInfo,
+  StNotLogInView,
+  StNotLogInViewText
 };
