@@ -78,11 +78,11 @@ function Header() {
               </>
             ) : (
               <>
-                <Link to="/login">
+                <Link to="/auth/login">
                   <StrBtn>Login</StrBtn>
                 </Link>
 
-                <Link to="/signup">
+                <Link to="/auth/signup">
                   <StrBtn>Sign up</StrBtn>
                 </Link>
               </>

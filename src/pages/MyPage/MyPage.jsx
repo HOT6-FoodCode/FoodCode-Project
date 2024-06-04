@@ -21,13 +21,13 @@ const MyPage = () => {
       <StDivProfile>
         <StTitle>Profile</StTitle>
         <StAccount>
-            <UserInfo userId={params.userId} />
+          <UserInfo userId={params.userId} />
         </StAccount>
       </StDivProfile>
       <StPostDiv>
         <StMyPostdiv>
           <StPostListTitle>내가 쓴 게시물</StPostListTitle>
-          <PostList sorting='myPost' userId={params.userId}/>
+          <PostList sorting="myPost" userId={params.userId} />
         </StMyPostdiv>
       </StPostDiv>
     </StMyPageWrapper>

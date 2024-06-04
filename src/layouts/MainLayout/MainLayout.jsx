@@ -16,13 +16,14 @@ function MainLayout() {
 }
 
 const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  flex-direction: column;  
 `;
 
-const Main = styled.div`
-  min-height: 70vh;
+const Main = styled.div`  
+  height: 100%;
 `;
 
 export default MainLayout;
