@@ -9,5 +9,10 @@ export const SkeletonGrid = styled.div`
   grid-column-gap: 90px;
   grid-row-gap: 40px;
   justify-items: center;
-  margin: 0 auto;
+  @media (max-width: 1240px) {
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  }
+  @media (max-width: 940px) {
+    grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  }
 `;

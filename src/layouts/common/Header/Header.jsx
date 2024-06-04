@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import mainLogo from '../../../assets/logo.png';
+import { signOut } from '../../../redux/slices/authSlice';
 import {
   DropdownButton,
   DropdownMenu,
@@ -14,18 +16,23 @@ import {
 
 function Header() {
   console.log('헤더');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  const toggleDropdown = useCallback(() => {
+    setIsDropdownOpen((prevState) => !prevState);
+  }, []);
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsDropdownOpen(false);
     }
+  };
+
+  const handleLogout = async () => {
+    dispatch(signOut());
   };
 
   useEffect(() => {
@@ -34,6 +41,9 @@ function Header() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  console.log('user', user);
+
   return (
     <header>
       <HeaderWrapDiv>
@@ -42,12 +52,10 @@ function Header() {
             <LogoImg src={mainLogo} alt="logo" />
           </Link>
         </h1>
-        {/* 지울 내용 */}
-        <StrBtn onClick={() => setIsLoggedIn((pervState) => !pervState)}>토글</StrBtn>
 
         <nav>
           <StrNavWrapDiv>
-            {isLoggedIn ? (
+            {user ? (
               <>
                 <Link to="/login">
                   <StrBtn>Write</StrBtn>
@@ -71,7 +79,7 @@ function Header() {
                       <DropdownMenuItem>
                         <Link to="/mypage">My Page</Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => setIsLoggedIn(false)}>Log Out</DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
                     </DropdownMenu>
                   )}
                 </div>

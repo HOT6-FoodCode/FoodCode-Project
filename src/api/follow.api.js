@@ -58,13 +58,13 @@ class FollowAPI {
   // 팔로잉한 당한 사용자 ID 가져오는 메서드
   async getFollowingIds(userId) {
     try {
-      const { data, error } = await supabase.from('follow').select('following_id').eq('following_id', userId);
+      const { data, error } = await supabase.from('follows').select('follower_id').eq('following_id', userId);
 
       if (error) {
         throw new Error(error.message);
       }
 
-      return data.map((follow) => follow.following_id);
+      return data.map((follow) => follow.follower_id);
     } catch (error) {
       throw new Error(`Failed to get following ids: ${error.message}`);
     }

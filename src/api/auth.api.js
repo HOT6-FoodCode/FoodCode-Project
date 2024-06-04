@@ -42,6 +42,13 @@ class AuthAPI {
       throw new Error(`Sign-out failed: ${error.message}`);
     }
   }
+
+  async getUser() {
+    const {
+      data: { session }
+    } = await supabase.auth.getSession();
+    return session ? session.user : null;
+  }
 }
 
 export default AuthAPI;
