@@ -11,7 +11,9 @@ function LoginForm() {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (event) => {
+    event.preventDefault();
+
     try {
       await dispatch(signUp({ email, password, username, profilePictureFile })).unwrap();
       setUsername('');
@@ -49,7 +51,6 @@ function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <StInputField type="file" onChange={(e) => setProfilePictureFile(e.target.files[0])} />
       </StInputBox>
       <div>
         <button onClick={handleSignUp}>Sign Up</button>
