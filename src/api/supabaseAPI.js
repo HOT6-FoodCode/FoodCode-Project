@@ -10,5 +10,8 @@ const SUPABASE_PROJECT_URL = 'https://ikyihgpsyyzhelqvpunj.supabase.co';
 const SUPABASE_ANON_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlreWloZ3BzeXl6aGVscXZwdW5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTY0NTMxMjcsImV4cCI6MjAzMjAyOTEyN30.kMdey2-FNiWhyktnHT4d09Z-nsjNiQY92k-h0JTqW6w';
 const supabase = createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_KEY);
-
+// 사진 URL 생성
+export const profileDefaultUrl = `${
+  import.meta.env.VITE_SUPABASE_URL
+}/storage/v1/object/public/profile-pictures/default-profile.jpg`;
 export default supabase;

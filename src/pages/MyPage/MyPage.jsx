@@ -12,12 +12,10 @@ import {
   StUserContents,
   StUserLabel,
   StUserValue,
-  StPostListTitle,
+  StPostListTitle
 } from './MyPage.styled';
 // import FetchData from '../../components/posts/FetchData';
 import UserPostList from '../../components/mypage/userPost/userPostList/UserPostList';
-
-
 
 const MyPage = () => {
   //const navigate = useNavigate();
@@ -27,9 +25,7 @@ const MyPage = () => {
       <StDivProfile>
         <StTitle>Profile</StTitle>
         <StAccount>
-          <StUserInfoImg>
-            {/* <UserImgUpdate /> */}
-          </StUserInfoImg>
+          <StUserInfoImg>{/* <UserImgUpdate /> */}</StUserInfoImg>
           <StUserInfo>
             <StUserContents>
               <StUserLabel>닉네임</StUserLabel>

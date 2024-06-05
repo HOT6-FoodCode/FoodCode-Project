@@ -1,33 +1,43 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../api/api';
+import api from '../../api';
 
 // 회원가입 비동기 작업 정의
-export const signUp = createAsyncThunk('auth/signUp', async ({ email, password, username }, { rejectWithValue }) => {
-  const { user, error } = await api.auth.signUp({
-    email,
-    password,
-    username
-  });
-  if (error) return rejectWithValue(error.message); // 에러 발생 시 리젝트
-  return user; // 성공 시 유저 정보 반환
+export const signUp = createAsyncThunk('auth/signUp', async ({ email, password, nickname }, { rejectWithValue }) => {
+  try {
+    const user = await api.auth.signUp(email, password, nickname);
+    return user;
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
 });
 
 // 로그인 비동기 작업 정의
-export const signIn = createAsyncThunk('auth/signIn', async ({ email, password, username }, { rejectWithValue }) => {
-  const { user, error } = await api.auth.signIn({
-    email,
-    password,
-    username
-  });
-  if (error) return rejectWithValue(error.message); // 에러 발생 시 리젝트
-  return user; // 성공 시 유저 정보 반환
+export const signIn = createAsyncThunk('auth/signIn', async ({ email, password }, { rejectWithValue }) => {
+  try {
+    const user = await api.auth.signIn(email, password);
+    return user;
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
 });
 
 // 로그아웃 비동기 작업 정의
 export const signOut = createAsyncThunk('auth/signOut', async (_, { rejectWithValue }) => {
-  const { error } = await api.auth.signOut();
-  if (error) return rejectWithValue(error.message); // 에러 발생 시 리젝트
-  return {}; // 성공 시 빈 객체 반환
+  try {
+    await api.auth.signOut();
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
+});
+
+// 현재 사용자 가져오기
+export const getUser = createAsyncThunk('auth/getUser', async (_, { rejectWithValue }) => {
+  try {
+    const user = await api.auth.getUser();
+    return user;
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
 });
 
 const authSlice = createSlice({
@@ -67,6 +77,17 @@ const authSlice = createSlice({
       })
       .addCase(signOut.rejected, (state, action) => {
         state.status = 'failed'; // 로그아웃 실패 상태
+        state.error = action.payload; // 에러 메시지 저장
+      })
+      .addCase(getUser.pending, (state) => {
+        state.status = 'loading'; // 사용자 정보 요청 중 상태
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.status = 'succeeded'; // 사용자 정보 가져오기 성공 상태
+        state.user = action.payload; // 유저 정보 저장
+      })
+      .addCase(getUser.rejected, (state, action) => {
+        state.status = 'failed'; // 사용자 정보 가져오기 실패 상태
         state.error = action.payload; // 에러 메시지 저장
       });
   }

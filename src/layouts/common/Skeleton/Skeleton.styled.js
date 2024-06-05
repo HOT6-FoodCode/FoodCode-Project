@@ -1,6 +1,7 @@
+// Skeleton.styled.js
 import styled from 'styled-components';
 
-export const PostGrid = styled.div`
+export const SkeletonGrid = styled.div`
   padding: 20px;
   display: grid;
   width: 1240px;
@@ -13,25 +14,5 @@ export const PostGrid = styled.div`
   }
   @media (max-width: 940px) {
     grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
-  }
-`;
-
-export const Message = styled.div`
-  display: flex;
-  width: 100vh;
-  height: 75vh;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  p {
-    padding: 20px;
-
-    background-color: #bbd3eb;
-    color: #194a95;
-    border: 1px solid #194a95;
-    border-radius: 4px;
-
-    font-size: 16px;
   }
 `;
