@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import uploadIcon from '../../assets/upload.png';
 
 function ImageUpload({ images, setImages }) {
   const handleAddImages = (event) => {
@@ -36,7 +37,7 @@ function ImageUpload({ images, setImages }) {
               </>
             ) : (
               <label htmlFor="input-file" style={{ cursor: 'pointer' }}>
-                <StUploadBtn src="./src/assets/upload.png" />
+                <StUploadBtn src={uploadIcon} />
                 <input
                   type="file"
                   id="input-file"
@@ -61,6 +62,7 @@ const StImageGroup = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 
   border: 1px solid black;
   border-radius: 10px;

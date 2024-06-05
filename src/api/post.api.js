@@ -48,6 +48,20 @@ class PostsAPI {
     }
   }
 
+  async getPost(postId) {
+    try {
+      const { data, error } = await supabase.from('posts').select('*').eq('id', postId);
+
+      if (error) {
+        throw error;
+      }
+      console.log("data입니다.",data);
+      return data[0];
+    } catch (error) {
+      throw new Error(`Failed to fetch my posts: ${error.message}`);
+    }
+  }
+
   async createPost(post) {
     try {
       const { userId, title, content, images, rating } = post;
