@@ -1,3 +1,4 @@
+
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -43,20 +44,6 @@ function Header() {
     dispatch(signOut());
   }, [dispatch]);
 
-  const handleWrite = () => {
-    // const userId = user?.id;
-    // const title = '테스트3';
-    // const content = '내용3';
-    // const image = 'url';
-    // const rating = '1.2';
-    // if (userId) {
-    //   const data = api.posts.createPost(userId, title, content, image, rating);
-    //   console.log(data);
-    // } else {
-    //   console.error('User ID is undefined');
-    // }
-  };
-
   return (
     <header>
       <HeaderWrapDiv>
@@ -70,7 +57,9 @@ function Header() {
           <StrNavWrapDiv>
             {user ? (
               <>
-                <StrBtn onClick={handleWrite}>Write</StrBtn>
+              <Link to="/mypage">
+                  <StrBtn>Write</StrBtn>
+                </Link>
 
                 <Link to="/mypage">
                   <UserImg src={profilePictureUrl ?? `${profileDefaultUrl}`} alt="User" />
