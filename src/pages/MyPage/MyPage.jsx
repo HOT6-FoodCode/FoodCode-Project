@@ -18,7 +18,7 @@ import { useEffect } from 'react';
 const MyPage = () => {
   const user = useSelector((state) => state.auth.user);
 
-  console.log('user', user);
+  //console.log('user', user);
 
   useEffect(() => {
     if (!user) {
@@ -39,7 +39,7 @@ const MyPage = () => {
   }
 
   const userId = user.id;
-  console.log('userId', userId);
+  //console.log('userId', userId);
 
   return (
     
