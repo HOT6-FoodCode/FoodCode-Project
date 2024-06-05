@@ -23,6 +23,15 @@ const PostList = ({ sorting }) => {
       </Message>
     );
   }
+
+  // if (sorting === 'myPosts' ) {
+  //   return (
+  //     <Message>
+  //       <p>작성한 게시물이 없습니다. 게시글을 작성해 주세요!</p>
+  //     </Message>
+  //   )
+  // }
+
   return (
     <>
       <FollowButton followerId={'e6450a1f-d01e-482c-a2d7-81ff06aecfc1'} />
@@ -43,7 +52,10 @@ const PostList = ({ sorting }) => {
               />
             ))}
           </PostGrid>
-          {visiblePosts.length < posts.length && <StButton onClick={loadMorePosts}>더보기</StButton>}
+          <StButtonDiv>
+            {visiblePosts.length < posts.length && <StButton onClick={loadMorePosts}>더보기</StButton>}
+          </StButtonDiv>
+          
         </>
       )}
     </>
@@ -57,4 +69,9 @@ const StButton = styled.button`
   border: 1px solid #ccc;
   margin-top: 20px;
   cursor: pointer;
+  width: 100px;
 `;
+const StButtonDiv = styled.div`
+  display: flex;
+  justify-content: center;
+`
