@@ -8,7 +8,7 @@ import {
   StButton,
   StButtonDiv,
   StDescription,
-  StForm,
+  StDiv,
   StInputForm,
   StRestaurantName,
   StTopForm,
@@ -19,7 +19,7 @@ function WritePage() {
   const [post, setPost] = useState({
     title:  '',
     content:  '',
-    images:  [],
+    image:  '',
     rating:  0,
     });
     const user = useSelector((state) => state.auth.user);
@@ -29,7 +29,7 @@ function WritePage() {
 
     const handlerAdd = async (e) => {
       e.preventDefault();
-    try {      
+    try {
       await api.posts.createPost( { userId: user.id, ...post });
       navigator('/')
     } catch (error) {
@@ -38,12 +38,12 @@ function WritePage() {
   };
   return (
     <StWriteWrapper>
-              <ImageUpload
-          images={post.images}
-          setImages={(images) => setPost({ ...post, images })}
-        />
 
-      <StForm>
+      <StDiv>
+      <ImageUpload
+        image={post.image}
+        setImage={(image) => setPost({ ...post, image })}
+      />
         <StInputForm>
           <StTopForm>
             <StRestaurantName
@@ -65,7 +65,7 @@ function WritePage() {
         <StButtonDiv>
           <StButton onClick={handlerAdd}>등록하기</StButton>
         </StButtonDiv>
-      </StForm>
+      </StDiv>
     </StWriteWrapper>
   );
 }
