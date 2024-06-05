@@ -1,21 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-// import supabase from '../../api/supabaseAPI';
 
 const StarRating = ({ rating, setRating }) => {
   const [hover, setHover] = useState(0);
-
-  // const handleClick = async (ratingValue) => {
-  //   setRating(ratingValue);
-  //   // Supabase에 별점 저장
-  //   const { data, error } = await supabase.from('posting').insert([{ rating: ratingValue }]);
-
-  //   if (error) {
-  //     console.error('error=> ', error);
-  //   } else {
-  //     console.log('data=> ', data);
-  //   }
-  // };
 
   return (
     <StStarRating>

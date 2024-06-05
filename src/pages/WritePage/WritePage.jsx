@@ -1,49 +1,35 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import api from '../../api';
 import ImageUpload from '../../components/writepage/ImageUpload';
 import StarRating from '../../components/writepage/StarRating';
-import {
-  StWriteWrapper,
-  StNickname,
-  StDiv,
-  StTitle,
-  StContent,
-  StInputForm,
-  StTopForm,
-  StButtonDiv,
-  StButton
-} from './WritePage.styled';
-import supabase from '../../api/supabaseAPI';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { StWriteWrapper, StNickname, StDiv, StTitle, StContent, StInputForm, StTopForm } from './WritePage.styled';
 
 function WritePage() {
   const userProfileData = useSelector((state) => state.user.userProfile);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [rating, setRating] = useState(0);
-  const [images, setImages] = useState([]);
+  const [post, setPost] = useState({
+    title: '',
+    content: '',
+    images: [],
+    rating: 0
+  });
+
   // 이미지 상대경로 저장
   const navigator = useNavigate();
 
   const handlerAdd = async (e) => {
     e.preventDefault();
-    const { data, error } = await supabase.from('posts').insert({
-      title,
-      content,
-      images,
-      rating
-    });
-    if (error) {
-      console.log('error==>', error);
-    } else {
-      alert('게시물이 저장되었습니다!');
-      console.log(data);
+    try {
+      await api.posts.createPost(post);
+      navigator('/mypage');
+    } catch (error) {
+      console.error('Failed to edit post:', error);
     }
-    navigator('/mypage');
   };
   return (
     <StWriteWrapper>
-      <ImageUpload images={images} setImages={setImages} />
+      <ImageUpload images={post.images} setImages={(images) => setPost(...post, images)} />
 
       <StDiv>
         <StNickname>
@@ -55,20 +41,16 @@ function WritePage() {
             <StTitle
               type="text"
               placeholder="매장 이름"
-              value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
-              }}
+              value={post.title}
+              onChange={(e) => setPost({ ...post, title: e.target.value })}
             />
-            <StarRating rating={rating} setRating={setRating} />
+            <StarRating rating={post.rating} setRating={(rating) => setPost({ ...post, rating })} />
           </StTopForm>
           <StContent
             type="text"
             placeholder="맛, 분위기, 추천 이유 등을 적어주세요"
-            value={content}
-            onChange={(e) => {
-              setContent(e.target.value);
-            }}
+            value={post.content}
+            onChange={(e) => setPost({ ...post, content: e.target.value })}
           />
         </StInputForm>
 

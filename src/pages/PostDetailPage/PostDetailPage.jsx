@@ -1,18 +1,19 @@
+import api from '../../api';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import StarRating from '../../components/writepage/StarRating';
 import ImageUpload from '../../components/writepage/ImageUpload';
+import StarRating from '../../components/writepage/StarRating';
 import {
-  StWriteWrapper,
+  StButton,
+  StButtonDiv,
+  StInputForm,
   StNickname,
   StDiv,
   StTitle,
   StContent,
-  StInputForm,
   StTopForm,
-  StButtonDiv,
-  StButton
+  StWriteWrapper
 } from '../WritePage/WritePage.styled';
 
 const PostDetailPage = () => {
