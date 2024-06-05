@@ -9,15 +9,8 @@ class AuthAPI {
       }
       const userId = signUpData.user.id;
 
-      // 사진 URL 생성
-      const profilePictureUrl = `${
-        import.meta.env.VITE_SUPABASE_URL
-      }/storage/v1/object/public/profile-pictures/default-profile.jpg`;
-
       // 추가 정보 저장
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .insert([{ id: userId, nickname, profilePictureUrl }]);
+      const { data: userData, error: userError } = await supabase.from('users').insert([{ id: userId, nickname }]);
 
       if (userError) {
         throw new Error(userError.message);
@@ -34,7 +27,7 @@ class AuthAPI {
 
       if (signInError) throw new Error(signInError.message);
 
-      return signInData;
+      return signInData.user;
     } catch (error) {
       throw new Error(`Sign-in failed: ${error.message}`);
     }
@@ -47,6 +40,19 @@ class AuthAPI {
       if (signOutError) throw new Error(signOutError.message);
     } catch (error) {
       throw new Error(`Sign-out failed: ${error.message}`);
+    }
+  }
+
+  async getUser() {
+    try {
+      const {
+        data: { session },
+        error
+      } = await supabase.auth.getSession();
+      if (error) throw new Error(error.message);
+      return session.user;
+    } catch (error) {
+      throw new Error(`Get user failed: ${error.message}`);
     }
   }
 }
