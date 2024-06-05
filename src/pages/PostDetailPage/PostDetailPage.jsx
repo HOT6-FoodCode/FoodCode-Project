@@ -1,88 +1,62 @@
-import { useEffect, useState } from 'react';
-import supabase from '../../api/supabaseAPI';
-import {
-  StWriteWrapper,
-  StNickname,
-  StForm,
-  StRestaurantName,
-  StDescription,
-  StInputForm,
-  StTopForm,
-  StButtonDiv,
-  StButton
-} from '../WritePage/WritePage.styled';
-import { useNavigate, useParams } from 'react-router-dom';
-import StarRating from '../../components/writepage/StarRating';
+import { useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import api from '../../api';
 import ImageUpload from '../../components/writepage/ImageUpload';
+import StarRating from '../../components/writepage/StarRating';
+import {
+  StButton,
+  StButtonDiv,
+  StDescription,
+  StForm,
+  StInputForm,
+  StNickname,
+  StRestaurantName,
+  StTopForm,
+  StWriteWrapper
+} from '../WritePage/WritePage.styled';
 
 const PostDetailPage = () => {
   //supabase에 저장되있는 데이터 가져오기
   //바로 수정할 수 있도록 input 창에 데이터 그대로 가져오기
   // 수정, 삭제 기능 추가하기
-  const [post, setPost] = useState(null);
-  const [restaurantName, setRestaurantName] = useState('');
-  const [description, setDescription] = useState('');
-  const [rating, setRating] = useState(0);
-  const [images, setImages] = useState([]);
-
+  const { id: postId } = useParams();
   const navigate = useNavigate();
-  const { id } = useParams();
+  const location = useLocation();
+  const {images: initialImages, title, content, rating} = location.state || {};
 
-  useEffect(() => {
-    const fetchPostDetail = async () => {
-      const { data, error } = await supabase.from('posting').select('*').eq('id', id).single();
-      if (error) {
-        console.log('error==> ', error);
-      } else {
-        setPost(data);
-        setRestaurantName(data.restaurantName);
-        setDescription(data.description);
-        setRating(data.star);
-        setImages(data.images);
-        console.log(data.images);
-      }
-    };
-    fetchPostDetail();
-  }, [id]);
+  const [editedPost, setEditedPost] = useState({
+    title: title || '',
+    content: content || '',
+    images: initialImages || [],
+    rating: rating || 0,
+  });
+  
+  
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    const { error } = await supabase
-      .from('posting')
-      .update({
-        restaurantName,
-        description,
-        rating,
-        images
-      })
-      .eq('id', id);
-
-    if (error) {
-      console.log('error==> ', error);
-    } else {
-      alert('수정되었습니다.');
-      navigate('/');
+  const handleUpdate = async (event) => {
+    event.preventDefault();
+    try {
+      await api.posts.editPost(postId, editedPost);
+    } catch (error) {
+      console.error('Failed to edit post:', error);
     }
   };
 
-  const handleDelete = async (e) => {
-    e.preventDefault();
-    const { error } = await supabase.from('posting').delete().eq('id', id);
 
-    if (error) {
-      console.log('error==> ', error);
-    } else {
-      alert('삭제되었습니다.');
+  const handleDelete = async (event) => {
+    event.preventDefault();
+    try {
+      api.posts.deletePost(postId);
       navigate('/');
+    } catch (error) {
+      console.error('Failed to delete post:', error);
     }
   };
-
-  if (!post) return <div>Loading...</div>;
 
   return (
     <div>
       <StWriteWrapper>
-        <ImageUpload images={images} setImages={setImages} />
+        <ImageUpload images={editedPost.images} setImages={(images) => setEditedPost(...editedPost, images)} />
 
         <StForm>
           <StNickname>
@@ -94,20 +68,19 @@ const PostDetailPage = () => {
               <StRestaurantName
                 type="text"
                 placeholder="매장 이름"
-                value={restaurantName}
-                onChange={(e) => {
-                  setRestaurantName(e.target.value);
-                }}
+                value={editedPost.title}
+                onChange={(e) => setEditedPost({ ...editedPost, title: e.target.value })}
               />
-              <StarRating rating={rating} setRating={setRating} />
+              <StarRating
+                rating={editedPost.rating}
+                setRating={(rating) => setEditedPost({ ...editedPost, rating })}
+              />
             </StTopForm>
             <StDescription
               type="text"
               placeholder="맛, 분위기, 추천 이유 등을 적어주세요"
-              value={description}
-              onChange={(e) => {
-                setDescription(e.target.value);
-              }}
+              value={editedPost.content}
+              onChange={(e) => setEditedPost({ ...editedPost, content: e.target.value })}
             />
           </StInputForm>
 
