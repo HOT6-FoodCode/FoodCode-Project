@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import api from '../../../api';
@@ -39,9 +39,9 @@ function Header() {
     }
   }, [user]);
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     dispatch(signOut());
-  };
+  }, [dispatch]);
 
   const handleWrite = () => {
     // const userId = user?.id;

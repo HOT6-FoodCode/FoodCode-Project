@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import api from '../../api';
 import sortPosts from '../../utils/sortPosts';
@@ -46,9 +46,9 @@ const usePosts = (sorting) => {
     getPosts();
   }, [sorting, user, page]);
 
-  const loadMorePosts = () => {
+  const loadMorePosts = useCallback(() => {
     setPage((prevPage) => prevPage + 1);
-  };
+  }, []);
 
   return { posts, visiblePosts, loading, loadMorePosts, user };
 };
