@@ -49,7 +49,7 @@ function ImageUpload({ images, setImages }) {
           </StImageUpload>
         ))}
       </StImageGroup>
-      <h5 style={{ textAlign: 'center', color: 'gray' }}>*최대 4장까지 가능합니다</h5>
+      <h5 style={{ fontSize: '14px', color: 'gray', margin: '10px' }}>* 이미지는 최대 4장까지 가능합니다</h5>
     </div>
   );
 }

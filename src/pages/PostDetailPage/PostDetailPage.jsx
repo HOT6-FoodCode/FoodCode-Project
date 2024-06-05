@@ -39,6 +39,7 @@ const PostDetailPage = () => {
         setDescription(data.description);
         setRating(data.star);
         setImages(data.images);
+        console.log(data.images);
       }
     };
     fetchPostDetail();
