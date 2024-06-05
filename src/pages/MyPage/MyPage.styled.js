@@ -63,7 +63,7 @@ const StUserInfo = styled.div`
 const StPostList = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px; 
+  gap: 10px;
 `;
 
 const StPostItem = styled.div`
@@ -80,7 +80,7 @@ const StPostItem = styled.div`
 const StPostListTitle = styled.p`
   font-size: 1.5rem;
   width: 180px;
-  border-bottom: 3px solid #ECC8CA;
+  border-bottom: 3px solid #ecc8ca;
   padding-bottom: 10px;
   font-weight: 700;
 `;
@@ -102,7 +102,7 @@ const StPostItemReview = styled.p`
 `;
 const StPostItemImg = styled.img`
   height: 50%;
-`
+`;
 
 const StNotLogInView = styled.div`
   width: 80%;
@@ -119,7 +119,7 @@ const StNotLogInViewText = styled.p`
   font-size: 1.3rem;
   line-height: 30px;
   text-align: center;
-`
+`;
 
 export {
   StMyPageWrapper,

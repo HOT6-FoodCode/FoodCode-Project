@@ -1,5 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import PostList from '../components/posts/PostList';
+import WritePage from '../pages/WritePage/WritePage';
+// import LoginForm from '../components/ui/LoginForm';
 import LoginForm from '../components/ui/LoginForm/LoginForm';
 import SignUpForm from '../components/ui/SignUpForm/SignUpForm';
 import MainLayout from '../layouts/MainLayout';
@@ -58,6 +60,14 @@ const router = createBrowserRouter([
             element: <PostList sorting="myPost" />
           }
         ]
+      },
+      {
+        path: '/write',
+        element: <WritePage />
+      },
+      {
+        path: '/postDetail/:id',
+        element: <PostDetailPage />
       }
     ]
   }
