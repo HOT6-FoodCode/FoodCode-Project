@@ -112,7 +112,7 @@ const StNotLogInView = styled.div`
   height: 50%;
   background-color: #f8f9fa;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 100px auto;
+  margin: 100px auto 164px;
   border-radius: 20px;
 `;
 const StNotLogInViewText = styled.p`
