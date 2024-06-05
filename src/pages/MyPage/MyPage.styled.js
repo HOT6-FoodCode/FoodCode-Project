@@ -8,16 +8,24 @@ const StMyPageWrapper = styled.div`
 const StPostDiv = styled.div`
   width: 100%;
   display: flex;
-  box-sizing: border-box;
+  flex-direction: column;
   gap: 1rem;
-  margin-top: 30px;
-  justify-content: space-around;
+  margin-top: 50px;
+  margin-left: 30px;
   padding: 20px;
+`;
+const StPostListDiv = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const StMyPostdiv = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  background-color: gray;
+  width: 100%;
+  align-items: center;
 `;
 const StDivProfile = styled.div`
   display: flex;
@@ -138,5 +146,6 @@ export {
   StPostItemImg,
   StUserInfo,
   StNotLogInView,
-  StNotLogInViewText
+  StNotLogInViewText,
+  StPostListDiv
 };

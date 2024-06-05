@@ -1,13 +1,13 @@
 import {
   StMyPageWrapper,
   StPostDiv,
-  StMyPostdiv,
   StDivProfile,
   StTitle,
   StAccount,
   StPostListTitle,
   StNotLogInView,
-  StNotLogInViewText
+  StNotLogInViewText,
+  StPostListDiv
 } from './MyPage.styled';
 import PostList from '../../components/posts/PostList';
 import UserInfo from '../../components/ui/UserInfo';
@@ -51,10 +51,10 @@ const MyPage = () => {
         </StAccount>
       </StDivProfile>
       <StPostDiv>
-        <StMyPostdiv>
-          <StPostListTitle>내가 쓴 게시물</StPostListTitle>
-          <PostList sorting='myPost' userId={userId} />
-        </StMyPostdiv>
+        <StPostListTitle>내가 쓴 게시물</StPostListTitle>
+          <StPostListDiv>
+            <PostList sorting='myPost' userId={userId} />
+          </StPostListDiv>
       </StPostDiv>
     </StMyPageWrapper>
   );
