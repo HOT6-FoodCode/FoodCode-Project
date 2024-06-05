@@ -66,10 +66,6 @@ const router = createBrowserRouter([
         element: <WritePage />
       },
       {
-        path: '/postDetail/:id',
-        element: <PostDetailPage />
-      },
-      {
         path: '/comment',
         element: <Comment />
       },
