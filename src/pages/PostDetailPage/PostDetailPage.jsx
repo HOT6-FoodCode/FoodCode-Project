@@ -97,7 +97,7 @@ const PostDetailPage = () => {
   
 
   return (
-    <div>
+    <div style={{display: 'flex', flexDirection: 'column'}}>
       
       <StWriteWrapper>
         
@@ -162,8 +162,9 @@ const PostDetailPage = () => {
             </StButtonDiv>
           )}
         </StForm>
-       <div></div>
-        <Comment />
+       
+       <Comment />
+       
       </StWriteWrapper>
       
     </div>

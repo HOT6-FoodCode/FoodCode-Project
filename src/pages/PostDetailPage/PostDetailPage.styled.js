@@ -5,8 +5,8 @@ const StWriteWrapper = styled.div`
   justify-content: center;
   padding: 35px;
   margin: 25px 30px;
-  height: 75vh;
   
+  flex-direction: column;
 `;
 
 const StNickname = styled.div`
@@ -89,7 +89,7 @@ const StImageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   div {
-        width: 360px;
+    width: 360px;
     height: 360px;
     display: flex;
     flex-wrap: wrap;
@@ -101,6 +101,7 @@ const StImageWrapper = styled.div`
     margin-right: 30px;
     padding: 10px;
   }
+  
 `;
 
 const StImage = styled.img`

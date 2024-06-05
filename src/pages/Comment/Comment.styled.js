@@ -3,6 +3,7 @@ import styled from "styled-components";
 const StDetailPage = styled.div`
     padding: 30px;
     margin: 30px;
+    display: flex;
 `;
 
 const StDetailForm = styled.div`

@@ -23,9 +23,7 @@ function Header() {
   const { isOpen, ref, toggle } = useDropdown();
   const user = useSelector((state) => state.auth.user);
   const userProfileData = useSelector((state) => state.user.userProfile);
-  
-  
-  const { isOpen, ref, toggle } = useDropdown();
+  console.log(userProfileData)
 
   useEffect(() => {
     if (user) {
@@ -64,7 +62,7 @@ function Header() {
                 </Link>
 
                 <Link to="/mypage">
-                  <UserImg src={userProfileData.profilePictureUrl  ?? `${profileDefaultUrl}`} alt="User" />
+                  <UserImg src={userProfileData && userProfileData.profilePictureUrl  || `${profileDefaultUrl}`} alt="User" />
                 </Link>
 
                 <div ref={ref}>
