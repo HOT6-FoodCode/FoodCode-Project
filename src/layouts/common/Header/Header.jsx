@@ -1,14 +1,12 @@
-
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
+import api from '../../../api';
 import { profileDefaultUrl } from '../../../api/supabaseAPI';
 import mainLogo from '../../../assets/logo.png';
-
-import useDropdown from '../../../hooks/useDropdown';
-import { getUser, signOut } from '../../../redux/slices/authSlice';
-import { userDataUpdate } from '../../../redux/slices/userSlice';
+import useDropdown from '../../../hooks/useDropdown/useDropdown';
+import { signOut } from '../../../redux/slices/authSlice';
+import { userDataUpdate } from '../../../redux/slices/userSlice'; // 여기에 추가
 import {
   DropdownButton,
   DropdownMenu,
@@ -21,20 +19,17 @@ import {
 } from './Header.styled';
 
 function Header() {
-  console.log('헤더');
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
-  console.log(user);
   const { isOpen, ref, toggle } = useDropdown();
+  const user = useSelector((state) => state.auth.user);
+  const userProfile = useSelector((state) => state.user.userProfile);
 
   useEffect(() => {
     if (user) {
       const fetchUserProfile = async () => {
         try {
-          const action = await dispatch(getUser());
-          if (action.payload) {
-            dispatch(userDataUpdate(action.payload)); // Correctly update user profile
-          }
+          const userProfileData = await api.user.getUserProfile(user.id);
+          dispatch(userDataUpdate(userProfileData));
         } catch (error) {
           console.error('Failed to fetch user profile', error);
         }
@@ -42,12 +37,11 @@ function Header() {
       fetchUserProfile();
     }
   }, [user, dispatch]);
-  
 
   const handleLogout = useCallback(async () => {
     dispatch(signOut());
   }, [dispatch]);
-  
+
   return (
     <header>
       <HeaderWrapDiv>
@@ -61,12 +55,12 @@ function Header() {
           <StrNavWrapDiv>
             {user ? (
               <>
-                <Link to="/login">
-                  <StrBtn to="/comment">Write</StrBtn>
+                <Link to="/write">
+                  <StrBtn>Write</StrBtn>
                 </Link>
 
                 <Link to="/mypage">
-                  <UserImg src={user.profilePictureUrl  ?? `${profileDefaultUrl}`} alt="User" />
+                  <UserImg src={userProfile?.profilePictureUrl ?? profileDefaultUrl} alt="User" />
                 </Link>
 
                 <div ref={ref}>

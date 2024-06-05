@@ -6,6 +6,7 @@ const StWriteWrapper = styled.div`
   padding: 35px;
   margin: 25px 30px;
   height: 75vh;
+  
 `;
 
 const StNickname = styled.div`

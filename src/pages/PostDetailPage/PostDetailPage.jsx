@@ -20,6 +20,7 @@ import {
   StRestaurantName,
   StWriteWrapper
 } from './PostDetailPage.styled';
+import Comment from '../Comment/Comment';
 
 const PostDetailPage = () => {
   const { postId } = useParams();
@@ -99,7 +100,8 @@ const PostDetailPage = () => {
     <div>
       
       <StWriteWrapper>
-      {isOwner ? (
+        
+        {isOwner ? (
           <ImageUpload
             image={editedPost.image.length > 0 ? editedPost.image : [postImageDefault]}
             setImage={(image) => setEditedPost({ ...editedPost, image })}
@@ -160,7 +162,10 @@ const PostDetailPage = () => {
             </StButtonDiv>
           )}
         </StForm>
+       <div></div>
+        <Comment />
       </StWriteWrapper>
+      
     </div>
   );
 };

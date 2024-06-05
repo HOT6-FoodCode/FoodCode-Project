@@ -38,7 +38,6 @@ function WritePage() {
   };
   return (
     <StWriteWrapper>
-
       <StDiv>
       <ImageUpload
         image={post.image}
