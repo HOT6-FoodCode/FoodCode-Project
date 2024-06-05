@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-// 예진님 상세페이지 들어가야함
 const StDetailPage = styled.div`
     padding: 30px;
     margin: 30px;
@@ -8,7 +7,7 @@ const StDetailPage = styled.div`
 `;
 
 const StDetailForm = styled.div`
-    height: 1000px;
+    height: 200px;
     padding: 30px;
     margin: 30px;
     background-color: skyblue;
@@ -16,9 +15,10 @@ const StDetailForm = styled.div`
 
 // 여기서부터 comment
 const StCommentWrapper = styled.div`
-    width: 60%;
-    padding: 30px;
-    margin: 30px;
+    width: 40%;
+    height: 40%;
+    padding: 15px;
+    margin: 10px;
     font-size: 40px;
     font-weight: Bold;
     border: 3px solid #C3C3C3;
@@ -26,13 +26,11 @@ const StCommentWrapper = styled.div`
     background-color: white;
 `;
 
-const StCommentTitle = styled.div`
+const StCommentForm = styled.form`
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: center; 
     padding: 10px;
     margin: 30px;
-    border: none;
 `;
 
 const StUserProfileImg = styled.div`
@@ -41,55 +39,74 @@ const StUserProfileImg = styled.div`
     width: 60px;
     height: 60px;
     padding: 10px;
-    margin-left: 30px ;
+    margin-left: 60px;
 `;
 
 const StCommentWrite = styled.div`
     border: 2px solid #C3C3C3;
     border-radius: 10px;
-    width: 80%;
+    width: 70%;
     height: 100px;
-    padding: 10px;
-    margin: 10px;
+    padding: 15px;
+    margin-left: 50px;
 `;
 
-const StWriteButton = styled.button`
-    button-type: submit;
+const StCommentButton = styled.button`
+    float: right;
+    cursor: pointer;
     border: 1px solid #C3C3C3;
     border-radius: 2px;
     padding: 5px;
-    margin: 25px 0px 0px 10px;
+    margin: 20px auto auto 5px;
 `;
 
-const StCommentList = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;    
+const StCommentLists = styled.div` 
+    width: 80%; 
     padding: 10px;
-    margin: 30px;
+    margin: 30px 30px auto 70px;
     border: 3px solid #C3C3C3;
     border-radius: 10px;    
 `;
 
-const StCommentItem = styled.div`
+const StCommentListForm = styled.form`
     display: flex;
-    justify-content: start;
     align-items: center;    
-    border: 2px solid #C3C3C3;
-    border-radius: 10px;
-    width: 80%;
-    height: 100px;
     padding: 10px;
     margin: 10px;
+    border: none;
 `;
+
+const StCommentUserImg = styled.div`
+    border: 2px solid #C3C3C3;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    padding: 10px;
+    margin-left: 35px;
+`;
+
+const StCommentItem = styled.div`
+    align-items: center;    
+    font-Size: 20px;
+    border: 2px solid #C3C3C3;
+    border-radius: 10px;
+    width: 70%;
+    height: 100px;
+    padding: 10px;
+    margin-left: 50px;
+`;
+
+
 export {
     StDetailPage,
     StDetailForm,
     StCommentWrapper,
-    StCommentTitle,
     StUserProfileImg,
+    StCommentForm,
     StCommentWrite,
-    StWriteButton,
-    StCommentList,
+    StCommentButton,
+    StCommentLists,
+    StCommentListForm,
+    StCommentUserImg,
     StCommentItem,
 };
