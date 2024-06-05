@@ -96,7 +96,9 @@ function Header() {
           <StrNavWrapDiv>
             {user ? (
               <>
-                <StrBtn onClick={handleWrite}>Write</StrBtn>
+                <Link to="/write">
+                  <StrBtn>Write</StrBtn>
+                </Link>
 
                 <Link to="/mypage">
                   {/* 우선, 둘 다 수락 */}
