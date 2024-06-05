@@ -4,9 +4,9 @@ import StarRating from '../../components/writepage/StarRating';
 import {
   StWriteWrapper,
   StNickname,
-  StForm,
-  StRestaurantName,
-  StDescription,
+  StDiv,
+  StTitle,
+  StContent,
   StInputForm,
   StTopForm,
   StButtonDiv,
@@ -14,10 +14,12 @@ import {
 } from './WritePage.styled';
 import supabase from '../../api/supabaseAPI';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function WritePage() {
-  const [restaurantName, setRestaurantName] = useState('');
-  const [description, setDescription] = useState('');
+  const userProfileData = useSelector((state) => state.user.userProfile);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [rating, setRating] = useState(0);
   const [images, setImages] = useState([]);
   // 이미지 상대경로 저장
@@ -25,9 +27,9 @@ function WritePage() {
 
   const handlerAdd = async (e) => {
     e.preventDefault();
-    const { data, error } = await supabase.from('posting').insert({
-      restaurantName,
-      description,
+    const { data, error } = await supabase.from('posts').insert({
+      title,
+      content,
       images,
       rating
     });
@@ -37,35 +39,35 @@ function WritePage() {
       alert('게시물이 저장되었습니다!');
       console.log(data);
     }
-    navigator('/');
+    navigator('/mypage');
   };
   return (
     <StWriteWrapper>
       <ImageUpload images={images} setImages={setImages} />
 
-      <StForm>
+      <StDiv>
         <StNickname>
-          <h2>Nickname</h2>
+          <h2>{userProfileData.nickname}</h2>
         </StNickname>
 
         <StInputForm>
           <StTopForm>
-            <StRestaurantName
+            <StTitle
               type="text"
               placeholder="매장 이름"
-              value={restaurantName}
+              value={title}
               onChange={(e) => {
-                setRestaurantName(e.target.value);
+                setTitle(e.target.value);
               }}
             />
             <StarRating rating={rating} setRating={setRating} />
           </StTopForm>
-          <StDescription
+          <StContent
             type="text"
             placeholder="맛, 분위기, 추천 이유 등을 적어주세요"
-            value={description}
+            value={content}
             onChange={(e) => {
-              setDescription(e.target.value);
+              setContent(e.target.value);
             }}
           />
         </StInputForm>
@@ -73,7 +75,7 @@ function WritePage() {
         <StButtonDiv>
           <StButton onClick={handlerAdd}>등록하기</StButton>
         </StButtonDiv>
-      </StForm>
+      </StDiv>
     </StWriteWrapper>
   );
 }

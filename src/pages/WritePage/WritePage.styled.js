@@ -12,7 +12,7 @@ const StNickname = styled.div`
   font-size: 20px;
   font-weight: bolder;
 `;
-const StForm = styled.form`
+const StDiv = styled.div`
   width: 50%;
 `;
 
@@ -21,13 +21,13 @@ const StTopForm = styled.form`
   justify-content: space-between;
   margin-bottom: 10px;
 `;
-const StRestaurantName = styled.input`
+const StTitle = styled.input`
   padding: 15px;
   font-size: 15px;
   border-radius: 30px;
   border: 1px solid gray;
 `;
-const StDescription = styled.textarea`
+const StContent = styled.textarea`
   padding: 20px;
   border-radius: 20px;
   border: 1px solid gray;
@@ -69,14 +69,4 @@ const StButton = styled.button`
     text-decoration: none;
   }
 `;
-export {
-  StWriteWrapper,
-  StNickname,
-  StForm,
-  StRestaurantName,
-  StDescription,
-  StInputForm,
-  StTopForm,
-  StButtonDiv,
-  StButton
-};
+export { StWriteWrapper, StNickname, StDiv, StTitle, StContent, StInputForm, StTopForm, StButtonDiv, StButton };
