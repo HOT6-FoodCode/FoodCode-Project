@@ -31,9 +31,9 @@ export const signOut = createAsyncThunk('auth/signOut', async (_, { rejectWithVa
 });
 
 // 현재 사용자 가져오기
-export const getUser = createAsyncThunk('auth/getUser', async (_, { rejectWithValue }) => {
+export const getUserProfile = createAsyncThunk('auth/getUser', async (_, { rejectWithValue }) => {
   try {
-    const user = await api.auth.getUser();
+    const user = await api.auth.getUserProfile();
     return user;
   } catch (error) {
     return rejectWithValue(error.message);
@@ -79,14 +79,14 @@ const authSlice = createSlice({
         state.status = 'failed'; // 로그아웃 실패 상태
         state.error = action.payload; // 에러 메시지 저장
       })
-      .addCase(getUser.pending, (state) => {
+      .addCase(getUserProfile.pending, (state) => {
         state.status = 'loading'; // 사용자 정보 요청 중 상태
       })
-      .addCase(getUser.fulfilled, (state, action) => {
+      .addCase(getUserProfile.fulfilled, (state, action) => {
         state.status = 'succeeded'; // 사용자 정보 가져오기 성공 상태
         state.user = action.payload; // 유저 정보 저장
       })
-      .addCase(getUser.rejected, (state, action) => {
+      .addCase(getUserProfile.rejected, (state, action) => {
         state.status = 'failed'; // 사용자 정보 가져오기 실패 상태
         state.error = action.payload; // 에러 메시지 저장
       });
