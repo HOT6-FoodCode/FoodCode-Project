@@ -60,8 +60,8 @@ function Header() {
           <StrNavWrapDiv>
             {user ? (
               <>
-              <Link to="/write">
-                  <StrBtn>Write</StrBtn>
+                <Link to="/login">
+                  <StrBtn to="/comment">Write</StrBtn>
                 </Link>
 
                 <Link to="/mypage">
