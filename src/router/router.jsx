@@ -6,6 +6,7 @@ import LoginPage from '../pages/LoginPage/LoginPage';
 import MainPage from '../pages/MainPage/MainPage';
 import LoginForm from '../components/ui/LoginForm/LoginForm';
 import SignUpForm from '../components/ui/SignUpForm/SignUpForm';
+import { Detail } from '../pages/Comment/Detail';
 import Comment from '../pages/Comment/Comment';
 
 const router = createBrowserRouter([
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
             element: <SignUpForm />
           }
         ]
+      },
+      {
+        path: 'detail/:postId',
+        element: <Detail />
       },
       {
         path: '/comment',

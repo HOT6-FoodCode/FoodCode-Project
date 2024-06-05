@@ -3,7 +3,6 @@ import styled from "styled-components";
 const StDetailPage = styled.div`
     padding: 30px;
     margin: 30px;
-    background-color: pink;
 `;
 
 const StDetailForm = styled.div`
@@ -15,13 +14,14 @@ const StDetailForm = styled.div`
 
 // 여기서부터 comment
 const StCommentWrapper = styled.div`
-    width: 40%;
+    float: right;
+    width: 50%;
     height: 40%;
     padding: 15px;
     margin: 10px;
     font-size: 40px;
     font-weight: Bold;
-    border: 3px solid #C3C3C3;
+    border: 1px solid #C3C3C3;
     border-radius: 10px;
     background-color: white;
 `;
@@ -34,7 +34,7 @@ const StCommentForm = styled.form`
 `;
 
 const StUserProfileImg = styled.div`
-    border: 2px solid #C3C3C3;
+    border: 1px solid #C3C3C3;
     border-radius: 50%;
     width: 60px;
     height: 60px;
@@ -43,7 +43,9 @@ const StUserProfileImg = styled.div`
 `;
 
 const StCommentWrite = styled.div`
-    border: 2px solid #C3C3C3;
+    display: flex;
+    align-items: center; 
+    border: 1px solid #C3C3C3;
     border-radius: 10px;
     width: 70%;
     height: 100px;
@@ -57,14 +59,14 @@ const StCommentButton = styled.button`
     border: 1px solid #C3C3C3;
     border-radius: 2px;
     padding: 5px;
-    margin: 20px auto auto 5px;
+    margin: auto auto auto 5px;
 `;
 
 const StCommentLists = styled.div` 
     width: 80%; 
     padding: 10px;
     margin: 30px 30px auto 70px;
-    border: 3px solid #C3C3C3;
+    border: 1px solid #C3C3C3;
     border-radius: 10px;    
 `;
 
@@ -77,7 +79,7 @@ const StCommentListForm = styled.form`
 `;
 
 const StCommentUserImg = styled.div`
-    border: 2px solid #C3C3C3;
+    border: 1px solid #C3C3C3;
     border-radius: 50%;
     width: 60px;
     height: 60px;
@@ -88,7 +90,7 @@ const StCommentUserImg = styled.div`
 const StCommentItem = styled.div`
     align-items: center;    
     font-Size: 20px;
-    border: 2px solid #C3C3C3;
+    border: 1px solid #C3C3C3;
     border-radius: 10px;
     width: 70%;
     height: 100px;
@@ -96,7 +98,18 @@ const StCommentItem = styled.div`
     margin-left: 50px;
 `;
 
+const StCommentUsername = styled.div`
+font-Size: 18px;
+padding: 10px;
+margin: 5px;
+`
 
+const StUserComment = styled.div`
+font-Size: 13px;
+font-weight: 400;
+padding: 10px;
+margin: 5px;
+`
 export {
     StDetailPage,
     StDetailForm,
@@ -109,4 +122,6 @@ export {
     StCommentListForm,
     StCommentUserImg,
     StCommentItem,
+    StCommentUsername,
+    StUserComment,
 };
