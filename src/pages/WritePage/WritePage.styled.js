@@ -13,7 +13,7 @@ const StNickname = styled.div`
   font-size: 20px;
   font-weight: bolder;
 `;
-const StForm = styled.form`
+const StDiv = styled.div`
   width: 50%;
 `;
 
@@ -71,6 +71,6 @@ const StButton = styled.button`
   }
 `;
 export {
-  StButton, StButtonDiv, StDescription, StForm, StInputForm, StNickname, StRestaurantName, StTopForm, StWriteWrapper
+  StButton, StButtonDiv, StDescription, StDiv, StInputForm, StNickname, StRestaurantName, StTopForm, StWriteWrapper
 };
 

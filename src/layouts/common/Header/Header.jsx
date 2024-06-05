@@ -2,11 +2,12 @@
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import api from '../../../api';
+
 import { profileDefaultUrl } from '../../../api/supabaseAPI';
 import mainLogo from '../../../assets/logo.png';
-import useDropdown from '../../../hooks/useDropdown/useDropdown';
-import { signOut } from '../../../redux/slices/authSlice';
+
+import useDropdown from '../../../hooks/useDropdown';
+import { getUser, signOut } from '../../../redux/slices/authSlice';
 import { userDataUpdate } from '../../../redux/slices/userSlice';
 import {
   DropdownButton,
@@ -23,30 +24,30 @@ function Header() {
   console.log('헤더');
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const userProfileData = useSelector((state) => state.user.userProfile);
-  
-  
+  console.log(user);
   const { isOpen, ref, toggle } = useDropdown();
 
   useEffect(() => {
     if (user) {
       const fetchUserProfile = async () => {
         try {
-          const userProfile = await api.user.getUserProfile(user.id);
-          dispatch(userDataUpdate(userProfile));
+          const action = await dispatch(getUser());
+          if (action.payload) {
+            dispatch(userDataUpdate(action.payload)); // Correctly update user profile
+          }
         } catch (error) {
           console.error('Failed to fetch user profile', error);
         }
       };
-  
       fetchUserProfile();
     }
   }, [user, dispatch]);
+  
 
   const handleLogout = useCallback(async () => {
     dispatch(signOut());
   }, [dispatch]);
-
+  
   return (
     <header>
       <HeaderWrapDiv>
@@ -65,7 +66,7 @@ function Header() {
                 </Link>
 
                 <Link to="/mypage">
-                  <UserImg src={userProfileData.profilePictureUrl  ?? `${profileDefaultUrl}`} alt="User" />
+                  <UserImg src={user.profilePictureUrl  ?? `${profileDefaultUrl}`} alt="User" />
                 </Link>
 
                 <div ref={ref}>
