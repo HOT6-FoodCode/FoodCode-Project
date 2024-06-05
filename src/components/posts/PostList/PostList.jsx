@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import usePosts from '../../../hooks/usePosts/usePosts';
 import Skeleton from '../../../layouts/common/Skeleton';
-import FollowButton from '../../common/FollowButton';
 import PostItem from '../PostItem';
 import { Message, PostGrid } from './PostList.styled';
 
@@ -25,8 +24,6 @@ const PostList = ({ sorting }) => {
   }
   return (
     <>
-      <FollowButton followerId={'e6450a1f-d01e-482c-a2d7-81ff06aecfc1'} />
-      <FollowButton followerId={'4fe28521-1bca-4821-8021-689eb68bda69'} />
       {loading ? (
         <Skeleton length={6} />
       ) : (
@@ -36,7 +33,7 @@ const PostList = ({ sorting }) => {
               <PostItem
                 key={index}
                 postId={post.id}
-                image={post.image}
+                images={post.images}
                 title={post.title}
                 content={post.content}
                 rating={post.rating}

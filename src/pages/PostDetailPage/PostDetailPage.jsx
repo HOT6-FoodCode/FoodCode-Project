@@ -1,39 +1,64 @@
-import api from '../../api';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import api from '../../api';
+import { postImageDefault } from '../../api/supabaseAPI';
+import FollowButton from '../../components/common/FollowButton';
 import ImageUpload from '../../components/writepage/ImageUpload';
 import StarRating from '../../components/writepage/StarRating';
 import {
   StButton,
   StButtonDiv,
-  StInputForm,
-  StNickname,
+  StDescription,
   StDiv,
-  StTitle,
-  StContent,
-  StTopForm,
+  StForm,
+  StImage,
+  StImageWrapper,
+  StInputForm,
+  StNameFollowWrapDiv,
+  StNickname,
+  StRestaurantName,
   StWriteWrapper
-} from '../WritePage/WritePage.styled';
+} from './PostDetailPage.styled';
 
 const PostDetailPage = () => {
+  const { postId } = useParams();
   const user = useSelector((state) => state.auth.user);
-  const userProfileData = useSelector((state) => state.user.userProfile);
-  const { id: postId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const { images: initialImages, title, content, rating } = location.state || {};
 
+  const [post, setPost] = useState(null);
   const [editedPost, setEditedPost] = useState({
     title: title || '',
     content: content || '',
-    images: initialImages || [],
+    images: initialImages || '',
     rating: rating || 0
   });
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const fetchedPost = await api.posts.getPost(postId);
+        setPost(fetchedPost);
+        setEditedPost({
+          title: fetchedPost.title || '',
+          content: fetchedPost.content || '',
+          images: fetchedPost.images || '',
+          rating: fetchedPost.rating || 0
+        });
+      } catch (error) {
+        console.error('Failed to fetch post:', error);
+      }
+    };
+
+    fetchPost();
+  }, [postId]);
 
   const handleUpdate = async (event) => {
     event.preventDefault();
     try {
+      console.log(postId);
       await api.posts.editPost(postId, editedPost);
       navigate('/mypage');
     } catch (error) {
@@ -51,67 +76,82 @@ const PostDetailPage = () => {
     }
   };
 
+  const handleGoBack = (event) => {
+    event.preventDefault();
+    try {
+      const confirmed = confirm('뒤로 가시겠습니까?');
+      if (confirmed) {
+        navigate(-1);
+      }
+    } catch (error) {
+      console.error('Failed to delete post:', error);
+    }
+  };
+  const userId = post ? post.user_id : null;
+
+  const isOwner = user && user.id === userId;
+  console.log('userId:', userId);
+
   return (
     <div>
       <StWriteWrapper>
-        {user ? (
-          <>
-            <ImageUpload images={editedPost.images} setImages={(images) => setEditedPost({ ...editedPost, images })} />
-
-            <StDiv>
-              <StNickname>
-                <h2>{userProfileData.nickname}</h2>
-              </StNickname>
-
-              <StInputForm>
-                <StTopForm>
-                  <StTitle
-                    type="text"
-                    placeholder="매장 이름"
-                    value={editedPost.title}
-                    onChange={(e) => setEditedPost({ ...editedPost, title: e.target.value })}
-                  />
-                  <StarRating
-                    rating={editedPost.rating}
-                    setRating={(rating) => setEditedPost({ ...editedPost, rating })}
-                  />
-                </StTopForm>
-                <StContent
-                  type="text"
-                  placeholder="맛, 분위기, 추천 이유 등을 적어주세요"
-                  value={editedPost.content}
-                  onChange={(e) => setEditedPost({ ...editedPost, content: e.target.value })}
-                />
-              </StInputForm>
-
-              <StButtonDiv>
-                <StButton onClick={handleUpdate}>수정</StButton>
-                <StButton onClick={handleDelete}>삭제</StButton>
-              </StButtonDiv>
-            </StDiv>
-          </>
+        {isOwner ? (
+          <ImageUpload
+            images={editedPost.images.length > 0 ? editedPost.images : [postImageDefault]}
+            setImages={(images) => setEditedPost({ ...editedPost, images })}
+          />
         ) : (
-          <>
-            <ImageUpload images={editedPost.images} />
-            <StDiv>
-              <StNickname>
-                <h2>Nickname</h2>
-              </StNickname>
-
-              <StInputForm>
-                <StTopForm>
-                  <StRestaurantName type="text" value={editedPost.title} />
-                  <StarRating rating={editedPost.rating} />
-                </StTopForm>
-                <StDescription type="text" value={editedPost.content} />
-              </StInputForm>
-
-              <StButtonDiv>
-                <StButton onClick={() => navigate(-1)}>목록</StButton>
-              </StButtonDiv>
-            </StDiv>
-          </>
+          <StImageWrapper>
+            <div>
+              {editedPost.images.length > 0 ? (
+                editedPost.images.map((image, index) => <StImage key={index} src={image} alt={`Image ${index}`} />)
+              ) : (
+                <StImage src={postImageDefault} alt="Default" />
+              )}
+            </div>
+          </StImageWrapper>
         )}
+        <StForm>
+          <StNickname>{post ? <h2>{post.nickname}</h2> : <h2>Loading...</h2>}</StNickname>
+
+          <StInputForm>
+            <StDiv>
+              <StNameFollowWrapDiv>
+                <StRestaurantName
+                  type="text"
+                  placeholder="매장 이름"
+                  value={editedPost.title}
+                  onChange={(e) => setEditedPost({ ...editedPost, title: e.target.value })}
+                  disabled={!isOwner}
+                />
+                {user && user.id !== userId && <FollowButton followerId={userId} />}
+              </StNameFollowWrapDiv>
+              <StarRating
+                rating={editedPost.rating}
+                setRating={(rating) => setEditedPost({ ...editedPost, rating })}
+                disabled={!isOwner}
+              />
+            </StDiv>
+            <StDescription
+              type="text"
+              placeholder="맛, 분위기, 추천 이유 등을 적어주세요"
+              value={editedPost.content}
+              onChange={(e) => setEditedPost({ ...editedPost, content: e.target.value })}
+              disabled={!isOwner}
+            />
+          </StInputForm>
+
+          {isOwner ? (
+            <StButtonDiv>
+              <StButton onClick={handleUpdate}>수정</StButton>
+              <StButton onClick={handleDelete}>삭제</StButton>
+            </StButtonDiv>
+          ) : (
+            <StButtonDiv>
+              <StButton onClick={handleGoBack}>뒤로가기</StButton>
+            </StButtonDiv>
+          )}
+        </StForm>
       </StWriteWrapper>
     </div>
   );
