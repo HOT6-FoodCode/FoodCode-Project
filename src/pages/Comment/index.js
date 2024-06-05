@@ -1,1 +1,1 @@
-export { default } from './Comment.styled';
+export {comment}  from './Comment.styled';

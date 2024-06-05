@@ -5,7 +5,7 @@ class UserAPI {
     try {
       const { data, error } = await supabase
         .from('users')
-        .select('id, email, nickname, profilePictureUrl')
+        .select('id, nickname, profilePictureUrl')
         .eq('id', userId)
         .single();
 
@@ -48,6 +48,7 @@ class UserAPI {
       throw new Error(`Failed to update user profile: ${error.message}`);
     }
   }
+  
 }
 
 export default UserAPI;

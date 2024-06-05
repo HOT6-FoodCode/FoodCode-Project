@@ -1,7 +1,7 @@
 import supabase from './supabaseAPI';
 
 class PostsAPI {
-  async fetchPosts() {
+  async getAllPosts() {
     try {
       const { data, error } = await supabase.from('posts').select('*');
 
@@ -14,9 +14,57 @@ class PostsAPI {
       throw new Error(`Failed to fetch posts: ${error.message}`);
     }
   }
-
-  async createPost(userId, title, context, image, rating) {
+  async getFollowingPosts(userIdArray) {
     try {
+      let fetchedPosts = [];
+
+      //  배열로 순회해서 follower_id에 해당하는 게시글  가져오기
+      for (const userId of userIdArray) {
+        const { data, error } = await supabase.from('posts').select('*').eq('user_id', userId);
+
+        if (error) {
+          throw error;
+        }
+
+        fetchedPosts.push(...data);
+      }
+
+      return fetchedPosts;
+    } catch (error) {
+      throw new Error(`Failed to fetch following posts: ${error.message}`);
+    }
+  }
+
+  async getMyPosts(userId) {
+    try {
+      const { data, error } = await supabase.from('posts').select('*').eq('user_id', userId);
+
+      if (error) {
+        throw error;
+      }
+      return data;
+    } catch (error) {
+      throw new Error(`Failed to fetch my posts: ${error.message}`);
+    }
+  }
+
+  async getPost(postId) {
+    try {
+      const { data, error } = await supabase.from('posts').select('*').eq('id', postId);
+
+      if (error) {
+        throw error;
+      }
+      console.log("data입니다.",data);
+      return data[0];
+    } catch (error) {
+      throw new Error(`Failed to fetch my posts: ${error.message}`);
+    }
+  }
+
+  async createPost(post) {
+    try {
+      const { userId, title, content, images, rating } = post;
       // 닉네임 가져오기
       const { data: userData, error: userError } = await supabase.from('users').select('nickname').eq('id', userId);
 
@@ -24,12 +72,17 @@ class PostsAPI {
         throw userError;
       }
 
+      if (!userData || userData.length === 0) {
+        throw new Error('User not found');
+      }
+
       const nickname = userData[0].nickname;
 
+      console.log(nickname, userData);
       // posts 테이블에 등록
       const { data, error } = await supabase
         .from('posts')
-        .insert([{ user_id: userId, nickname, title, context, image, views: 0, rating }]);
+        .insert([{ user_id: userId, nickname, title, content, images, views: 0, rating }]);
 
       if (error) {
         throw error;
@@ -51,15 +104,17 @@ class PostsAPI {
     }
   }
 
-  async editPost(postId, title, context, image) {
+  async editPost(postId, updatedPost) {
     try {
-      const { error } = await supabase.from('posts').update({ title, context, image }).eq('id', postId);
+      const { title, content, images, rating } = updatedPost;
+      const { error } = await supabase.from('posts').update({ title, content, images, rating }).eq('id', postId);
 
       if (error) throw error;
     } catch (error) {
       throw new Error(`Failed to edit post: ${error.message}`);
     }
   }
+
   async incrementViewCount(postId) {
     try {
       const { data: postData, error: fetchError } = await supabase.from('posts').select('views').eq('id', postId);

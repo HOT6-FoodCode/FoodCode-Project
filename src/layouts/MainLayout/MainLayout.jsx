@@ -9,8 +9,8 @@ function MainLayout() {
       <Header />
       <Main>
         <Outlet />
+        <Footer />
       </Main>
-      <Footer />
     </Wrapper>
   );
 }
@@ -19,10 +19,10 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
-  flex-direction: column;  
+  flex-direction: column;
 `;
 
-const Main = styled.div`  
+const Main = styled.div`
   height: 100%;
 `;
 

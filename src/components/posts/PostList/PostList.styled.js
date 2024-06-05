@@ -15,3 +15,23 @@ export const PostGrid = styled.div`
     grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
   }
 `;
+
+export const Message = styled.div`
+  display: flex;
+  width: 100vh;
+  height: 75vh;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  p {
+    padding: 20px;
+
+    background-color: #bbd3eb;
+    color: #194a95;
+    border: 1px solid #194a95;
+    border-radius: 4px;
+
+    font-size: 16px;
+  }
+`;

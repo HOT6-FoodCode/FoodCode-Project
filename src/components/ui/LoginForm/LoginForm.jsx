@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { signIn, signOut } from '../../../redux/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 import loginEmail from '../../../assets/icons/envelope-regular.svg';
 import loginPassword from '../../../assets/icons/unlock-keyhole-solid.svg';
-import { useNavigate } from 'react-router-dom';
+import { signIn } from '../../../redux/slices/authSlice';
 import { getUserLoginErrorMessage } from '../../auth/getUserLoginErrorMessage';
 import {
   StErrorMsg,
@@ -33,12 +33,6 @@ const LoginForm = () => {
     } catch (error) {
       console.error('로그인 중 오류 발생:', error);
     }
-  };
-
-  // header 로그아웃 부분에 사용
-  const handleSignOut = () => {
-    dispatch(signOut());
-    alert('로그아웃 되었습니다.');
   };
 
   return (

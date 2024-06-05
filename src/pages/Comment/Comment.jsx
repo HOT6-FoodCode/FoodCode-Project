@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-// import supabase from '../../api/supabaseAPI';
-import { createClient } from '@supabase/supabase-js'
-const supabaseUrl = 'https://efxiyqhlunmdhtxszzum.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmeGl5cWhsdW5tZGh0eHN6enVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTc0Njc5NzgsImV4cCI6MjAzMzA0Mzk3OH0.HZdIxo2oeEg6VzajvQPNWtrShLQN5iHNcv9h-CyCC9o'
-const supabase = createClient(supabaseUrl, supabaseKey)
+// import api from '../../api';
 
 import {
     StDetailPage,
@@ -67,7 +63,6 @@ function Comment(props) {
     // 삭제
     async function deleteComment(id) {
         setLoading(true);
-
         const {error} = await supabase
             .from('comments')
             .delete()
@@ -82,9 +77,9 @@ function Comment(props) {
         setLoading(false);
     };
 
+
     // 수정
     async function updateComment(id) {
-        
         const { data } = await supabase
             .from('comments')
             .update({comment: prompt("수정할 댓글을 입력하세요!")})
@@ -96,7 +91,7 @@ function Comment(props) {
             );
         
         setPosts(updatedAddComment);
-        };
+    };
 
     if(isLoading) return <h1>Loading</h1>
     return (

@@ -1,6 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import api from '../../../api';
+import { profileDefaultUrl } from '../../../api/supabaseAPI';
 import mainLogo from '../../../assets/logo.png';
+import useDropdown from '../../../hooks/useDropdown/useDropdown';
+import { signOut } from '../../../redux/slices/authSlice';
 import {
   DropdownButton,
   DropdownMenu,
@@ -14,26 +20,30 @@ import {
 
 function Header() {
   console.log('헤더');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsDropdownOpen(false);
-    }
-  };
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const [profilePictureUrl, setProfilePictureUrl] = useState(null);
+  const { isOpen, ref, toggle } = useDropdown();
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+    if (user) {
+      const fetchUserProfile = async () => {
+        try {
+          const userProfile = await api.user.getUserProfile(user.id);
+          setProfilePictureUrl(userProfile.profilePictureUrl);
+        } catch (error) {
+          console.error('Failed to fetch user profile', error);
+        }
+      };
+
+      fetchUserProfile();
+    }
+  }, [user]);
+
+  const handleLogout = useCallback(async () => {
+    dispatch(signOut());
+  }, [dispatch]);
+
   return (
     <header>
       <HeaderWrapDiv>
@@ -42,36 +52,31 @@ function Header() {
             <LogoImg src={mainLogo} alt="logo" />
           </Link>
         </h1>
-        {/* 지울 내용 */}
-        <StrBtn onClick={() => setIsLoggedIn((pervState) => !pervState)}>토글</StrBtn>
 
         <nav>
           <StrNavWrapDiv>
-            {isLoggedIn ? (
+            {user ? (
               <>
                 <Link to="/login">
                   <StrBtn to="/comment">Write</StrBtn>
                 </Link>
 
                 <Link to="/mypage">
-                  <UserImg
-                    src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg"
-                    alt="User"
-                  />
+                  <UserImg src={profilePictureUrl ?? `${profileDefaultUrl}`} alt="User" />
                 </Link>
 
-                <div ref={dropdownRef}>
-                  <DropdownButton onClick={toggleDropdown}>
+                <div ref={ref}>
+                  <DropdownButton onClick={toggle}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12 15L6 9H18L12 15Z" fill="currentColor" />
                     </svg>
                   </DropdownButton>
-                  {isDropdownOpen && (
-                    <DropdownMenu isOpen={isDropdownOpen}>
+                  {isOpen && (
+                    <DropdownMenu $isOpen={isOpen}>
                       <DropdownMenuItem>
                         <Link to="/mypage">My Page</Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => setIsLoggedIn(false)}>Log Out</DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
                     </DropdownMenu>
                   )}
                 </div>
