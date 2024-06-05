@@ -48,6 +48,7 @@ class UserAPI {
       throw new Error(`Failed to update user profile: ${error.message}`);
     }
   }
+  
 }
 
 export default UserAPI;
