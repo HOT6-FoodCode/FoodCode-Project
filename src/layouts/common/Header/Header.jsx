@@ -6,7 +6,7 @@ import { profileDefaultUrl } from '../../../api/supabaseAPI';
 import mainLogo from '../../../assets/logo.png';
 import useDropdown from '../../../hooks/useDropdown/useDropdown';
 import { signOut } from '../../../redux/slices/authSlice';
-import { userDataUpdate } from '../../../redux/slices/userSlice'; // 여기에 추가
+import { userDataUpdate } from '../../../redux/slices/userSlice';
 import {
   DropdownButton,
   DropdownMenu,
@@ -22,18 +22,22 @@ function Header() {
   const dispatch = useDispatch();
   const { isOpen, ref, toggle } = useDropdown();
   const user = useSelector((state) => state.auth.user);
-  const userProfile = useSelector((state) => state.user.userProfile);
+  const userProfileData = useSelector((state) => state.user.userProfile);
+  
+  
+  const { isOpen, ref, toggle } = useDropdown();
 
   useEffect(() => {
     if (user) {
       const fetchUserProfile = async () => {
         try {
-          const userProfileData = await api.user.getUserProfile(user.id);
-          dispatch(userDataUpdate(userProfileData));
+          const userProfile = await api.user.getUserProfile(user.id);
+          dispatch(userDataUpdate(userProfile));
         } catch (error) {
           console.error('Failed to fetch user profile', error);
         }
       };
+  
       fetchUserProfile();
     }
   }, [user, dispatch]);
@@ -55,12 +59,12 @@ function Header() {
           <StrNavWrapDiv>
             {user ? (
               <>
-                <Link to="/write">
+              <Link to="/write">
                   <StrBtn>Write</StrBtn>
                 </Link>
 
                 <Link to="/mypage">
-                  <UserImg src={userProfile?.profilePictureUrl ?? profileDefaultUrl} alt="User" />
+                  <UserImg src={userProfileData.profilePictureUrl  ?? `${profileDefaultUrl}`} alt="User" />
                 </Link>
 
                 <div ref={ref}>
