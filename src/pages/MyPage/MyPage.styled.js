@@ -3,6 +3,7 @@ import styled from 'styled-components';
 const StMyPageWrapper = styled.div`
   padding: 30px;
   margin: 0 30px;
+  min-width: 1470px;
 `;
 
 const StPostDiv = styled.div`
