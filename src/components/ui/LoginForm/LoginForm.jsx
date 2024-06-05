@@ -35,11 +35,6 @@ const LoginForm = () => {
     }
   };
 
-  // // header 로그아웃 부분에 사용
-  // const handleSignOut = () => {
-  //   dispatch(signOut());
-  //   alert('로그아웃 되었습니다.');
-  // };
 
   return (
     <StFormWrapper onSubmit={handleSignIn}>
