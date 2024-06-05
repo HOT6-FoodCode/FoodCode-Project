@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api';
 import ImageUpload from '../../components/writepage/ImageUpload';
@@ -21,14 +22,15 @@ function WritePage() {
     images:  [],
     rating:  0,
     });
+    const user = useSelector((state) => state.auth.user);
 
     // 이미지 상대경로 저장
     const navigator = useNavigate();
 
     const handlerAdd = async (e) => {
       e.preventDefault();
-    try {
-      await api.posts.createPost(post);
+    try {      
+      await api.posts.createPost( { userId: user.id, ...post });
       navigator('/')
     } catch (error) {
       console.error('Failed to edit post:', error);
@@ -36,7 +38,10 @@ function WritePage() {
   };
   return (
     <StWriteWrapper>
-      <ImageUpload images={post.images} setImages={(images) => setPost(...post, images)} />
+              <ImageUpload
+          images={post.images}
+          setImages={(images) => setPost({ ...post, images })}
+        />
 
       <StForm>
         <StInputForm>
