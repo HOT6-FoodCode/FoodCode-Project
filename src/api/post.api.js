@@ -1,7 +1,7 @@
 import supabase from './supabaseAPI';
 
 class PostsAPI {
-  async fetchPosts() {
+  async getAllPosts() {
     try {
       const { data, error } = await supabase.from('posts').select('*');
 
@@ -14,7 +14,7 @@ class PostsAPI {
       throw new Error(`Failed to fetch posts: ${error.message}`);
     }
   }
-  async fetchFollowingPosts(userIdArray) {
+  async getFollowingPosts(userIdArray) {
     try {
       let fetchedPosts = [];
 
@@ -35,8 +35,22 @@ class PostsAPI {
     }
   }
 
-  async createPost(userId, title, content, image, rating) {
+  async getMyPosts(userId) {
     try {
+      const { data, error } = await supabase.from('posts').select('*').eq('user_id', userId);
+
+      if (error) {
+        throw error;
+      }
+      return data;
+    } catch (error) {
+      throw new Error(`Failed to fetch my posts: ${error.message}`);
+    }
+  }
+
+  async createPost(post) {
+    try {
+      const { userId, title, content, image, rating } = post;
       // 닉네임 가져오기
       const { data: userData, error: userError } = await supabase.from('users').select('nickname').eq('id', userId);
 
@@ -76,15 +90,17 @@ class PostsAPI {
     }
   }
 
-  async editPost(postId, title, content, image) {
+  async editPost(postId, updatedPost) {
     try {
-      const { error } = await supabase.from('posts').update({ title, content, image }).eq('id', postId);
+      const { title, content, image, rating } = updatedPost;
+      const { error } = await supabase.from('posts').update({ title, content, image, rating }).eq('id', postId);
 
       if (error) throw error;
     } catch (error) {
       throw new Error(`Failed to edit post: ${error.message}`);
     }
   }
+
   async incrementViewCount(postId) {
     try {
       const { data: postData, error: fetchError } = await supabase.from('posts').select('views').eq('id', postId);

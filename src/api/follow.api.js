@@ -1,60 +1,87 @@
 import supabase from './supabaseAPI';
 
-class AuthAPI {
-  async signUp(email, password, nickname) {
+class FollowAPI {
+  // 팔로우 상태 확인 프라이빗 메서드
+  async _checkFollowStatus(followingId, followerId) {
+    if (!followingId || !followerId) {
+      throw new Error('Invalid user IDs');
+    }
+
+    const { data: existingFollow, error: checkError } = await supabase
+      .from('follows')
+      .select('*')
+      .eq('following_id', followingId)
+      .eq('follower_id', followerId)
+      .limit(1);
+
+    if (checkError) {
+      throw new Error(checkError.message);
+    }
+
+    return existingFollow.length > 0 ? existingFollow[0] : null;
+  }
+  // 팔로우 상태 토글 메서드
+  async toggleFollowUser(followingId, followerId) {
+    if (!followingId || !followerId) {
+      throw new Error('Invalid user IDs');
+    }
+
+    if (followingId === followerId) {
+      throw new Error('Cannot follow yourself');
+    }
+
     try {
-      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password });
-      if (signUpError) {
-        throw new Error(signUpError.message);
+      const existingFollow = await this._checkFollowStatus(followingId, followerId);
+
+      if (existingFollow) {
+        const { data, error } = await supabase
+          .from('follows')
+          .delete()
+          .eq('following_id', followingId)
+          .eq('follower_id', followerId);
+
+        if (error) {
+          throw new Error(error.message);
+        }
+        return { action: 'unfollow', data };
+      } else {
+        const { data, error } = await supabase
+          .from('follows')
+          .insert([{ following_id: followingId, follower_id: followerId }]);
+
+        if (error) {
+          throw new Error(error.message);
+        }
+        return { action: 'follow', data };
       }
-      const userId = signUpData.user.id;
+    } catch (error) {
+      throw new Error(`Failed to toggle follow status: ${error.message}`);
+    }
+  }
+  // 팔로우 상태 확인 메서드
+  async isFollowing(followingId, followerId) {
+    try {
+      const existingFollow = await this._checkFollowStatus(followingId, followerId);
 
-      // 추가 정보 저장
-      const { data: userData, error: userError } = await supabase.from('users').insert([{ id: userId, nickname }]);
+      return existingFollow ? true : false;
+    } catch (error) {
+      throw new Error(`Failed to check follow status: ${error.message}`);
+    }
+  }
+  // 팔로잉한 당한 사용자 ID 가져오는 메서드
+  async getFollowingIds(userId) {
+    try {
+      const { data, error } = await supabase.from('follows').select('follower_id').eq('following_id', userId);
 
-      if (userError) {
-        throw new Error(userError.message);
+      if (error) {
+        throw new Error(error.message);
       }
 
-      return { signUpData, userData };
+      return data.map((follow) => follow.follower_id);
     } catch (error) {
-      throw new Error(`Sign-up failed: ${error.message}`);
-    }
-  }
-  async signIn(email, password) {
-    try {
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-
-      if (signInError) throw new Error(signInError.message);
-
-      return signInData.user;
-    } catch (error) {
-      throw new Error(`Sign-in failed: ${error.message}`);
-    }
-  }
-
-  async signOut() {
-    try {
-      const { error: signOutError } = await supabase.auth.signOut();
-
-      if (signOutError) throw new Error(signOutError.message);
-    } catch (error) {
-      throw new Error(`Sign-out failed: ${error.message}`);
-    }
-  }
-
-  async getUser() {
-    try {
-      const {
-        data: { session },
-        error
-      } = await supabase.auth.getSession();
-      if (error) throw new Error(error.message);
-      return session.user;
-    } catch (error) {
-      throw new Error(`Get user failed: ${error.message}`);
+      throw new Error(`Failed to get following ids: ${error.message}`);
     }
   }
 }
 
-export default AuthAPI;
+export default FollowAPI;
