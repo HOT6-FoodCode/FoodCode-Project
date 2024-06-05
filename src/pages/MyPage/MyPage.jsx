@@ -14,7 +14,6 @@ import UserInfo from '../../components/ui/UserInfo';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
-
 const MyPage = () => {
   const user = useSelector((state) => state.auth.user);
 
@@ -30,24 +29,23 @@ const MyPage = () => {
     return (
       <StNotLogInView>
         <StNotLogInViewText>
-          로그인이 필요합니다! 
+          로그인이 필요합니다!
           <br />
           상단의 로그인 페이지로 이동해 주세요 😆
         </StNotLogInViewText>
       </StNotLogInView>
-    )
+    );
   }
 
   const userId = user.id;
   //console.log('userId', userId);
 
   return (
-    
     <StMyPageWrapper>
       <StDivProfile>
         <StTitle>Profile</StTitle>
         <StAccount>
-            <UserInfo userId={userId} user={user}/>
+          <UserInfo userId={userId} user={user} />
         </StAccount>
       </StDivProfile>
       <StPostDiv>
