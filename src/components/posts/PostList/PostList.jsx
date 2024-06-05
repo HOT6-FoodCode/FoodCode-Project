@@ -24,13 +24,14 @@ const PostList = ({ sorting }) => {
     );
   }
 
-  // if (sorting === 'myPosts' ) {
-  //   return (
-  //     <Message>
-  //       <p>작성한 게시물이 없습니다. 게시글을 작성해 주세요!</p>
-  //     </Message>
-  //   )
-  // }
+  
+  if (sorting === 'myPost' && posts.length === 0) {
+    return (
+      <Message style={{height : '50vh'}}>
+        <p>작성한 게시물이 없습니다. 게시글을 작성해 주세요!</p>
+      </Message>
+    );
+  }
 
   return (
     <>
@@ -74,4 +75,4 @@ const StButton = styled.button`
 const StButtonDiv = styled.div`
   display: flex;
   justify-content: center;
-`
+`;
