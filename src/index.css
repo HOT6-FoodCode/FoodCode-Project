@@ -107,6 +107,20 @@ nav,
 section {
   display: block;
 }
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
 body {
   line-height: 1;
   font-family: 'Wanted Sans Variable', 'Wanted Sans', -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI',
@@ -146,4 +160,5 @@ button {
 
 a {
   text-decoration: none;
+  color: black;
 }

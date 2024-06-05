@@ -16,6 +16,9 @@ const StNickname = styled.div`
 const StForm = styled.form`
   width: 50%;
 `;
+const StDiv = styled.div`
+  width: 100%;
+`
 
 const StTopForm = styled.form`
   display: flex;
@@ -54,6 +57,11 @@ const StButtonDiv = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-top: 10px;
+  gap: 10px;
+
+  button:last-child {
+    color: #E32227;
+  }
 `;
 const StButton = styled.button`
   border-radius: 26px;
@@ -70,7 +78,37 @@ const StButton = styled.button`
     text-decoration: none;
   }
 `;
+const StNameFollowWrapDiv =styled.div`
+  width:100%;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 10px;
+`
+const StImageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  div {
+        width: 360px;
+    height: 360px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-right: 30px;
+    padding: 10px;
+  }
+`;
+
+const StImage = styled.img`
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  margin-right: 10px;
+`;
 export {
-  StButton, StButtonDiv, StDescription, StForm, StInputForm, StNickname, StRestaurantName, StTopForm, StWriteWrapper
+  StButton, StButtonDiv, StDescription, StDiv, StForm, StImage, StImageWrapper, StInputForm, StNameFollowWrapDiv, StNickname, StRestaurantName, StTopForm, StWriteWrapper
 };
 
