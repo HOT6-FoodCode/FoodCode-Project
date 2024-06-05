@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import api from '../../api';
 import sortPosts from '../../utils/sortPosts';
@@ -7,7 +7,6 @@ const POSTS_PER_PAGE = 12;
 
 const usePosts = (sorting) => {
   const [posts, setPosts] = useState([]);
-  const [visiblePosts, setVisiblePosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const user = useSelector((state) => state.auth.user);
@@ -20,35 +19,38 @@ const usePosts = (sorting) => {
 
         if (sorting === 'follow') {
           if (!user) {
+            setPosts([]);
             setLoading(false);
             return;
           }
           // 팔로워 ID 가져오기
           const followingIds = await api.follow.getFollowingIds(user.id);
           // 팔로워 ID 배열로 순회해서 데이터에 추가
-          fetchedPosts = await api.posts.fetchFollowingPosts(followingIds);
+          fetchedPosts = await api.posts.getFollowingPosts(followingIds);
+        } else if (sorting === 'myPost') {
+          fetchedPosts = await api.posts.getMyPosts(user.id);
         } else {
-          fetchedPosts = await api.posts.fetchPosts();
+          fetchedPosts = await api.posts.getAllPosts();
         }
 
         const sortedPosts = sortPosts(fetchedPosts, sorting);
         setPosts(sortedPosts);
-        setVisiblePosts(sortedPosts.slice(0, page * POSTS_PER_PAGE));
       } catch (error) {
         console.error('Failed to fetch posts:', error);
         setPosts([]);
-        setVisiblePosts([]);
       } finally {
         setLoading(false);
       }
     };
 
     getPosts();
-  }, [sorting, user, page]);
+    setPage(1);
+  }, [sorting, user]);
+  const visiblePosts = posts.slice(0, page * POSTS_PER_PAGE);
 
-  const loadMorePosts = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
+  const loadMorePosts = useCallback(() => {
+    setPage(page + 1);
+  }, [page]);
 
   return { posts, visiblePosts, loading, loadMorePosts, user };
 };
