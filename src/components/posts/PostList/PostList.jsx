@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import usePosts from '../../../hooks/usePosts/usePosts';
+
+import usePosts from '../../../hooks/usePosts';
 import Skeleton from '../../../layouts/common/Skeleton';
 import PostItem from '../PostItem';
 import { Message, PostGrid } from './PostList.styled';
@@ -43,7 +44,7 @@ const PostList = ({ sorting }) => {
               <PostItem
                 key={index}
                 postId={post.id}
-                images={post.images[0]}
+                image={post.image}
                 title={post.title}
                 content={post.content}
                 rating={post.rating}

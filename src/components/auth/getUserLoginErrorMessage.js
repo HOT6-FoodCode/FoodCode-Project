@@ -1,5 +1,4 @@
 export const getUserLoginErrorMessage = (error) => {
-  //   const errorMessage = error.message;
   console.log(error);
 
   if (error.includes('Invalid login credentials')) {
