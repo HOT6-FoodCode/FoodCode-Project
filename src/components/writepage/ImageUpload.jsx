@@ -1,84 +1,57 @@
 import styled from 'styled-components';
 import uploadIcon from '../../assets/upload.png';
-
-function ImageUpload({ images, setImages }) {
-  const handleAddImages = (event) => {
-    const imageLists = event.target.files;
-    let imageUrlLists = [...images];
-
-    for (let i = 0; i < imageLists.length; i++) {
-      const currentImageUrl = URL.createObjectURL(imageLists[i]);
-      imageUrlLists.push(currentImageUrl);
+function ImageUpload({ image, setImage }) {
+  const handleAddImage = (event) => {
+    const file = event.target.files[0]; 
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl);
     }
-
-    if (imageUrlLists.length > 4) {
-      imageUrlLists = imageUrlLists.slice(0, 4);
-    }
-    setImages(imageUrlLists);
   };
 
-  // X버튼 클릭 시 이미지 삭제
-  const handleDeleteImage = (id) => {
-    setImages(images.filter((_, index) => index !== id));
+  const handleDeleteImage = () => {
+    setImage('');
   };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <StImageGroup>
-        {/* 고정된 4개의 슬롯 생성 */}
-        {[...Array(4)].map((_, index) => (
-          <StImageUpload key={index}>
-            {images[index] ? (
-              <>
-                <StDeleteBtn>
-                  <StDeleteImage onClick={() => handleDeleteImage(index, images, setImages)} />
-                </StDeleteBtn>
-                <StPreviewImage src={images[index]} alt={`uploaded-${index}`} />
-              </>
-            ) : (
-              <label htmlFor="input-file" style={{ cursor: 'pointer' }}>
-                <StUploadBtn src={uploadIcon} />
-                <input
-                  type="file"
-                  id="input-file"
-                  style={{ display: 'none' }}
-                  multiple
-                  onChange={(e) => handleAddImages(e, images, setImages)}
-                />
-              </label>
-            )}
-          </StImageUpload>
-        ))}
+        {image ? (
+          <>
+            <StDeleteBtn onClick={handleDeleteImage}>
+              <StDeleteImage />
+            </StDeleteBtn>
+            <StPreviewImage src={image} alt="uploaded" />
+          </>
+        ) : (
+          <label htmlFor="input-file" style={{ cursor: 'pointer' }}>
+            <StUploadBtn src={uploadIcon} />
+            <input
+              type="file"
+              id="input-file"
+              style={{ display: 'none' }}
+              onChange={handleAddImage}
+            />
+          </label>
+        )}
       </StImageGroup>
-      <h5 style={{ fontSize: '14px', color: 'gray', margin: '10px' }}>* 이미지는 최대 4장까지 가능합니다</h5>
+      <h5 style={{ fontSize: '14px', color: 'gray', margin: '10px' }}>* 이미지는 하나만 가능합니다</h5>
     </div>
   );
 }
+
 export default ImageUpload;
+
 const StImageGroup = styled.div`
   width: 360px;
   height: 360px;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-
   border: 1px solid black;
   border-radius: 10px;
   margin-right: 30px;
   padding: 10px;
-`;
-const StImageUpload = styled.div`
-  width: 150px;
-  height: 150px;
-  border: 2px solid gray;
-  border-radius: 15px;
-  margin: 5px 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
 `;
 const StUploadBtn = styled.img`
   max-width: 50px;
@@ -93,6 +66,7 @@ const StDeleteBtn = styled.div`
   position: absolute;
   top: 5px;
   right: 5px;
+  cursor: pointer;
 `;
 const StDeleteImage = styled.svg.attrs({
   viewBox: '0 0 24 24',

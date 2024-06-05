@@ -33,7 +33,7 @@ const PostList = ({ sorting }) => {
               <PostItem
                 key={index}
                 postId={post.id}
-                images={post.images[0]}
+                image={post.image}
                 title={post.title}
                 content={post.content}
                 rating={post.rating}
