@@ -1,5 +1,3 @@
-//import { useNavigate } from 'react-router-dom';
-//import UserImgUpdate from '../../components/mypage/userInfo/UserImgUpdate';
 import {
   StMyPageWrapper,
   StPostDiv,
@@ -7,50 +5,53 @@ import {
   StDivProfile,
   StTitle,
   StAccount,
-  StUserInfoImg,
-  StUserInfo,
-  StUserContents,
-  StUserLabel,
-  StUserValue,
-  StPostListTitle
+  StPostListTitle,
+  StNotLogInView,
+  StNotLogInViewText
 } from './MyPage.styled';
-// import FetchData from '../../components/posts/FetchData';
-import UserPostList from '../../components/mypage/userPost/userPostList/UserPostList';
+import PostList from '../../components/posts/PostList';
+import UserInfo from '../../components/ui/UserInfo';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const MyPage = () => {
-  //const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
+
+  console.log('user', user);
+
+  useEffect(() => {
+    if (!user) {
+      //console.log('로그인이 필요합니다.');
+    }
+  }, [user]);
+
+  if (!user) {
+    return (
+      <StNotLogInView>
+        <StNotLogInViewText>
+          로그인이 필요합니다!
+          <br />
+          상단의 로그인 페이지로 이동해 주세요 😆
+        </StNotLogInViewText>
+      </StNotLogInView>
+    );
+  }
+
+  const userId = user.id;
+  console.log('userId', userId);
 
   return (
     <StMyPageWrapper>
       <StDivProfile>
         <StTitle>Profile</StTitle>
         <StAccount>
-          <StUserInfoImg>{/* <UserImgUpdate /> */}</StUserInfoImg>
-          <StUserInfo>
-            <StUserContents>
-              <StUserLabel>닉네임</StUserLabel>
-              <StUserValue>nickname</StUserValue>
-            </StUserContents>
-            <StUserContents>
-              <StUserLabel>아이디</StUserLabel>
-              <StUserValue>id</StUserValue>
-            </StUserContents>
-            <StUserContents>
-              <StUserLabel>비밀번호</StUserLabel>
-              <StUserValue>******</StUserValue>
-            </StUserContents>
-          </StUserInfo>
+          <UserInfo userId={userId} user={user} />
         </StAccount>
       </StDivProfile>
       <StPostDiv>
         <StMyPostdiv>
-          <StPostListTitle color="#ECC8CA">내가 쓴 게시물</StPostListTitle>
-          {/* <FetchData /> */}
-          <UserPostList />
-        </StMyPostdiv>
-        <StMyPostdiv>
-          <StPostListTitle $color="blue">팔로우 한 게시물</StPostListTitle>
-          <UserPostList />
+          <StPostListTitle>내가 쓴 게시물</StPostListTitle>
+          <PostList sorting="myPost" userId={userId} />
         </StMyPostdiv>
       </StPostDiv>
     </StMyPageWrapper>
