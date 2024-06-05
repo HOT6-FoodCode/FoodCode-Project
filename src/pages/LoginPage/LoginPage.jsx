@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
-const Login = () => {
+const LoginPage = () => {
   return (
     <>
       <Outlet />
@@ -8,4 +8,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
