@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import usePosts from '../../../hooks/usePosts/usePosts';
 import Skeleton from '../../../layouts/common/Skeleton';
@@ -5,7 +6,11 @@ import PostItem from '../PostItem';
 import { Message, PostGrid } from './PostList.styled';
 
 const PostList = ({ sorting }) => {
-  const { posts, visiblePosts, loading, loadMorePosts, user } = usePosts(sorting);
+  const { allPosts, visiblePosts, loading, filterAndSortPosts, loadMorePosts, user } = usePosts();
+
+  useEffect(() => {
+    filterAndSortPosts(sorting);
+  }, [sorting, filterAndSortPosts]);
 
   if (!user && sorting === 'follow') {
     return (
@@ -15,7 +20,7 @@ const PostList = ({ sorting }) => {
     );
   }
 
-  if (sorting === 'follow' && posts.length === 0) {
+  if (sorting === 'follow' && visiblePosts.length === 0) {
     return (
       <Message>
         <p>팔로우한 사용자가 없습니다. 다른 사용자를 팔로우해보세요.</p>
@@ -23,10 +28,9 @@ const PostList = ({ sorting }) => {
     );
   }
 
-  
-  if (sorting === 'myPost' && posts.length === 0) {
+  if (sorting === 'myPost' && visiblePosts.length === 0) {
     return (
-      <Message style={{height : '50vh'}}>
+      <Message style={{ height: '50vh' }}>
         <p>작성한 게시물이 없습니다. 게시글을 작성해 주세요!</p>
       </Message>
     );
@@ -39,9 +43,9 @@ const PostList = ({ sorting }) => {
       ) : (
         <>
           <PostGrid>
-            {visiblePosts.map((post, index) => (
+            {visiblePosts.map((post) => (
               <PostItem
-                key={index}
+                key={post.id}
                 postId={post.id}
                 image={post.image}
                 title={post.title}
@@ -51,16 +55,13 @@ const PostList = ({ sorting }) => {
             ))}
           </PostGrid>
           <StButtonDiv>
-            {visiblePosts.length < posts.length && <StButton onClick={loadMorePosts}>더보기</StButton>}
+            {visiblePosts.length < allPosts.length && <StButton onClick={loadMorePosts}>더보기</StButton>}
           </StButtonDiv>
-          
         </>
       )}
     </>
   );
 };
-
-export default PostList;
 
 const StButton = styled.button`
   padding: 20px;
@@ -73,3 +74,5 @@ const StButtonDiv = styled.div`
   display: flex;
   justify-content: center;
 `;
+
+export default PostList;

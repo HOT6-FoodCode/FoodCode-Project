@@ -5,8 +5,9 @@ import sortPosts from '../../utils/sortPosts';
 
 const POSTS_PER_PAGE = 12;
 
-const usePosts = (sorting) => {
-  const [posts, setPosts] = useState([]);
+const usePosts = () => {
+  const [allPosts, setAllPosts] = useState([]);
+  const [visiblePosts, setVisiblePosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const user = useSelector((state) => state.auth.user);
@@ -15,44 +16,43 @@ const usePosts = (sorting) => {
     const getPosts = async () => {
       setLoading(true);
       try {
-        let fetchedPosts = [];
-
-        if (sorting === 'follow') {
-          if (!user) {
-            setPosts([]);
-            setLoading(false);
-            return;
-          }
-          // 팔로워 ID 가져오기
-          const followingIds = await api.follow.getFollowingIds(user.id);
-          // 팔로워 ID 배열로 순회해서 데이터에 추가
-          fetchedPosts = await api.posts.getFollowingPosts(followingIds);
-        } else if (sorting === 'myPost') {
-          fetchedPosts = await api.posts.getMyPosts(user.id);
-        } else {
-          fetchedPosts = await api.posts.getAllPosts();
-        }
-
-        const sortedPosts = sortPosts(fetchedPosts, sorting);
-        setPosts(sortedPosts);
+        const fetchedPosts = await api.posts.getAllPosts();
+        setAllPosts(fetchedPosts);
+        setVisiblePosts(fetchedPosts.slice(0, POSTS_PER_PAGE));
       } catch (error) {
         console.error('Failed to fetch posts:', error);
-        setPosts([]);
+        setAllPosts([]);
+        setVisiblePosts([]);
       } finally {
         setLoading(false);
       }
     };
 
     getPosts();
-    setPage(1);
-  }, [sorting, user]);
-  const visiblePosts = posts.slice(0, page * POSTS_PER_PAGE);
+  }, []);
+
+  const filterAndSortPosts = useCallback(
+    (sorting) => {
+      let filteredPosts = allPosts;
+
+      if (sorting === 'follow' && user) {
+        const followingIds = (user.following || []).map((f) => f.id);
+        filteredPosts = allPosts.filter((post) => followingIds.includes(post.user_id));
+      } else if (sorting === 'myPost' && user) {
+        filteredPosts = allPosts.filter((post) => post.user_id === user.id);
+      }
+
+      const sortedPosts = sortPosts(filteredPosts, sorting);
+      setVisiblePosts(sortedPosts.slice(0, page * POSTS_PER_PAGE));
+    },
+    [allPosts, user, page]
+  );
 
   const loadMorePosts = useCallback(() => {
-    setPage(page + 1);
-  }, [page]);
+    setPage((prev) => prev + 1);
+  }, []);
 
-  return { posts, visiblePosts, loading, loadMorePosts, user };
+  return { allPosts, visiblePosts, loading, filterAndSortPosts, loadMorePosts, user };
 };
 
 export default usePosts;
