@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import usePosts from '../../../hooks/usePosts/usePosts';
 import Skeleton from '../../../layouts/common/Skeleton';
 
-import { selectFollowingIds } from '../../../redux/slices/followSlice';
+import { selectFollowerIds } from '../../../redux/slices/followSlice';
 import PostItem from '../PostItem';
 import { Message, PostGrid, StButton, StButtonDiv } from './PostList.styled';
 
@@ -10,7 +10,7 @@ const PostList = ({ sorting }) => {
   const { visiblePosts, loadMorePosts, totalPosts } = usePosts(sorting);
   const loading = useSelector((state) => state.posts.loading);
   const user = useSelector((state) => state.auth.user);
-  const followerIds = useSelector(selectFollowingIds);
+  const followerIds = useSelector(selectFollowerIds);
 
   console.log(followerIds);
 

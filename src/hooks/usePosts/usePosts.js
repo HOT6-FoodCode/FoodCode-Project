@@ -23,8 +23,7 @@ const usePosts = (sorting) => {
   const { posts, user, followingIds, followerIds } = useSelector(selectPostsData);
 
   const [page, setPage] = useState(1);
-  console.log(followingIds);
-  console.log(followerIds);
+
   useEffect(() => {
     setPage(1);
   }, [sorting]);
@@ -58,10 +57,12 @@ const usePosts = (sorting) => {
   }, []);
 
   const totalPosts = useMemo(() => {
+    console.log(followingIds);
+    console.log(followerIds);
     if (sorting === 'myPost') return myPosts.length;
     if (sorting === 'follow') return followingPosts.length;
     return posts.length;
-  }, [sorting, myPosts, followingPosts, posts]);
+  }, [sorting, myPosts, followingPosts, posts, followingIds, followerIds]);
 
   return { visiblePosts, loadMorePosts, totalPosts };
 };
