@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import styled from 'styled-components';
 import api from '../../../api';
 import { toggleFollowUser } from '../../../redux/slices/followSlice';
+import StFollowBtn from './FollowButton.styled';
 
 function FollowButton({ followerId }) {
   const [isFollowing, setIsFollowing] = useState(false);
@@ -65,22 +65,7 @@ function FollowButton({ followerId }) {
     return null;
   }
 
-  return <StFollowBtn onClick={handleToggleFollow}>{isFollowing ? 'Unfollow' : 'Follow'}</StFollowBtn>;
+  return <StFollowBtn onClick={handleToggleFollow}>{isFollowing ? 'unfollow' : 'follow'}</StFollowBtn>;
 }
 
 export default FollowButton;
-
-const StFollowBtn = styled.button`
-  background-color: #1b4b9c;
-  color: white;
-  border-radius: 30px;
-  padding: 12px 20px;
-  font-size: 18px;
-  width: 120px;
-  height: 48px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  &:hover {
-    background-color: #3b6fbf;
-  }
-`;

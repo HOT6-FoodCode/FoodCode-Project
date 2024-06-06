@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import api from '../../api';
+import { postImageDefault } from '../../api/supabaseAPI';
 import ImageUpload from '../../components/writepage/ImageUpload';
 import StarRating from '../../components/writepage/StarRating';
+import { StNotLogInView, StNotLogInViewText } from '../MyPage/MyPage.styled';
 import {
   StButton,
   StButtonDiv,
@@ -19,16 +22,32 @@ function WritePage() {
   const [post, setPost] = useState({
     title: '',
     content: '',
-    image: '',
+    image: postImageDefault,
     rating: 0
   });
   const user = useSelector((state) => state.auth.user);
-
   // 이미지 상대경로 저장
   const navigator = useNavigate();
 
+  if (!user) {
+    return (
+      <StNotLogInView>
+        <StNotLogInViewText>
+          로그인이 필요합니다!
+          <br />
+          상단의 로그인 페이지로 이동해 주세요 😆
+        </StNotLogInViewText>
+      </StNotLogInView>
+    );
+  }
+
   const handlerAdd = async (e) => {
     e.preventDefault();
+    // 유효성 검사
+    if (!post.title || !post.content || !post.rating) {
+      toast.error('모든 필드를 입력해주세요.');
+      return;
+    }
     try {
       await api.posts.createPost({ userId: user.id, ...post });
       navigator(-1);
