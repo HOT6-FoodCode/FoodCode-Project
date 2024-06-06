@@ -53,6 +53,7 @@ export const StLoginBtn = styled.button`
   background-color: black;
   color: white;
   margin-top: 15px;
+  cursor: pointer;
 `;
 
 export const StErrorMsg = styled.p`

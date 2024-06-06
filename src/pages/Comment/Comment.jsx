@@ -31,7 +31,7 @@ function Comment({ postId, user }) {
   const [editCommentId, setEditCommentId] = useState(null);
   const [editCommentText, setEditCommentText] = useState('');
   const userProfileData = useSelector((state) => state.user.userProfile);
-  const myImgUrl = userProfileData && userProfileData.profilePictureUrl;
+  const myImgUrl = (userProfileData && userProfileData.profilePictureUrl) ?? profileDefaultUrl;
 
   const getComments = async () => {
     try {

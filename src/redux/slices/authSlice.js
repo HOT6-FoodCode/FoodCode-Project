@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../api';
+import { userDataUpdate } from './userSlice';
 
 // 회원가입 비동기 작업 정의
 export const signUp = createAsyncThunk('auth/signUp', async ({ email, password, nickname }, { rejectWithValue }) => {
@@ -12,9 +13,10 @@ export const signUp = createAsyncThunk('auth/signUp', async ({ email, password, 
 });
 
 // 로그인 비동기 작업 정의
-export const signIn = createAsyncThunk('auth/signIn', async ({ email, password }, { rejectWithValue }) => {
+export const signIn = createAsyncThunk('auth/signIn', async ({ email, password }, { rejectWithValue, dispatch }) => {
   try {
     const user = await api.auth.signIn(email, password);
+    dispatch(userDataUpdate(user));
     return user;
   } catch (error) {
     return rejectWithValue(error.message);
@@ -25,15 +27,17 @@ export const signIn = createAsyncThunk('auth/signIn', async ({ email, password }
 export const signOut = createAsyncThunk('auth/signOut', async (_, { rejectWithValue }) => {
   try {
     await api.auth.signOut();
+    localStorage.removeItem('supabase.auth.token');
   } catch (error) {
     return rejectWithValue(error.message);
   }
 });
 
 // 현재 사용자 가져오기
-export const getUser = createAsyncThunk('auth/getUser', async (_, { rejectWithValue }) => {
+export const getUser = createAsyncThunk('auth/getUser', async (_, { rejectWithValue, dispatch }) => {
   try {
     const user = await api.auth.getUser();
+    dispatch(userDataUpdate(user));
     return user;
   } catch (error) {
     return rejectWithValue(error.message);
@@ -74,6 +78,7 @@ const authSlice = createSlice({
       .addCase(signOut.fulfilled, (state) => {
         state.status = 'succeeded'; // 로그아웃 성공 상태
         state.user = null; // 유저 정보 제거
+        localStorage.removeItem('supabase.auth.token'); // 토큰 제거
       })
       .addCase(signOut.rejected, (state, action) => {
         state.status = 'failed'; // 로그아웃 실패 상태
