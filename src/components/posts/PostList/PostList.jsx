@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-
-import usePosts from '../../../hooks/usePosts';
+import usePosts from '../../../hooks/usePosts/usePosts';
 import Skeleton from '../../../layouts/common/Skeleton';
 import PostItem from '../PostItem';
 import { Message, PostGrid } from './PostList.styled';

@@ -10,7 +10,7 @@ const PostItem = ({ postId, image, title, content, rating }) => {
   };
 
   return (
-    <Link to={{pathname: `/post/${postId}`, state: { image, title, content, rating }}}>
+    <Link to={{pathname: `/post/${postId}`}}>
       <PostCard onClick={handleClick}>
         <CardImage src={image ?? `${postImageDefault}`} alt={title} />
         <ContentWrapDiv>

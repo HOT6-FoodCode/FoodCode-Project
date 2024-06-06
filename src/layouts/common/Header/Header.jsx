@@ -6,7 +6,7 @@ import { profileDefaultUrl } from '../../../api/supabaseAPI';
 import mainLogo from '../../../assets/logo.png';
 import useDropdown from '../../../hooks/useDropdown/useDropdown';
 import { signOut } from '../../../redux/slices/authSlice';
-import { userDataUpdate } from '../../../redux/slices/userSlice';
+import { userDataUpdate } from '../../../redux/slices/userSlice'; // 여기에 추가
 import {
   DropdownButton,
   DropdownMenu,
@@ -19,24 +19,21 @@ import {
 } from './Header.styled';
 
 function Header() {
-  console.log('헤더');
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
-  const userProfileData = useSelector((state) => state.user.userProfile);
-
   const { isOpen, ref, toggle } = useDropdown();
+  const user = useSelector((state) => state.auth.user);
+  const userProfile = useSelector((state) => state.user.userProfile);
 
   useEffect(() => {
     if (user) {
       const fetchUserProfile = async () => {
         try {
-          const userProfile = await api.user.getUserProfile(user.id);
-          dispatch(userDataUpdate(userProfile));
+          const userProfileData = await api.user.getUserProfile(user.id);
+          dispatch(userDataUpdate(userProfileData));
         } catch (error) {
           console.error('Failed to fetch user profile', error);
         }
       };
-
       fetchUserProfile();
     }
   }, [user, dispatch]);
@@ -63,7 +60,7 @@ function Header() {
                 </Link>
 
                 <Link to="/mypage">
-                  <UserImg src={userProfileData.profilePictureUrl ?? `${profileDefaultUrl}`} alt="User" />
+                  <UserImg src={userProfile?.profilePictureUrl ?? profileDefaultUrl} alt="User" />
                 </Link>
 
                 <div ref={ref}>

@@ -8,7 +8,7 @@ import {
   StButton,
   StButtonDiv,
   StDescription,
-  StDiv,
+  StForm,
   StInputForm,
   StRestaurantName,
   StTopForm,
@@ -17,21 +17,22 @@ import {
 } from './WritePage.styled';
 
 function WritePage() {
-  const user = useSelector((state) => state.auth.user);
-  const navigator = useNavigate();
-
   const [post, setPost] = useState({
     title: '',
     content: '',
-    image: '',
+    images: [],
     rating: 0
   });
+  const user = useSelector((state) => state.auth.user);
+
+  // 이미지 상대경로 저장
+  const navigator = useNavigate();
 
   const handlerAdd = async (e) => {
     e.preventDefault();
     try {
       await api.posts.createPost({ userId: user.id, ...post });
-      navigator('/mypage');
+      navigator(-1);
     } catch (error) {
       console.error('Failed to edit post:', error);
     }
@@ -45,8 +46,9 @@ function WritePage() {
 
   return (
     <StWriteWrapper>
-      <StDiv>
-        <ImageUpload image={post.image} setImage={(image) => setPost({ ...post, image })} />
+      <ImageUpload image={post.images} setImage={(image) => setPost({ ...post, images: [image] })} />
+
+      <StForm>
         <StInputForm>
           <StTopForm>
             <StRestaurantName
@@ -68,7 +70,7 @@ function WritePage() {
         <StButtonDiv>
           <StButton onClick={handlerAdd}>등록하기</StButton>
         </StButtonDiv>
-      </StDiv>
+      </StForm>
     </StWriteWrapper>
   );
 }

@@ -13,12 +13,11 @@ const StNickname = styled.div`
   font-size: 20px;
   font-weight: bolder;
 `;
-const StDiv = styled.div`
-  width: 600px;
-  height: 500px;
+const StForm = styled.form`
+  width: 50%;
 `;
 
-const StTopForm = styled.form`
+const StTopForm = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
@@ -74,7 +73,7 @@ export {
   StButton,
   StButtonDiv,
   StDescription,
-  StDiv,
+  StForm,
   StInputForm,
   StNickname,
   StRestaurantName,
