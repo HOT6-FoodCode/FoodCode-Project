@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import usePosts from '../../../hooks/usePosts/usePosts';
 import Skeleton from '../../../layouts/common/Skeleton';
@@ -5,7 +6,10 @@ import PostItem from '../PostItem';
 import { Message, PostGrid } from './PostList.styled';
 
 const PostList = ({ sorting }) => {
-  const { visiblePosts, loading, loadMorePosts, user, followingIds, totalPosts } = usePosts(sorting);
+  const { visiblePosts, loadMorePosts, totalPosts } = usePosts(sorting);
+  const loading = useSelector((state) => state.posts.loading);
+  const user = useSelector((state) => state.auth.user);
+  const followingIds = useSelector((state) => state.follow.followingIds);
 
   if (!user && sorting === 'follow') {
     return (
