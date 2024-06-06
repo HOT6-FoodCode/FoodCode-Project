@@ -1,4 +1,5 @@
-import supabase from './supabaseAPI';
+import { supabase } from "./supabaseAPI";
+
 
 class PostsAPI {
   async getAllPosts() {
@@ -55,8 +56,8 @@ class PostsAPI {
       if (error) {
         throw error;
       }
-      
-      return data;
+      console.log("data입니다.",data);
+      return data[0];
     } catch (error) {
       throw new Error(`Failed to fetch my posts: ${error.message}`);
     }

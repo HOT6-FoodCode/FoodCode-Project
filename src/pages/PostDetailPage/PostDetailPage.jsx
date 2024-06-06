@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -25,14 +26,13 @@ import Comment from '../Comment/Comment';
 const PostDetailPage = () => {
   const { postId } = useParams();
   const user = useSelector((state) => state.auth.user);
-  const navigate = useNavigate();
- 
+  const navigate = useNavigate(); 
   const [post, setPost] = useState(null);
   const [editedPost, setEditedPost] = useState({
     title: '',
     content: '',
     image: '',
-    rating: 0
+    rating: 0,
   });
   
   useEffect(() => {
@@ -40,12 +40,11 @@ const PostDetailPage = () => {
       try {
         const fetchedPost = await api.posts.getPost(postId);
         setPost(fetchedPost);
-        console.log("fetchedPost", fetchedPost[0].image)
         setEditedPost({
           title: fetchedPost.title || '',
           content: fetchedPost.content || '',
           image: fetchedPost.image || '',
-          rating: fetchedPost.rating || 0
+          rating: fetchedPost.rating || 0,
         });
       } catch (error) {
         console.error('Failed to fetch post:', error);
@@ -79,7 +78,7 @@ const PostDetailPage = () => {
 
   const handleGoBack = (event) => {
     event.preventDefault();
-    const confirmed = confirm('뒤로 가시겠습니까?');
+    const confirmed = confirm("뒤로 가시겠습니까?");
     if (confirmed) {
       navigate(-1);
     }
@@ -94,14 +93,19 @@ const PostDetailPage = () => {
       
       <StWriteWrapper>
         {isOwner ? (
-          <ImageUpload image={editedPost.image} setImage={(image) => setEditedPost({ ...editedPost, image })} />
+          <ImageUpload
+            image={editedPost.image}
+            setImage={(image) => setEditedPost({ ...editedPost, image })}
+          />
         ) : (
           <StImageWrapper>
               <StImage src={editedPost.image || postImageDefault} alt="Post Image" />
           </StImageWrapper>
         )}
         <StForm>
-        <StNickname>{post ? <h2>{post.nickname}</h2> : <h2>Loading...</h2>}</StNickname>
+          <StNickname>
+            {post ? <h2>{post.nickname}</h2> : <h2>Loading...</h2>}
+          </StNickname>
           <StInputForm>
             <StDiv>
               <StNameFollowWrapDiv>
