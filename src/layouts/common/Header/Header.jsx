@@ -21,10 +21,9 @@ import {
 function Header() {
   const dispatch = useDispatch();
   const { isOpen, ref, toggle } = useDropdown();
-  const { isOpen, ref, toggle } = useDropdown();
   const user = useSelector((state) => state.auth.user);
-  const userProfileData = useSelector((state) => state.user.userProfile);
-  console.log(userProfileData)
+  const userProfile = useSelector((state) => state.user.userProfile);
+  console.log(userProfile)
 
   useEffect(() => {
     if (user) {
