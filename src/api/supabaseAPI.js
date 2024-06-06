@@ -13,4 +13,3 @@ const postImageDefault =`${
 }/storage/v1/object/public/post-Image/default-post-image.png?t=2024-06-05T08%3A49%3A47.575Z`;
 
 export { postImageDefault, profileDefaultUrl, supabase };
-
