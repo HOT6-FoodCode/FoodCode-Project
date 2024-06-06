@@ -26,13 +26,17 @@ const LoginForm = () => {
   const handleSignIn = async (event) => {
     event.preventDefault();
     try {
+      if (!email || !password) {
+        toast.error('이메일 또는 비밀번호를 입력하세요.');
+        return;
+      }
       await dispatch(signIn({ email, password })).unwrap();
       setPassword('');
       setEmail('');
       toast.warn('로그인 되었습니다.');
       navigate('/');
     } catch (error) {
-      console.error('로그인 중 오류 발생:', error);
+      toast.error(getUserLoginErrorMessage(error));
     }
   };
 

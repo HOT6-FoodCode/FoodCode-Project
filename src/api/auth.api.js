@@ -1,4 +1,4 @@
-import { supabase } from "./supabaseAPI";
+import { supabase } from './supabaseAPI';
 class AuthAPI {
   async signUp(email, password, nickname) {
     try {
