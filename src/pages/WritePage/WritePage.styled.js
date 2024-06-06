@@ -35,7 +35,7 @@ const StDescription = styled.textarea`
   border: 1px solid gray;
 
   font-size: 14px;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Nanum Gothic', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   height: auto;
   min-height: 100px;
   resize: vertical;
