@@ -7,8 +7,8 @@ import SignUpForm from '../components/ui/SignUpForm/SignUpForm';
 import MainLayout from '../layouts/MainLayout';
 import LoginPage from '../pages/LoginPage/LoginPage';
 import MainPage from '../pages/MainPage/MainPage';
-import PostDetailPage from '../pages/PostDetailPage/PostDetailPage';
 import { MyPage } from '../pages/MyPage';
+import PostDetailPage from '../pages/PostDetailPage/PostDetailPage';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +19,10 @@ const router = createBrowserRouter([
         path: '',
         element: <MainPage />,
         children: [
+          {
+            path: '',
+            element: <PostList sorting="trending" />
+          },
           {
             path: 'trending',
             element: <PostList sorting="trending" />
