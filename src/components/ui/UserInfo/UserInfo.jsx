@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import api from '../../../api/api';
 import { profileDefaultUrl } from '../../../api/supabaseAPI';
 import { userDataUpdate } from '../../../redux/slices/userSlice';
-import { profileDefaultUrl } from '../../../api/supabaseAPI';
 import {
   StUserContents,
   StUserImgUpdateDiv,
