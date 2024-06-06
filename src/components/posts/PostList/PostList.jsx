@@ -5,7 +5,7 @@ import PostItem from '../PostItem';
 import { Message, PostGrid } from './PostList.styled';
 
 const PostList = ({ sorting }) => {
-  const { posts, visiblePosts, loading, loadMorePosts, user } = usePosts(sorting);
+  const { visiblePosts, loading, loadMorePosts, user, followingIds, totalPosts } = usePosts(sorting);
 
   if (!user && sorting === 'follow') {
     return (
@@ -15,33 +15,17 @@ const PostList = ({ sorting }) => {
     );
   }
 
-  if (sorting === 'follow' && posts.length === 0) {
-    if (loading) {
-      return (
-        <Message>
-          <p>로딩 중입니다...</p>
-        </Message>
-      );
-    }
-    
+  if (sorting === 'follow' && followingIds.length === 0) {
     return (
       <Message>
         <p>팔로우한 사용자가 없습니다. 다른 사용자를 팔로우해보세요.</p>
       </Message>
     );
   }
-  
-  if (sorting === 'myPost' && posts.length === 0) {
-    if (loading) {
-      return (
-        <Message>
-          <p>로딩 중입니다...</p>
-        </Message>
-      );
-    }
 
+  if (sorting === 'mypage' && visiblePosts.length === 0) {
     return (
-      <Message style={{height : '50vh'}}>
+      <Message style={{ height: '50vh' }}>
         <p>작성한 게시물이 없습니다. 게시글을 작성해 주세요!</p>
       </Message>
     );
@@ -54,9 +38,9 @@ const PostList = ({ sorting }) => {
       ) : (
         <>
           <PostGrid>
-            {visiblePosts.map((post, index) => (
+            {visiblePosts.map((post) => (
               <PostItem
-                key={index}
+                key={post.id}
                 postId={post.id}
                 image={post.image}
                 title={post.title}
@@ -65,15 +49,18 @@ const PostList = ({ sorting }) => {
               />
             ))}
           </PostGrid>
-          <StButtonDiv>
-            {visiblePosts.length < posts.length && <StButton onClick={loadMorePosts}>더보기</StButton>}
-          </StButtonDiv>
-          
+          {visiblePosts.length < totalPosts && (
+            <StButtonDiv>
+              <StButton onClick={loadMorePosts}>더보기</StButton>
+            </StButtonDiv>
+          )}
         </>
       )}
     </>
   );
 };
+
+// ... 스타일 컴포넌트 코드 ...
 
 export default PostList;
 
