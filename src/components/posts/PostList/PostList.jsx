@@ -16,15 +16,20 @@ const PostList = ({ sorting }) => {
   }
 
   if (sorting === 'follow' && posts.length === 0) {
+    if (loading) {
+      return (
+        <Message>
+          <p>로딩 중입니다...</p>
+        </Message>
+      );
+    }
+    
     return (
       <Message>
         <p>팔로우한 사용자가 없습니다. 다른 사용자를 팔로우해보세요.</p>
       </Message>
     );
   }
-
-  
-
   
   if (sorting === 'myPost' && posts.length === 0) {
     if (loading) {
