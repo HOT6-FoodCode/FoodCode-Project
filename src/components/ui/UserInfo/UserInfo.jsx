@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import api from '../../../api/api';
+import { profileDefaultUrl } from '../../../api/supabaseAPI';
 import { userDataUpdate } from '../../../redux/slices/userSlice';
 import {
   StUserContents,
@@ -38,7 +39,7 @@ const UserInfo = ({ userId, user }) => {
     }
   };
 
-  const imageUrl = userProfileData && userProfileData.profilePictureUrl;
+  const imageUrl = userProfileData?.profilePictureUrl ?? profileDefaultUrl;
 
   useEffect(() => {
     fetchUserProfilePicture();
