@@ -1,39 +1,9 @@
 import { supabase } from './supabaseAPI';
 
 class CommentsAPI {
-  async getComments(postId) {
+  async getAllComments() {
     try {
-      const { data, error } = await supabase.from('comments').select('*').eq('id', postId);
-
-      if (error) {
-        throw error;
-      }
-      console.log('data입니다.', data);
-      return data[0];
-    } catch (error) {
-      throw new Error(`Failed to fetch my posts: ${error.message}`);
-    }
-  }
-
-  async createComment(post) {
-    try {
-      const { postId, userId, comment } = post;
-      // 닉네임 가져오기
-      const { data: userData, error: userError } = await supabase.from('users').select('nickname').eq('id', userId);
-
-      if (userError) {
-        throw userError;
-      }
-
-      if (!userData || userData.length === 0) {
-        throw new Error('User not found');
-      }
-
-      const nickname = userData[0].nickname;
-
-      console.log(nickname, userData);
-      // posts 테이블에 등록
-      const { data, error } = await supabase.from('comments').insert([{ post_id: postId, user_id: userId, comment }]);
+      const { data, error } = await supabase.from('comments').select('*');
 
       if (error) {
         throw error;
@@ -41,29 +11,93 @@ class CommentsAPI {
 
       return data;
     } catch (error) {
-      throw new Error(`Failed to create post: ${error.message}`);
+      throw new Error(`Failed to fetch comments: ${error.message}`);
     }
   }
 
+  async getMyComments(userId) {
+    try {
+      const { data, error } = await supabase.from('comments').select('*').eq('user_id', userId);
+
+      if (error) {
+        throw error;
+      }
+      return data;
+    } catch (error) {
+      throw new Error(`Failed to fetch my comments: ${error.message}`);
+    }
+  }
+
+  async getComment(postId) {
+    try {
+      const { data, error } = await supabase.from('comments').select('*').eq('post_id', postId);
+
+      if (error) {
+        throw error;
+      }
+
+      return data;
+    } catch (error) {
+      throw new Error(`Failed to fetch comment: ${error.message}`);
+    }
+  }
+
+  async createComment(comment) {
+    try {
+      const { userId, postId, commentText, created_at } = comment;
+
+      if (!userId || !postId || !commentText) {
+        throw new Error('User ID, Post ID, and Comment text are required');
+      }
+
+      const { data, error } = await supabase
+        .from('comments')
+        .insert([{ user_id: userId, post_id: postId, comment: commentText, created_at }]);
+
+      if (error) {
+        throw error;
+      }
+
+      return data;
+    } catch (error) {
+      throw new Error(`Failed to create comment: ${error.message}`);
+    }
+  }
+  async editComment(commentId, updatedText) {
+    try {
+      if (typeof updatedText !== 'object' || !updatedText.commentText) {
+        throw new Error('Invalid updated text format');
+      }
+
+      const { commentText, created_at } = updatedText;
+
+      const { data, error } = await supabase
+        .from('comments')
+        .update({ comment: commentText, created_at })
+        .eq('id', commentId);
+
+      if (error) {
+        throw error;
+      }
+
+      return data;
+    } catch (error) {
+      throw new Error(`Failed to edit comment: ${error.message}`);
+    }
+  }
   async deleteComment(commentId) {
     try {
       const { error } = await supabase.from('comments').delete().eq('id', commentId);
 
-      if (error) throw error;
-    } catch (error) {
-      throw new Error(`Failed to delete post: ${error.message}`);
-    }
-  }
+      if (error) {
+        throw error;
+      }
 
-  async editComment(commentId, updatedComment) {
-    try {
-      const { title, content, image, rating } = updatedComment;
-      const { error } = await supabase.from('posts').update({ title, content, image, rating }).eq('id', commentId);
-
-      if (error) throw error;
+      return true; // 삭제 성공을 나타내는 값 반환
     } catch (error) {
-      throw new Error(`Failed to edit post: ${error.message}`);
+      throw new Error(`Failed to delete comment: ${error.message}`);
     }
   }
 }
+
 export default CommentsAPI;

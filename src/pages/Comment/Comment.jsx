@@ -1,184 +1,216 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../../api';
 import {
-    StDetailPage,
-    StCommentWrapper,
-    StUserProfileImg,
-    StCommentForm,
-    StCommentWrite,
-    StCommentButton,
-    StCommentLists,
-    StCommentListForm,
-    StCommentUserImg,
-    StCommentItem,
-    StCommentUsername,
-    StUserComment,
-    StCommentListContainer,
-    StCommnetInput,
-    StCommentTitle
+  StBtnWrapDiv,
+  StCommentButton,
+  StCommentForm,
+  StCommentItem,
+  StCommentListContainer,
+  StCommentListForm,
+  StCommentLists,
+  StCommentTitle,
+  StCommentUserImg,
+  StCommentUsername,
+  StCommentWrapper,
+  StCommentWrite,
+  StCommnetInput,
+  StDetailPage,
+  StUserComment,
+  StUserProfileImg,
+  StWrapDiv
 } from './Comment.styled';
 
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { profileDefaultUrl, supabase } from '../../api/supabaseAPI';
 
+function Comment({ postId, user }) {
+  const [comment, setComment] = useState('');
+  const [commentList, setCommentList] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [editCommentId, setEditCommentId] = useState(null);
+  const [editCommentText, setEditCommentText] = useState('');
+  const userProfileData = useSelector((state) => state.user.userProfile);
+  const myImgUrl = userProfileData && userProfileData.profilePictureUrl;
 
-/*supabase에서 user_id 컬럼 추가 -> 댓글을 추가 시 로그인한 user id도 넣기 */
-function Comment({postId, user}) {
-    const [comment, setComment] = useState("");
-    const [commentList, setCommentList] = useState([]);
-    const [isLoading, setLoading] = useState(false); 
-    const userProfileData = useSelector((state) => state.user.userProfile);
-    // console.log('userProfileData >>',userProfileData)
-    const myImgUrl = userProfileData && userProfileData.profilePictureUrl;
-
-    const getComments = async () => {
-        const data = await api.comment.getComment(postId);
-        setCommentList(data)
+  const getComments = async () => {
+    try {
+      const comments = await api.comment.getComment(postId);
+      const commentsWithUserProfile = await Promise.all(
+        comments.map(async (comment) => {
+          if (comment.user_id) {
+            const userProfileData = await api.user.getUserProfile(comment.user_id);
+            return { ...comment, userProfileData };
+          } else {
+            return comment;
+          }
+        })
+      );
+      setCommentList(commentsWithUserProfile);
+    } catch (error) {
+      console.error('Failed to fetch comments:', error.message);
     }
-    
-    useEffect(() => {
-        getComments();
-    }, [isLoading, postId]);
+  };
+  useEffect(() => {
+    getComments();
+  }, [isLoading, postId]);
 
-    // console.log(commentList);
-    // console.log(postId);
+  if (!postId) {
+    console.error('postId is required');
+    return null;
+  }
 
-    if (!postId) {
-        console.error("postId is required");
-        return null;
+  const userId = user && user.id;
+
+  const handleWriteChange = (e) => {
+    setComment(e.target.value);
+  };
+
+  const handleWriteComment = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      // 로그인되어 있지 않은 경우 팝업 표시
+      toast.warn('댓글을 작성하려면 먼저 로그인하세요.');
+      return;
     }
-    
-
-    const imgUserId = commentList.map((comment) => comment.user_id);
-    //console.log(imgUserId)
-    const userId = user && user.id;
-    //console.log(userId)
-
-    
-    // 작성
-    const handleWriteChange = (e) => {
-        setComment(e.target.value);
+    if (!comment) {
+      return toast.warn('댓글을 입력하세요!');
+    }
+    const newComment = {
+      commentText: comment,
+      postId: postId,
+      userId: userId,
+      created_at: new Date().toISOString()
     };
 
-    // console.log("userId:", userId);
-    // console.log("postId:", postId);
-    // console.log("comment:", comment);
-    const handleWriteComment = async (e) => {
-        e.preventDefault();
-        if (!comment) {
-            return alert("댓글을 입력하세요!");
-        }
-        // const id = Date.now();
-        const newComment = {
-            commentText: comment,
-            postId : postId,
-            userId : userId,
-            created_at: new Date().toISOString(),
-            // username: "이가현", // 로그인한 username 넣기
-        };
-        // const { data, error } = await supabase.from("comments").insert(newComment);
-        try {
-            await api.comment.createComment(newComment);
-            setCommentList([...commentList, newComment]);
-            setComment("");
+    try {
+      await api.comment.createComment(newComment);
+      setCommentList([...commentList, newComment]);
+      setComment('');
+      await getComments(); // 댓글 목록 갱신
+    } catch (error) {
+      console.error('Failed to add comment:', error.message);
+    }
+  };
 
-            await getComments(); // 댓글 목록 갱신
-        } catch (error) {
-            console.error("Failed to add comment:", error.message);
-        }
-    };
+  async function deleteComment(event, id) {
+    event.preventDefault(); // 폼 제출 방지
+    setLoading(true);
+    const { error } = await supabase.from('comments').delete().eq('id', id);
 
-
-    // 삭제
-    async function deleteComment(id) {
-        setLoading(true);
-        const {error} = await supabase
-            .from('comments')
-            .delete()
-            .eq('id', id)
-
-        const {data} = await supabase
-            .from('comments')
-            .select("*")
-            .eq('post_id', postId)
-            
-
-        setCommentList(data);
-        setLoading(false);
+    if (error) {
+      console.error('Failed to delete comment:', error.message);
+    } else {
+      const { data } = await supabase.from('comments').select('*').eq('post_id', postId);
+      setCommentList(data);
     }
 
+    setLoading(false);
+  }
 
-    // 수정
-    // async function updateComment(id) {
-    //     const { data } = await supabase
-    //         .from('comments')
-    //         .update({comment: prompt("수정할 댓글을 입력하세요!")})
-    //         .eq('id', id)
-
-    //         const [updatedComment] = {data};
-    //         const updatedAddComment = commentList.map((comment) =>
-    //             comment.id === updatedComment.id ? updatedComment : comment
-    //         );
-        
-    //         setCommentList(updatedAddComment);
-    // }
-    async function updateComment(commentId, updatedText) {
-        
-        try {
-            await api.comment.editComment(commentId, { commentText: updatedText, created_at: new Date().toISOString() });
-            
-            await getComments();
-        } catch (error) {
-            console.error("Failed to edit comment:", error.message);
-        }
+  async function updateComment(event, commentId) {
+    event.preventDefault(); // 폼 제출 방지
+    if (!editCommentText.trim()) {
+      // 수정창이 비어있을 때
+      toast.warn('내용을 입력해주세요!');
+      return;
     }
+    try {
+      await api.comment.editComment(commentId, { commentText: editCommentText, created_at: new Date().toISOString() });
+      await getComments();
+      setEditCommentId(null); // 수정 완료 후 상태 초기화
+      setEditCommentText(''); // 수정 완료 후 텍스트 초기화
+    } catch (error) {
+      console.error('Failed to edit comment:', error.message);
+    }
+  }
 
-    if(isLoading) return <h1>Loading</h1>
-    return (
-        <>
-        {/* <Link to='/comment'></Link> */}
-        <StDetailPage>
-            <StCommentWrapper>
-                <StCommentTitle>Comment</StCommentTitle>
-                    <StCommentForm onSubmit={handleWriteComment}>
-                        <StUserProfileImg>
-                        {/* user 프로필 사진 들어가야함 */}
-                            <img src={myImgUrl} />
-                        </StUserProfileImg>
-                        <StCommentWrite>
-                            <StCommnetInput
-                                type="text"
-                                placeholder="댓글을 입력하세요."
-                                value={comment}
-                                onChange={handleWriteChange}
-                            ></StCommnetInput>
-                            <StCommentButton type="submit">등록</StCommentButton>
-                        </StCommentWrite>
-                    </StCommentForm>
-                <StCommentListContainer>
-                {commentList && commentList.map((comment, index) => {
-                    return (
-                        <StCommentLists key={index}>
-                            <StCommentListForm>
-                                <StCommentUserImg>
-                                    {/* user 프로필 사진 들어가야함 */}
-                                    <img />
-                                </StCommentUserImg>
-                                <StCommentItem>
-                                    <div key={comment.id} />
-                                    <StCommentUsername>{comment.username}</StCommentUsername>
-                                    <StUserComment>{comment.comment}</StUserComment>
-                                </StCommentItem>
-                                <StCommentButton type="submit" onClick={() => deleteComment(comment.id)}>삭제</StCommentButton>
-                                <StCommentButton type='button' onClick={() => updateComment(comment.id)}>수정</StCommentButton>
-                            </StCommentListForm>
-                        </StCommentLists>
-                    );
-                })}    
-                </StCommentListContainer>
-            </StCommentWrapper>
-        </StDetailPage>
-        </>
-    );
+  const handleEditChange = (e) => {
+    setEditCommentText(e.target.value);
+  };
+
+  const handleEditCancel = (event) => {
+    event.preventDefault();
+    setEditCommentId(null); // 수정 취소 시 수정 상태 초기화
+    setEditCommentText(''); // 수정 취소 시 텍스트 초기화
+  };
+
+  if (isLoading) return <h1>Loading</h1>;
+  return (
+    <>
+      <StDetailPage>
+        <StCommentWrapper>
+          <StCommentTitle>Comment</StCommentTitle>
+          <StCommentForm onSubmit={handleWriteComment}>
+            <StUserProfileImg src={myImgUrl} />
+            <StCommentWrite>
+              <StCommnetInput
+                type="text"
+                placeholder="댓글을 입력하세요."
+                value={comment}
+                onChange={handleWriteChange}
+              />
+              <StCommentButton type="submit">등록</StCommentButton>
+            </StCommentWrite>
+          </StCommentForm>
+          <StCommentListContainer>
+            {commentList &&
+              commentList.map((comment, index) => {
+                return (
+                  <StCommentLists key={index}>
+                    <StCommentListForm>
+                      <StCommentUserImg
+                        src={comment.userProfileData?.profilePictureUrl ?? profileDefaultUrl}
+                        alt="User Profile"
+                      />
+                      <StWrapDiv>
+                        <StCommentItem>
+                          <StCommentUsername>{comment.userProfileData?.nickname}</StCommentUsername>
+                          {editCommentId === comment.id ? (
+                            <StCommnetInput type="text" value={editCommentText} onChange={handleEditChange} />
+                          ) : (
+                            <StUserComment>{comment.comment}</StUserComment>
+                          )}
+                        </StCommentItem>
+                        {user && comment.user_id === user.id ? (
+                          <StBtnWrapDiv>
+                            {editCommentId === comment.id ? (
+                              <>
+                                <StCommentButton type="submit" onClick={(event) => updateComment(event, comment.id)}>
+                                  등록
+                                </StCommentButton>
+                                <StCommentButton type="button" onClick={handleEditCancel}>
+                                  취소
+                                </StCommentButton>
+                              </>
+                            ) : (
+                              <>
+                                <StCommentButton
+                                  type="button"
+                                  onClick={(event) => {
+                                    event.preventDefault();
+                                    setEditCommentId(comment.id);
+                                  }}
+                                >
+                                  수정
+                                </StCommentButton>
+                                <StCommentButton type="submit" onClick={(event) => deleteComment(event, comment.id)}>
+                                  삭제
+                                </StCommentButton>
+                              </>
+                            )}
+                          </StBtnWrapDiv>
+                        ) : null}
+                      </StWrapDiv>
+                    </StCommentListForm>
+                  </StCommentLists>
+                );
+              })}
+          </StCommentListContainer>
+        </StCommentWrapper>
+      </StDetailPage>
+    </>
+  );
 }
 
 export default Comment;
