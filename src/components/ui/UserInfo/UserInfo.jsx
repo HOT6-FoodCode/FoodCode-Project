@@ -1,30 +1,27 @@
 import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import api from '../../../api/api';
+import { userDataUpdate } from '../../../redux/slices/userSlice';
 import {
-  StUserImgUpdateDiv,
-  StUserImgUpdateLabel,
-  StUserImgUpdateInput,
-  StUserInfoContainer,
-  StUserInfo,
   StUserContents,
+  StUserImgUpdateDiv,
+  StUserImgUpdateInput,
+  StUserImgUpdateLabel,
+  StUserInfo,
+  StUserInfoContainer,
   StUserLabel,
   StUserValue
 } from '../UserInfo/UserInfo.styled';
 import UserImg from './UserImg';
-import { useSelector, useDispatch } from 'react-redux';
-import { userDataUpdate } from '../../../redux/slices/userSlice';
-const UserImgUpdate = ({ userId, user }) => {
-  //const [userData, setUserData] = useState(null);
-  //console.log(userId);
+
+const UserInfo = ({ userId, user }) => {
   const fileInputRef = useRef(null);
   const userProfileData = useSelector((state) => state.user.userProfile);
-  console.log('상태확인, UserInfo', userProfileData);
-  const dispatch  = useDispatch();
+  const dispatch = useDispatch();
 
   const fetchUserProfilePicture = async () => {
     try {
       const userInfo = await api.user.getUserProfile(userId);
-      console.log(userInfo);
       dispatch(userDataUpdate(userInfo));
     } catch (error) {
       console.error('프로필 사진 업로드 및 사용자 데이터 업데이트 오류:', error.message);
@@ -32,7 +29,6 @@ const UserImgUpdate = ({ userId, user }) => {
   };
 
   const handleFileInputChange = async (file) => {
-
     try {
       await api.user.updateUserProfile(userId, file);
       await fetchUserProfilePicture();
@@ -42,7 +38,6 @@ const UserImgUpdate = ({ userId, user }) => {
   };
 
   const imageUrl = userProfileData && userProfileData.profilePictureUrl;
-
 
   useEffect(() => {
     fetchUserProfilePicture();
@@ -76,4 +71,4 @@ const UserImgUpdate = ({ userId, user }) => {
   );
 };
 
-export default UserImgUpdate;
+export default UserInfo;

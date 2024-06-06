@@ -17,7 +17,7 @@ const StForm = styled.form`
   width: 50%;
 `;
 
-const StTopForm = styled.form`
+const StTopForm = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;

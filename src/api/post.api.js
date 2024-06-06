@@ -1,4 +1,5 @@
-import supabase from './supabaseAPI';
+import { supabase } from "./supabaseAPI";
+
 
 class PostsAPI {
   async getAllPosts() {
@@ -64,7 +65,7 @@ class PostsAPI {
 
   async createPost(post) {
     try {
-      const { userId, title, content, images, rating } = post;
+      const { userId, title, content, image, rating } = post;
       // 닉네임 가져오기
       const { data: userData, error: userError } = await supabase.from('users').select('nickname').eq('id', userId);
 
@@ -82,7 +83,7 @@ class PostsAPI {
       // posts 테이블에 등록
       const { data, error } = await supabase
         .from('posts')
-        .insert([{ user_id: userId, nickname, title, content, images, views: 0, rating }]);
+        .insert([{ user_id: userId, nickname, title, content, image, views: 0, rating }]);
 
       if (error) {
         throw error;
@@ -106,8 +107,8 @@ class PostsAPI {
 
   async editPost(postId, updatedPost) {
     try {
-      const { title, content, images, rating } = updatedPost;
-      const { error } = await supabase.from('posts').update({ title, content, images, rating }).eq('id', postId);
+      const { title, content, image, rating } = updatedPost;
+      const { error } = await supabase.from('posts').update({ title, content, image, rating }).eq('id', postId);
 
       if (error) throw error;
     } catch (error) {

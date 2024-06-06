@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import loginEmail from '../../../assets/icons/envelope-regular.svg';
 import loginPassword from '../../../assets/icons/unlock-keyhole-solid.svg';
 import { signIn } from '../../../redux/slices/authSlice';
@@ -28,13 +29,12 @@ const LoginForm = () => {
       await dispatch(signIn({ email, password })).unwrap();
       setPassword('');
       setEmail('');
-      alert('로그인 되었습니다.');
+      toast.warn('로그인 되었습니다.');
       navigate('/');
     } catch (error) {
       console.error('로그인 중 오류 발생:', error);
     }
   };
-
 
   return (
     <StFormWrapper onSubmit={handleSignIn}>

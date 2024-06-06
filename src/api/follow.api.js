@@ -1,4 +1,4 @@
-import supabase from './supabaseAPI';
+import { supabase } from './supabaseAPI';
 
 class FollowAPI {
   // 팔로우 상태 확인 프라이빗 메서드
@@ -32,7 +32,6 @@ class FollowAPI {
 
     try {
       const existingFollow = await this._checkFollowStatus(followingId, followerId);
-
       if (existingFollow) {
         const { data, error } = await supabase
           .from('follows')
@@ -40,6 +39,7 @@ class FollowAPI {
           .eq('following_id', followingId)
           .eq('follower_id', followerId);
 
+        console.log('existingFollow가 있다면 data', data);
         if (error) {
           throw new Error(error.message);
         }
@@ -60,6 +60,7 @@ class FollowAPI {
   }
   // 팔로우 상태 확인 메서드
   async isFollowing(followingId, followerId) {
+    console.log(`isFollowing에서 followingId: ${followingId} followerId: ${followerId}`);
     try {
       const existingFollow = await this._checkFollowStatus(followingId, followerId);
       return existingFollow !== null;
