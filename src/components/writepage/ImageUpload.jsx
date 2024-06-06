@@ -1,44 +1,36 @@
 import styled from 'styled-components';
 import uploadIcon from '../../assets/upload.png';
-
 function ImageUpload({ image, setImage }) {
   const handleAddImage = (event) => {
-    const imageFile = event.target.files[0];
-    const imageUrl = URL.createObjectURL(imageFile);
-    setImage(imageUrl);
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl);
+    }
   };
 
-  // 이미지 삭제
   const handleDeleteImage = () => {
     setImage('');
   };
 
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <StImageGroup>
-        <StImageUpload>
-          {image ? (
-            <>
-              <StDeleteBtn>
-                <StDeleteImage onClick={handleDeleteImage} />
-              </StDeleteBtn>
-              <StPreviewImage src={image} alt={`uploaded-image`} />
-            </>
-          ) : (
-            <label htmlFor="input-file" style={{ cursor: 'pointer' }}>
-              <StUploadBtn src={uploadIcon} />
-              <input
-                type="file"
-                id="input-file"
-                style={{ display: 'none' }}
-                onChange={handleAddImage}
-              />
-            </label>
-          )}
-        </StImageUpload>
+        {image ? (
+          <>
+            <StDeleteBtn onClick={handleDeleteImage}>
+              <StDeleteImage />
+            </StDeleteBtn>
+            <StPreviewImage src={image} alt="uploaded" />
+          </>
+        ) : (
+          <label htmlFor="input-file" style={{ cursor: 'pointer' }}>
+            <StUploadBtn src={uploadIcon} />
+            <input type="file" id="input-file" style={{ display: 'none' }} onChange={handleAddImage} />
+          </label>
+        )}
       </StImageGroup>
-      <h5 style={{ fontSize: '14px', color: 'gray', margin: '10px' }}>* 이미지는 최대 1장까지 가능합니다</h5>
+      <h5 style={{ fontSize: '14px', color: 'gray', margin: '10px' }}>* 이미지는 하나만 가능합니다</h5>
     </div>
   );
 }
@@ -51,19 +43,11 @@ const StImageGroup = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-right: 30px;
+  padding: 10px;
 `;
-
-const StImageUpload = styled.div`
-  width: 150px;
-  height: 150px;
-  border: 2px solid gray;
-  border-radius: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-`;
-
 const StUploadBtn = styled.img`
   max-width: 50px;
   max-height: 50px;
@@ -79,6 +63,7 @@ const StDeleteBtn = styled.div`
   position: absolute;
   top: 5px;
   right: 5px;
+  cursor: pointer;
 `;
 
 const StDeleteImage = styled.svg.attrs({
