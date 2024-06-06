@@ -44,6 +44,7 @@ const StCommentWrapper = styled.div`
 const StCommentForm = styled.form`
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 10px;
   margin: 30px;
 `;
@@ -51,8 +52,8 @@ const StCommentForm = styled.form`
 const StUserProfileImg = styled.img`
   border: 1px solid #c3c3c3;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   margin-left: 60px;
   object-fit: cover;
 `;
@@ -111,8 +112,8 @@ const StCommentListForm = styled.form`
 const StCommentUserImg = styled.img`
   border: 1px solid #c3c3c3;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
 `;
 
@@ -163,9 +164,13 @@ const StWrapDiv = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
 `;
 const StBtnWrapDiv = styled.div`
   display: flex;
+  margin-left: 45px;
+  margin-top: 10px;
+
   button {
     background-color: #28a745;
     color: white;
