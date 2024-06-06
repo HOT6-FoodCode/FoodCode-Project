@@ -1,4 +1,4 @@
-import supabase from './supabaseAPI';
+import { supabase } from './supabaseAPI';
 
 class CommentsAPI {
   async getAllComments() {
@@ -42,7 +42,6 @@ class CommentsAPI {
     }
   }
 
-
   async createComment(comment) {
     try {
       const { userId, postId, commentText, created_at } = comment;
@@ -64,7 +63,6 @@ class CommentsAPI {
       throw new Error(`Failed to create comment: ${error.message}`);
     }
   }
-
 
   // 수정 필요
   // async deleteComment(commentId) {
@@ -92,7 +90,6 @@ class CommentsAPI {
   //       throw new Error(`Failed to edit comment: ${error.message}`);
   //   }
   // }
-
 }
 
 export default CommentsAPI;

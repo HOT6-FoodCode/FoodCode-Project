@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-//import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import api from '../../api';
 import {
     StDetailPage,
@@ -18,9 +17,8 @@ import {
     StCommnetInput,
     StCommentTitle
 } from './Comment.styled';
-import supabase from '../../api/supabaseAPI';
-import { useSelector } from 'react-redux';
 
+import { useSelector } from 'react-redux';
 
 
 /*supabase에서 user_id 컬럼 추가 -> 댓글을 추가 시 로그인한 user id도 넣기 */
@@ -29,24 +27,20 @@ function Comment({postId, user}) {
     const [commentList, setCommentList] = useState([]);
     const [isLoading, setLoading] = useState(false); 
     const userProfileData = useSelector((state) => state.user.userProfile);
-    console.log('userProfileData>>',userProfileData)
+    // console.log('userProfileData >>',userProfileData)
     const myImgUrl = userProfileData && userProfileData.profilePictureUrl;
 
     const getComments = async () => {
         const data = await api.comment.getComment(postId);
         setCommentList(data)
-        
     }
     
     useEffect(() => {
-        
         getComments();
     }, [isLoading, postId]);
 
-
-   // console.log(commentList);
-
-    //console.log(postId);
+    // console.log(commentList);
+    // console.log(postId);
 
     if (!postId) {
         console.error("postId is required");
@@ -55,23 +49,19 @@ function Comment({postId, user}) {
     
 
     const imgUserId = commentList.map((comment) => comment.user_id);
-    console.log(imgUserId)
-
+    //console.log(imgUserId)
     const userId = user && user.id;
-    console.log(userId)
+    //console.log(userId)
 
     
     // 작성
     const handleWriteChange = (e) => {
         setComment(e.target.value);
-       // console.log(comment);
     };
 
     // console.log("userId:", userId);
     // console.log("postId:", postId);
     // console.log("comment:", comment);
-
-    
     const handleWriteComment = async (e) => {
         e.preventDefault();
         if (!comment) {
@@ -90,7 +80,8 @@ function Comment({postId, user}) {
             await api.comment.createComment(newComment);
             setCommentList([...commentList, newComment]);
             setComment("");
-            await getComments(); // createComment 후에 getComments를 호출하여 새로운 댓글을 포함하여 댓글 목록을 갱신합니다.
+
+            await getComments(); // 댓글 목록 갱신
         } catch (error) {
             console.error("Failed to add comment:", error.message);
         }
@@ -133,10 +124,8 @@ function Comment({postId, user}) {
     async function updateComment(commentId, updatedText) {
         
         try {
-            // 댓글을 업데이트합니다.
             await api.comment.editComment(commentId, { commentText: updatedText, created_at: new Date().toISOString() });
             
-            // 댓글 목록을 다시 가져옵니다.
             await getComments();
         } catch (error) {
             console.error("Failed to edit comment:", error.message);
@@ -179,8 +168,8 @@ function Comment({postId, user}) {
                                     <StCommentUsername>{comment.username}</StCommentUsername>
                                     <StUserComment>{comment.comment}</StUserComment>
                                 </StCommentItem>
-                                <StCommentButton type="submit" onClick={() =>deleteComment(comment.id)}>삭제</StCommentButton>
-                                <StCommentButton type='button' onClick={() =>updateComment(comment.id)}>수정</StCommentButton>
+                                <StCommentButton type="submit" onClick={() => deleteComment(comment.id)}>삭제</StCommentButton>
+                                <StCommentButton type='button' onClick={() => updateComment(comment.id)}>수정</StCommentButton>
                             </StCommentListForm>
                         </StCommentLists>
                     );
