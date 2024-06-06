@@ -26,6 +26,7 @@ const PostDetailPage = () => {
   const { postId } = useParams();
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
+ 
   const [post, setPost] = useState(null);
   const [editedPost, setEditedPost] = useState({
     title: '',
@@ -33,13 +34,13 @@ const PostDetailPage = () => {
     image: '',
     rating: 0
   });
-
+  
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const fetchedPost = await api.posts.getPost(postId);
         setPost(fetchedPost);
-        console.log('fetchedPost', fetchedPost[0].image);
+        console.log("fetchedPost", fetchedPost[0].image)
         setEditedPost({
           title: fetchedPost.title || '',
           content: fetchedPost.content || '',
@@ -54,9 +55,11 @@ const PostDetailPage = () => {
     fetchPost();
   }, [postId]);
 
+
   const handleUpdate = async (event) => {
     event.preventDefault();
     try {
+      
       await api.posts.editPost(postId, editedPost);
       navigate('/');
     } catch (error) {
@@ -81,27 +84,28 @@ const PostDetailPage = () => {
       navigate(-1);
     }
   };
-
   const userId = post ? post.user_id : null;
+  
   const isOwner = user && user.id === userId;
+  
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column'}}>
+    <div style={{display: 'flex', flexDirection: 'column', minWidth: '1470px'}}>
       
       <StWriteWrapper>
         {isOwner ? (
           <ImageUpload image={editedPost.image} setImage={(image) => setEditedPost({ ...editedPost, image })} />
         ) : (
           <StImageWrapper>
-            <StImage src={editedPost.image || postImageDefault} alt="Post Image" />
+              <StImage src={editedPost.image || postImageDefault} alt="Post Image" />
           </StImageWrapper>
         )}
         <StForm>
-          <StNickname>{post ? <h2>{post.nickname}</h2> : <h2>Loading...</h2>}</StNickname>
+        <StNickname>{post ? <h2>{post.nickname}</h2> : <h2>Loading...</h2>}</StNickname>
           <StInputForm>
             <StDiv>
               <StNameFollowWrapDiv>
-                <StRestaurantName
+              <StRestaurantName
                   type="text"
                   placeholder="매장 이름"
                   value={editedPost.title}
@@ -124,6 +128,7 @@ const PostDetailPage = () => {
               disabled={!isOwner}
             />
           </StInputForm>
+
           {isOwner ? (
             <StButtonDiv>
               <StButton onClick={handleUpdate}>수정</StButton>
@@ -135,10 +140,9 @@ const PostDetailPage = () => {
             </StButtonDiv>
           )}
         </StForm>
-       
-       <Comment />
-       
+
       </StWriteWrapper>
+      <Comment postId={postId} user={user} />
       
     </div>
   );

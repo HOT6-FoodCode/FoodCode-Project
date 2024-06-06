@@ -4,9 +4,9 @@ const StWriteWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 35px;
-  margin: 25px 30px;
-  
-  flex-direction: column;
+  margin: 25px 30px 0px 25px;
+  flex-direction: row;
+
 `;
 
 const StNickname = styled.div`
@@ -88,6 +88,8 @@ const StNameFollowWrapDiv =styled.div`
 const StImageWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: fit-content;
+  margin-right: 50px;
   div {
     width: 360px;
     height: 360px;
