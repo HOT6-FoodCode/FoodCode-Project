@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import {
     StDetailPage,
-    StDetailForm,
     StCommentWrapper,
     StUserProfileImg,
     StCommentForm,
@@ -18,14 +17,21 @@ import {
     StUserComment,
 
 } from './Comment.styled';
+import supabase from '../../api/supabaseAPI';
+import { useSelector } from 'react-redux';
 
 /*supabase에서 user_id 컬럼 추가 -> 댓글을 추가 시 로그인한 user id도 넣기 */
-function Comment(props) {
-    console.log(props.currentPostId);
+function Comment() {
+    //console.log(props.currentPostId);
     const [write, setWrite] = useState("");
-    const [CommentList, setCommentList] = useState([]);
+    const [commentList, setCommentList] = useState([]);
     const [isLoading, setLoading] = useState(false);
-    console.log(CommentList);
+    console.log(commentList);
+
+    const currentPostId = '24';
+
+    const userProfileData = useSelector((state) => state.user.userProfile);
+    console.log(userProfileData);
 
     // 작성
     const handleWriteChange = (e) => {
@@ -47,13 +53,13 @@ function Comment(props) {
         };
         const { data, error } = await supabase.from("comments").insert(newComment);
     
-        setCommentList([...CommentList, newComment]);
+        setCommentList([...commentList, newComment]);
         setWrite("");
     };
 
     useEffect(() => {
         const getComments = async () => {
-            const {data} = await supabase.from('comments').select("*").eq('post_id', props.currentPostId)
+            const {data} = await supabase.from('comments').select("*").eq('post_id',currentPostId)
             setCommentList(data)
         }
         getComments();
@@ -75,7 +81,7 @@ function Comment(props) {
 
         setCommentList(data);
         setLoading(false);
-    };
+    }
 
 
     // 수정
@@ -86,56 +92,53 @@ function Comment(props) {
             .eq('id', id)
 
             const [updatedComment] = {data};
-            const updatedAddComment = CommentList.map((comment) =>
+            const updatedAddComment = commentList.map((comment) =>
                 comment.id === updatedComment.id ? updatedComment : comment
             );
         
-        setPosts(updatedAddComment);
-    };
+            setCommentList(updatedAddComment);
+    }
 
     if(isLoading) return <h1>Loading</h1>
     return (
         <>
-            <Link to='/comment'></Link>
-            <StDetailPage>
-                <StDetailForm> detail page </StDetailForm>
-                <StCommentWrapper>
-                    <h1>Comment</h1>
-                        <StCommentForm onSubmit={handleWriteComment}>
-                            <StUserProfileImg>
-                            {/* user 프로필 사진 들어가야함 */}
-                            </StUserProfileImg>
-                            <StCommentWrite>
-                                <input
-                                    type="text"
-                                    placeholder="댓글을 입력하세요."
-                                    style={{ textAlign: "left", width: "90%", height: "100%", border: "none", outline: "none", fontSize: "15px" }}
-                                    value={write}
-                                    onChange={handleWriteChange}
-                                ></input>
-                                <StCommentButton type="submit">등록</StCommentButton>
-                            </StCommentWrite>
-                        </StCommentForm>
-                    {CommentList.length !== 0 && CommentList.map((comment) => {
-                        return (
-                            <StCommentLists>
-                                <StCommentListForm>
-                                    <StCommentUserImg>
-                                        {/* user 프로필 사진 들어가야함 */}
-                                    </StCommentUserImg>
-                                    <StCommentItem>
-                                        <div key={comment.id} />
-                                        <StCommentUsername>{comment.username}</StCommentUsername>
-                                        <StUserComment>{comment.comment}</StUserComment>
-                                    </StCommentItem>
-                                    <StCommentButton type="submit" onClick={() =>{deleteComment(comment.id);}}>삭제</StCommentButton>
-                                    <StCommentButton type="submit" onClick={() =>{updateComment(comment.id);}}>수정</StCommentButton>
-                                </StCommentListForm>
-                            </StCommentLists>
-                        );
-                    })}    
-                </StCommentWrapper>
-            </StDetailPage>
+        <Link to='/comment'></Link>
+            <StCommentWrapper>
+                <h1>Comment</h1>
+                    <StCommentForm onSubmit={handleWriteComment}>
+                        <StUserProfileImg>
+                        {/* user 프로필 사진 들어가야함 */}
+                        </StUserProfileImg>
+                        <StCommentWrite>
+                            <input
+                                type="text"
+                                placeholder="댓글을 입력하세요."
+                                style={{ textAlign: "left", width: "90%", height: "100%", border: "none", outline: "none", fontSize: "15px" }}
+                                value={write}
+                                onChange={handleWriteChange}
+                            ></input>
+                            <StCommentButton type="submit">등록</StCommentButton>
+                        </StCommentWrite>
+                    </StCommentForm>
+                {commentList && commentList.map((comment, index) => {
+                    return (
+                        <StCommentLists key={index}>
+                            <StCommentListForm>
+                                <StCommentUserImg>
+                                    {/* user 프로필 사진 들어가야함 */}
+                                </StCommentUserImg>
+                                <StCommentItem>
+                                    <div key={comment.id} />
+                                    <StCommentUsername>{comment.username}</StCommentUsername>
+                                    <StUserComment>{comment.comment}</StUserComment>
+                                </StCommentItem>
+                                <StCommentButton type="submit" onClick={() =>{deleteComment(comment.id);}}>삭제</StCommentButton>
+                                <StCommentButton type="submit" onClick={() =>{updateComment(comment.id);}}>수정</StCommentButton>
+                            </StCommentListForm>
+                        </StCommentLists>
+                    );
+                })}    
+            </StCommentWrapper>
         </>
     );
 }

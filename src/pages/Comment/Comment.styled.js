@@ -1,21 +1,9 @@
 import styled from "styled-components";
 
-const StDetailPage = styled.div`
-    padding: 30px;
-    margin: 30px;
-`;
-
-const StDetailForm = styled.div`
-    height: 200px;
-    padding: 30px;
-    margin: 30px;
-    background-color: skyblue;
-`;
-
 // 여기서부터 comment
 const StCommentWrapper = styled.div`
     float: right;
-    width: 50%;
+    width: 100%;
     height: 40%;
     padding: 15px;
     margin: 10px;

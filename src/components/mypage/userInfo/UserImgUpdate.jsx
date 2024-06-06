@@ -62,7 +62,7 @@ const UserImgUpdate = () => {
     setProfileUrl(
       `https://xnztnztnezrtcqcdoiob.supabase.co/storage/v1/object/public/profile/${data.path}`
     );
-  }
+    }
 
 
   const handleFileUpdateChange = async(files) => {
@@ -104,9 +104,9 @@ const UserImgUpdate = () => {
   return (
     <>
       <UserImg profileUrl={profileUrl} />
-      <StUserImgUpdateDiv>
+        <StUserImgUpdateDiv>
         <StUserImgUpdateLabel htmlFor='hiddenFileInput'>이미지 등록</StUserImgUpdateLabel>
-        <StUserImgUpdateInput
+          <StUserImgUpdateInput
           onChange={(e) => handleFileInputChange(e.target.files)}
           type="file"
           ref={fileInputRef}
@@ -115,11 +115,11 @@ const UserImgUpdate = () => {
         <StUserImgUpdateLabel htmlFor='hiddenFileInput'>이미지 수정</StUserImgUpdateLabel>
         <StUserImgUpdateInput
           onChange={(e) => handleFileUpdateChange(e.target.files)}
-          type="file"
-          ref={fileInputRef}
-          id="hiddenFileInput"
-        />
-      </StUserImgUpdateDiv>
+            type="file"
+            ref={fileInputRef}
+            id="hiddenFileInput"
+          />
+        </StUserImgUpdateDiv>
     </>
   );
 };
