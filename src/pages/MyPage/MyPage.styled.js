@@ -130,6 +130,12 @@ const StNotLogInViewText = styled.p`
   text-align: center;
 `;
 
+const CenteredMessage = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export {
   StMyPageWrapper,
   StPostDiv,
@@ -148,5 +154,6 @@ export {
   StUserInfo,
   StNotLogInView,
   StNotLogInViewText,
-  StPostListDiv
+  StPostListDiv,
+  CenteredMessage
 };

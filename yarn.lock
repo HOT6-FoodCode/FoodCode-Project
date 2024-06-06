@@ -2049,7 +2049,7 @@ prelude-ls@^1.2.1:
 
 prettier@^3.3.1:
   version "3.3.1"
-  resolved "https://registry.npmjs.org/prettier/-/prettier-3.3.1.tgz"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.3.1.tgz#e68935518dd90bb7ec4821ba970e68f8de16e1ac"
   integrity sha512-7CAwy5dRsxs8PHXT3twixW9/OEll8MLE0VRPCJyl7CkS6VHGPSlsVaWTiASPTyGyYRyApxlaWTzwUxVNrhcwDg==
 
 prop-types@^15.8.1:
