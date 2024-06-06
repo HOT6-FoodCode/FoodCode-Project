@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../api';
+import { userDataUpdate } from './userSlice';
 
 // 회원가입 비동기 작업 정의
 export const signUp = createAsyncThunk('auth/signUp', async ({ email, password, nickname }, { rejectWithValue }) => {
@@ -12,9 +13,10 @@ export const signUp = createAsyncThunk('auth/signUp', async ({ email, password, 
 });
 
 // 로그인 비동기 작업 정의
-export const signIn = createAsyncThunk('auth/signIn', async ({ email, password }, { rejectWithValue }) => {
+export const signIn = createAsyncThunk('auth/signIn', async ({ email, password }, { rejectWithValue, dispatch }) => {
   try {
     const user = await api.auth.signIn(email, password);
+    dispatch(userDataUpdate(user));
     return user;
   } catch (error) {
     return rejectWithValue(error.message);
@@ -32,9 +34,10 @@ export const signOut = createAsyncThunk('auth/signOut', async (_, { rejectWithVa
 });
 
 // 현재 사용자 가져오기
-export const getUser = createAsyncThunk('auth/getUser', async (_, { rejectWithValue }) => {
+export const getUser = createAsyncThunk('auth/getUser', async (_, { rejectWithValue, dispatch }) => {
   try {
     const user = await api.auth.getUser();
+    dispatch(userDataUpdate(user));
     return user;
   } catch (error) {
     return rejectWithValue(error.message);
