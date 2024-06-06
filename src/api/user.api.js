@@ -1,5 +1,4 @@
-import supabase from './supabaseAPI';
-
+import { supabase } from "./supabaseAPI";
 class UserAPI {
   async getUserProfile(userId) {
     try {

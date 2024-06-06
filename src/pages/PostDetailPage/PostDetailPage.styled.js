@@ -87,23 +87,23 @@ const StNameFollowWrapDiv =styled.div`
 const StImageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  div {
-        width: 360px;
-    height: 360px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border: 1px solid black;
-    border-radius: 10px;
-    margin-right: 30px;
-    padding: 10px;
-  }
+  
+  width: 360px;
+  height: 360px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-right: 30px;
+  padding: 10px;
+  
 `;
 
 const StImage = styled.img`
-  max-width: 100%;
+  max-width: 80%;
   max-height: 400px;
   object-fit: cover;
   margin-right: 10px;

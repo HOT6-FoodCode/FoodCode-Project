@@ -1,12 +1,13 @@
 import {
   StPostItem,
-  StPostItemReview,
   StPostItemImg,
+  StPostItemReview,
   StPostItemText,
   StPostItemTextStarCategory
 } from './UserPostItem.styled';
 
 const UserPostItem = ({ post }) => {
+  console.log("UserPostItem",post);
   return (
     <>
       <StPostItem>
