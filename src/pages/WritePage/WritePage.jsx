@@ -6,6 +6,7 @@ import api from '../../api';
 import { postImageDefault } from '../../api/supabaseAPI';
 import ImageUpload from '../../components/writepage/ImageUpload';
 import StarRating from '../../components/writepage/StarRating';
+import { StNotLogInView, StNotLogInViewText } from '../MyPage/MyPage.styled';
 import {
   StButton,
   StButtonDiv,
@@ -25,9 +26,20 @@ function WritePage() {
     rating: 0
   });
   const user = useSelector((state) => state.auth.user);
-
   // 이미지 상대경로 저장
   const navigator = useNavigate();
+
+  if (!user) {
+    return (
+      <StNotLogInView>
+        <StNotLogInViewText>
+          로그인이 필요합니다!
+          <br />
+          상단의 로그인 페이지로 이동해 주세요 😆
+        </StNotLogInViewText>
+      </StNotLogInView>
+    );
+  }
 
   const handlerAdd = async (e) => {
     e.preventDefault();
