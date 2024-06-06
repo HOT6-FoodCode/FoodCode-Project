@@ -1,13 +1,13 @@
 import {
   StMyPageWrapper,
   StPostDiv,
-  StMyPostdiv,
   StDivProfile,
   StTitle,
   StAccount,
   StPostListTitle,
   StNotLogInView,
-  StNotLogInViewText
+  StNotLogInViewText,
+  StPostListDiv
 } from './MyPage.styled';
 import PostList from '../../components/posts/PostList';
 import UserInfo from '../../components/ui/UserInfo';
@@ -17,7 +17,7 @@ import { useEffect } from 'react';
 const MyPage = () => {
   const user = useSelector((state) => state.auth.user);
 
-  console.log('user', user);
+  //console.log('user', user);
 
   useEffect(() => {
     if (!user) {
@@ -38,7 +38,7 @@ const MyPage = () => {
   }
 
   const userId = user.id;
-  console.log('userId', userId);
+  //console.log('userId', userId);
 
   return (
     <StMyPageWrapper>
@@ -49,10 +49,10 @@ const MyPage = () => {
         </StAccount>
       </StDivProfile>
       <StPostDiv>
-        <StMyPostdiv>
-          <StPostListTitle>내가 쓴 게시물</StPostListTitle>
-          <PostList sorting="myPost" userId={userId} />
-        </StMyPostdiv>
+        <StPostListTitle>내가 쓴 게시물</StPostListTitle>
+          <StPostListDiv>
+            <PostList sorting='myPost' userId={userId} />
+          </StPostListDiv>
       </StPostDiv>
     </StMyPageWrapper>
   );

@@ -6,7 +6,7 @@ import router from './router/router';
 function App() {
   return (
     <>
-      <ToastContainer />
+      <ToastContainer closeOnClick />
       <RouterProvider router={router} />
     </>
   );

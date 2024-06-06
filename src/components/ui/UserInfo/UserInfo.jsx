@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import api from '../../../api/api';
 import { userDataUpdate } from '../../../redux/slices/userSlice';
 import {
@@ -14,7 +15,7 @@ import {
 } from '../UserInfo/UserInfo.styled';
 import UserImg from './UserImg';
 
-const UserImgUpdate = ({ userId, user }) => {
+const UserInfo = ({ userId, user }) => {
   const fileInputRef = useRef(null);
   const userProfileData = useSelector((state) => state.user.userProfile);
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ const UserImgUpdate = ({ userId, user }) => {
       const userInfo = await api.user.getUserProfile(userId);
       dispatch(userDataUpdate(userInfo));
     } catch (error) {
-      console.error('프로필 사진 업로드 및 사용자 데이터 업데이트 오류:', error.message);
+      toast.error('프로필 사진 업로드 및 사용자 데이터 업데이트 오류:', error.message);
     }
   };
 
@@ -71,4 +72,4 @@ const UserImgUpdate = ({ userId, user }) => {
   );
 };
 
-export default UserImgUpdate;
+export default UserInfo;

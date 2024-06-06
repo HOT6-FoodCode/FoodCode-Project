@@ -25,6 +25,7 @@ const StTopForm = styled.div`
 const StRestaurantName = styled.input`
   padding: 15px;
   font-size: 15px;
+  font-family: 'Nanum Gothic';
   border-radius: 30px;
   border: 1px solid gray;
 `;
@@ -34,7 +35,7 @@ const StDescription = styled.textarea`
   border: 1px solid gray;
 
   font-size: 14px;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Nanum Gothic';
   height: auto;
   min-height: 100px;
   resize: vertical;

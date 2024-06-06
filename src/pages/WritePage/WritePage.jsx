@@ -20,7 +20,7 @@ function WritePage() {
   const [post, setPost] = useState({
     title: '',
     content: '',
-    images: [],
+    image: '',
     rating: 0
   });
   const user = useSelector((state) => state.auth.user);
@@ -46,7 +46,7 @@ function WritePage() {
 
   return (
     <StWriteWrapper>
-      <ImageUpload image={post.images} setImage={(image) => setPost({ ...post, images: [image] })} />
+      <ImageUpload image={post.image} setImage={(image) => setPost({ ...post, image })} />
 
       <StForm>
         <StInputForm>

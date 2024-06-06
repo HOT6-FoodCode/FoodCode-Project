@@ -22,6 +22,16 @@ const PostList = ({ sorting }) => {
       </Message>
     );
   }
+
+  
+  if (sorting === 'myPost' && posts.length === 0) {
+    return (
+      <Message style={{height : '50vh'}}>
+        <p>작성한 게시물이 없습니다. 게시글을 작성해 주세요!</p>
+      </Message>
+    );
+  }
+
   return (
     <>
       {loading ? (
@@ -40,7 +50,10 @@ const PostList = ({ sorting }) => {
               />
             ))}
           </PostGrid>
-          {visiblePosts.length < posts.length && <StButton onClick={loadMorePosts}>더보기</StButton>}
+          <StButtonDiv>
+            {visiblePosts.length < posts.length && <StButton onClick={loadMorePosts}>더보기</StButton>}
+          </StButtonDiv>
+          
         </>
       )}
     </>
@@ -54,4 +67,9 @@ const StButton = styled.button`
   border: 1px solid #ccc;
   margin-top: 20px;
   cursor: pointer;
+  width: 100px;
+`;
+const StButtonDiv = styled.div`
+  display: flex;
+  justify-content: center;
 `;
