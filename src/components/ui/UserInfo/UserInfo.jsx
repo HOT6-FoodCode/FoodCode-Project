@@ -14,7 +14,7 @@ import {
 } from '../UserInfo/UserInfo.styled';
 import UserImg from './UserImg';
 
-const UserImgUpdate = ({ userId, user }) => {
+const UserInfo = ({ userId, user }) => {
   const fileInputRef = useRef(null);
   const userProfileData = useSelector((state) => state.user.userProfile);
   const dispatch = useDispatch();
@@ -71,4 +71,4 @@ const UserImgUpdate = ({ userId, user }) => {
   );
 };
 
-export default UserImgUpdate;
+export default UserInfo;

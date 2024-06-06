@@ -4,8 +4,9 @@ const StWriteWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 35px;
-  margin: 25px 30px;
-  height: 75vh;
+  margin: 25px 30px 0px 25px;
+  flex-direction: row;
+
 `;
 
 const StNickname = styled.div`

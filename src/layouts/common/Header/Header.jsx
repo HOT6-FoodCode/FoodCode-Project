@@ -23,6 +23,7 @@ function Header() {
   const { isOpen, ref, toggle } = useDropdown();
   const user = useSelector((state) => state.auth.user);
   const userProfile = useSelector((state) => state.user.userProfile);
+  console.log(userProfile)
 
   useEffect(() => {
     if (user) {

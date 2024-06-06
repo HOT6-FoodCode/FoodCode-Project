@@ -54,9 +54,11 @@ const PostDetailPage = () => {
     fetchPost();
   }, [postId]);
 
+
   const handleUpdate = async (event) => {
     event.preventDefault();
     try {
+      
       await api.posts.editPost(postId, editedPost);
       navigate('/');
     } catch (error) {
@@ -81,12 +83,14 @@ const PostDetailPage = () => {
       navigate(-1);
     }
   };
-
   const userId = post ? post.user_id : null;
+  
   const isOwner = user && user.id === userId;
+  
 
   return (
-    <div>
+    <div style={{display: 'flex', flexDirection: 'column', minWidth: '1470px'}}>
+      
       <StWriteWrapper>
         {isOwner ? (
           <ImageUpload
@@ -95,7 +99,7 @@ const PostDetailPage = () => {
           />
         ) : (
           <StImageWrapper>
-            <StImage src={editedPost.image || postImageDefault} alt="Post Image" />
+              <StImage src={editedPost.image || postImageDefault} alt="Post Image" />
           </StImageWrapper>
         )}
         <StForm>
@@ -105,7 +109,7 @@ const PostDetailPage = () => {
           <StInputForm>
             <StDiv>
               <StNameFollowWrapDiv>
-                <StRestaurantName
+              <StRestaurantName
                   type="text"
                   placeholder="매장 이름"
                   value={editedPost.title}
@@ -128,6 +132,7 @@ const PostDetailPage = () => {
               disabled={!isOwner}
             />
           </StInputForm>
+
           {isOwner ? (
             <StButtonDiv>
               <StButton onClick={handleUpdate}>수정</StButton>
@@ -139,10 +144,9 @@ const PostDetailPage = () => {
             </StButtonDiv>
           )}
         </StForm>
-      
-       <Comment />
-      
+
       </StWriteWrapper>
+      <Comment postId={postId} user={user} />
       
     </div>
   );
