@@ -99,8 +99,6 @@ padding: 10px;
 margin: 5px;
 `
 export {
-    StDetailPage,
-    StDetailForm,
     StCommentWrapper,
     StUserProfileImg,
     StCommentForm,
