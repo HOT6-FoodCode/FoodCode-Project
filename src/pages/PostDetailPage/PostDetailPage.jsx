@@ -6,6 +6,7 @@ import { postImageDefault } from '../../api/supabaseAPI';
 import FollowButton from '../../components/common/FollowButton';
 import ImageUpload from '../../components/writepage/ImageUpload';
 import StarRating from '../../components/writepage/StarRating';
+import Comment from '../Comment/Comment';
 import {
   StButton,
   StButtonDiv,
@@ -15,12 +16,12 @@ import {
   StImage,
   StImageWrapper,
   StInputForm,
-  StNameFollowWrapDiv,
+  StNameStarWrapDiv,
+  StNameWrapdIv,
   StNickname,
   StRestaurantName,
   StWriteWrapper
 } from './PostDetailPage.styled';
-import Comment from '../Comment/Comment';
 
 const PostDetailPage = () => {
   const { postId } = useParams();
@@ -53,11 +54,9 @@ const PostDetailPage = () => {
     fetchPost();
   }, [postId]);
 
-
   const handleUpdate = async (event) => {
     event.preventDefault();
     try {
-      
       await api.posts.editPost(postId, editedPost);
       navigate('/mypage');
     } catch (error) {
@@ -83,40 +82,40 @@ const PostDetailPage = () => {
     }
   };
   const userId = post ? post.user_id : null;
-  
+
   const isOwner = user && user.id === userId;
-  
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', minWidth: '1470px'}}>
-      
+    <div style={{ display: 'flex', flexDirection: 'column', minWidth: '1470px' }}>
       <StWriteWrapper>
         {isOwner ? (
           <ImageUpload image={editedPost.image} setImage={(image) => setEditedPost({ ...editedPost, image })} />
         ) : (
           <StImageWrapper>
-              <StImage src={editedPost.image || postImageDefault} alt="Post Image" />
+            <StImage src={editedPost.image || postImageDefault} alt="Post Image" />
           </StImageWrapper>
         )}
         <StForm>
-          <StNickname>{post ? <h2>{post.nickname}</h2> : <h2>Loading...</h2>}</StNickname>
+          <StNameWrapdIv>
+            <StNickname>{post ? <h2>{post.nickname}</h2> : <h2>Loading...</h2>}</StNickname>
+            {user && user.id !== userId && <FollowButton followerId={userId} />}
+          </StNameWrapdIv>
           <StInputForm>
             <StDiv>
-              <StNameFollowWrapDiv>
-              <StRestaurantName
+              <StNameStarWrapDiv>
+                <StRestaurantName
                   type="text"
                   placeholder="매장 이름"
                   value={editedPost.title}
                   onChange={(e) => setEditedPost({ ...editedPost, title: e.target.value })}
                   disabled={!isOwner}
                 />
-                {user && user.id !== userId && <FollowButton followerId={userId} />}
-              </StNameFollowWrapDiv>
-              <StarRating
-                rating={editedPost.rating}
-                setRating={(rating) => setEditedPost({ ...editedPost, rating })}
-                disabled={!isOwner}
-              />
+                <StarRating
+                  rating={editedPost.rating}
+                  setRating={(rating) => setEditedPost({ ...editedPost, rating })}
+                  disabled={!isOwner}
+                />
+              </StNameStarWrapDiv>
             </StDiv>
             <StDescription
               type="text"
@@ -138,10 +137,8 @@ const PostDetailPage = () => {
             </StButtonDiv>
           )}
         </StForm>
-
       </StWriteWrapper>
       <Comment postId={postId} user={user} />
-      
     </div>
   );
 };

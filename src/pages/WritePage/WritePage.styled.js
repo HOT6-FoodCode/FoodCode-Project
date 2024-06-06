@@ -58,10 +58,10 @@ const StButtonDiv = styled.div`
 const StButton = styled.button`
   border-radius: 26px;
   border: none;
-  color: white;
-  /* font-weight: bolder; */
+  color: #194a95;
+  font-weight: bolder;
   font-size: 15px;
-  background: black;
+  background: #eeeae1;
   padding: 10px 25px;
   cursor: pointer;
   transition: background-color 0.3s ease;

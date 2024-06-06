@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { postImageDefault } from '../../api/supabaseAPI';
 import uploadIcon from '../../assets/upload.png';
 
 const ImageUpload = ({ image, setImage }) => {
@@ -10,6 +11,8 @@ const ImageUpload = ({ image, setImage }) => {
         setImage(reader.result);
       };
       reader.readAsDataURL(file);
+    } else {
+      setImage(postImageDefault);
     }
   };
 

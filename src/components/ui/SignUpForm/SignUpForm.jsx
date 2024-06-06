@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUp } from '../../../redux/slices/authSlice';
-import loginPerson from '../../../assets/icons/user-large-solid.svg';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import loginEmail from '../../../assets/icons/envelope-regular.svg';
 import loginPassword from '../../../assets/icons/unlock-keyhole-solid.svg';
-import { useNavigate } from 'react-router-dom';
+import loginPerson from '../../../assets/icons/user-large-solid.svg';
+import { signUp } from '../../../redux/slices/authSlice';
 import { getUserErrorMessage } from '../../auth/getUserErrorMessage';
 import {
   StErrorMsg,
@@ -53,7 +54,7 @@ const SignUpForm = () => {
       setNickname('');
       setPassword('');
       setEmail('');
-      alert('회원가입이 완료되었습니다.');
+      toast.warn('회원가입이 완료되었습니다.');
       navigate('/');
     } catch (error) {
       event.preventDefault();
