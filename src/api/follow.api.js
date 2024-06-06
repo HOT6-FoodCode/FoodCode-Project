@@ -68,16 +68,26 @@ class FollowAPI {
       throw new Error(`Failed to check follow status: ${error.message}`);
     }
   }
-  // 팔로잉한 당한 사용자 ID 가져오는 메서드
-  async getFollowingIds(userId) {
+
+  async getFollowerIds(userId) {
     try {
       const { data, error } = await supabase.from('follows').select('follower_id').eq('following_id', userId);
 
-      if (error) {
-        throw new Error(error.message);
-      }
-
+      if (error) throw new Error(error.message);
+      console.log('Raw data from getFollowerIds:', data);
       return data.map((follow) => follow.follower_id);
+    } catch (error) {
+      throw new Error(`Failed to get follower ids: ${error.message}`);
+    }
+  }
+
+  async getFollowingIds(userId) {
+    try {
+      const { data, error } = await supabase.from('follows').select('following_id').eq('follower_id', userId);
+
+      if (error) throw new Error(error.message);
+      console.log('Raw data from getFollowingIds:', data);
+      return data.map((follow) => follow.following_id);
     } catch (error) {
       throw new Error(`Failed to get following ids: ${error.message}`);
     }

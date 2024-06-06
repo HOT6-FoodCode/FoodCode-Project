@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const PostGrid = styled.div`
+const PostGrid = styled.div`
   padding: 20px;
   display: grid;
   width: 1240px;
@@ -16,22 +16,25 @@ export const PostGrid = styled.div`
   }
 `;
 
-export const Message = styled.div`
+const StButton = styled.button`
+  padding: 20px;
+  border: 1px solid #ccc;
+  margin-top: 20px;
+  cursor: pointer;
+  width: 100px;
+`;
+const StButtonDiv = styled.div`
   display: flex;
-  width: 100vh;
-  height: 75vh;
+  justify-content: center;
+`;
+
+const Message = styled.div`
+  display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
-
-  p {
-    padding: 20px;
-
-    background-color: #bbd3eb;
-    color: #194a95;
-    border: 1px solid #194a95;
-    border-radius: 4px;
-
-    font-size: 16px;
-  }
+  height: 50vh;
+  font-size: 18px;
+  color: #333;
 `;
+
+export { Message, PostGrid, StButton, StButtonDiv };
