@@ -6,7 +6,7 @@ const StFollowBtn = styled.button`
   border-radius: 30px;
   padding: 5px 25px;
   font-size: 18px;
-  width: 100px;
+
   height: 35px;
   cursor: pointer;
   transition: background-color 0.3s ease;

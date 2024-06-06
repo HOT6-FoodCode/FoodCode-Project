@@ -72,7 +72,7 @@ const DropdownMenu = styled.ul`
   position: absolute;
   top: 100%;
   right: 0;
-
+  background-color: white;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -82,7 +82,10 @@ const DropdownMenu = styled.ul`
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
-  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    visibility 0.3s;
   li:first-child {
     position: relative;
     &::before {

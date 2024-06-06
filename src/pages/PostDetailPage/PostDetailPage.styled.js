@@ -102,8 +102,8 @@ const StImageWrapper = styled.div`
 `;
 
 const StImage = styled.img`
-  max-width: 80%;
-  max-height: 400px;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: cover;
   margin-right: 10px;
 `;

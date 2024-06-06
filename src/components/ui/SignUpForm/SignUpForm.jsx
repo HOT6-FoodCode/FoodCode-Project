@@ -50,6 +50,10 @@ const SignUpForm = () => {
   const handleSignUp = async (event) => {
     event.preventDefault();
     try {
+      if (!email || !password || !nickname) {
+        toast.error('모든 필드를 입력해주세요.');
+        return;
+      }
       await dispatch(signUp({ email, password, nickname })).unwrap();
       setNickname('');
       setPassword('');
@@ -57,8 +61,7 @@ const SignUpForm = () => {
       toast.warn('회원가입이 완료되었습니다.');
       navigate('/');
     } catch (error) {
-      event.preventDefault();
-      console.error('회원가입 중 오류 발생:', error.message || error);
+      toast.error(getUserErrorMessage(error));
     }
   };
 

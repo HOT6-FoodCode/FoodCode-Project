@@ -26,26 +26,28 @@ const PostCard = styled.div`
 
 const CardImage = styled.img`
   width: 100%;
-  height: 60%;
+  height: 100%;
   object-fit: cover;
 `;
 
 const ContentWrapDiv = styled.div`
-  padding: 30px;
+  padding: 10px 30px 30px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 40%;
+  gap: 10px;
 `;
 
 const Title = styled.h3`
   font-size: 1.2em;
   font-weight: 600;
-  margin-bottom: 10px;
+
   text-overflow: ellipsis;
   overflow-x: hidden;
   overflow-y: hidden;
   white-space: nowrap;
+  height: 100%;
 `;
 
 const Content = styled.p`
@@ -55,12 +57,12 @@ const Content = styled.p`
   overflow-x: hidden;
   overflow-y: hidden;
   white-space: nowrap;
+  height: 100%;
 `;
 
 const Rating = styled.div`
   font-size: 0.9em;
   color: #777;
-  margin-top: 5px;
 `;
 
 export { CardImage, Content, ContentWrapDiv, PostCard, Rating, Title };
