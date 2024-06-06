@@ -24,6 +24,13 @@ const PostList = ({ sorting }) => {
   }
 
   if (sorting === 'myPost' && visiblePosts.length === 0) {
+    if (loading) {
+      return (
+        <Message>
+          <p>로딩 중입니다...</p>
+        </Message>
+      );
+    }
     return (
       <Message style={{ height: '50vh' }}>
         <p>작성한 게시물이 없습니다. 게시글을 작성해 주세요!</p>
