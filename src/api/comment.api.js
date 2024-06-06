@@ -1,6 +1,6 @@
 import { supabase } from './supabaseAPI';
 
-class CommentAPI {
+class CommentsAPI {
   async getComments(postId) {
     try {
       const { data, error } = await supabase.from('comments').select('*').eq('id', postId);
@@ -66,4 +66,4 @@ class CommentAPI {
     }
   }
 }
-export default CommentAPI;
+export default CommentsAPI;

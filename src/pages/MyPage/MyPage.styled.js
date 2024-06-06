@@ -3,21 +3,30 @@ import styled from 'styled-components';
 const StMyPageWrapper = styled.div`
   padding: 30px;
   margin: 0 30px;
+  min-width: 1470px;
 `;
 
 const StPostDiv = styled.div`
   width: 100%;
   display: flex;
-  box-sizing: border-box;
+  flex-direction: column;
   gap: 1rem;
-  margin-top: 30px;
-  justify-content: space-around;
+  margin-top: 50px;
+  margin-left: 30px;
   padding: 20px;
+`;
+const StPostListDiv = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const StMyPostdiv = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  background-color: gray;
+  width: 100%;
+  align-items: center;
 `;
 const StDivProfile = styled.div`
   display: flex;
@@ -112,7 +121,7 @@ const StNotLogInView = styled.div`
   height: 50%;
   background-color: #f8f9fa;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 100px auto;
+  margin: 100px auto 164px;
   border-radius: 20px;
 `;
 const StNotLogInViewText = styled.p`
@@ -138,5 +147,6 @@ export {
   StPostItemImg,
   StUserInfo,
   StNotLogInView,
-  StNotLogInViewText
+  StNotLogInViewText,
+  StPostListDiv
 };
