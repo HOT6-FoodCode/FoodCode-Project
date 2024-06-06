@@ -4,6 +4,7 @@ import api from '../../api';
 export const toggleFollowUser = createAsyncThunk(
   'follow/toggleFollowUser',
   async ({ followingId, followerId }, { rejectWithValue }) => {
+    console.log('toggleFollowUser thunk called with followingId:', followingId, 'and followerId:', followerId);
     try {
       const result = await api.follow.toggleFollowUser(followingId, followerId);
       return result;
@@ -16,6 +17,7 @@ export const toggleFollowUser = createAsyncThunk(
 export const checkFollowStatus = createAsyncThunk(
   'follow/checkFollowStatus',
   async ({ followingId, followerId }, { rejectWithValue }) => {
+    console.log('checkFollowStatus thunk called with followingId:', followingId, 'and followerId:', followerId);
     try {
       const isFollowing = await api.follow.isFollowing(followingId, followerId);
       return isFollowing;
@@ -24,7 +26,6 @@ export const checkFollowStatus = createAsyncThunk(
     }
   }
 );
-
 const followSlice = createSlice({
   name: 'follow',
   initialState: { status: 'idle', isFollowing: false, error: null },
