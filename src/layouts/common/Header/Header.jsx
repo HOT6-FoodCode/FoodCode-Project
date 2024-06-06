@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../../../api';
 import { profileDefaultUrl } from '../../../api/supabaseAPI';
 import mainLogo from '../../../assets/logo.png';
@@ -24,6 +24,7 @@ function Header() {
   const user = useSelector((state) => state.auth.user);
   const userProfile = useSelector((state) => state.user.userProfile);
   console.log(userProfile);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -41,6 +42,7 @@ function Header() {
 
   const handleLogout = useCallback(async () => {
     dispatch(signOut());
+    navigate('/');
   }, [dispatch]);
 
   return (

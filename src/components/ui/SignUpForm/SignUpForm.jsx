@@ -59,7 +59,7 @@ const SignUpForm = () => {
       setPassword('');
       setEmail('');
       toast.warn('회원가입이 완료되었습니다.');
-      navigate('/');
+      navigate('/auth/login'); // 회원가입 후 로그인 페이지로 이동
     } catch (error) {
       toast.error(getUserErrorMessage(error));
     }

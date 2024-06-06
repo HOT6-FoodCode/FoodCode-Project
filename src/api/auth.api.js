@@ -1,4 +1,5 @@
 import { supabase } from './supabaseAPI';
+
 class AuthAPI {
   async signUp(email, password, nickname) {
     try {
@@ -10,7 +11,6 @@ class AuthAPI {
 
       // 추가 정보 저장
       const { data: userData, error: userError } = await supabase.from('users').insert([{ id: userId, nickname }]);
-
       if (userError) {
         throw new Error(userError.message);
       }
@@ -20,11 +20,13 @@ class AuthAPI {
       throw new Error(`Sign-up failed: ${error.message}`);
     }
   }
+
   async signIn(email, password) {
     try {
       const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-
-      if (signInError) throw new Error(signInError.message);
+      if (signInError) {
+        throw new Error(signInError.message);
+      }
 
       return signInData.user;
     } catch (error) {
@@ -35,7 +37,6 @@ class AuthAPI {
   async signOut() {
     try {
       const { error: signOutError } = await supabase.auth.signOut();
-
       if (signOutError) throw new Error(signOutError.message);
     } catch (error) {
       throw new Error(`Sign-out failed: ${error.message}`);
