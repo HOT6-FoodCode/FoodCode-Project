@@ -8,7 +8,8 @@ const supabase = createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_KEY);
 const profileDefaultUrl = `${
   import.meta.env.VITE_SUPABASE_URL
 }/storage/v1/object/public/profile-pictures/default-profile.jpg`;
-const postImageDefault =`${
+
+const postImageDefault = `${
   import.meta.env.VITE_SUPABASE_URL
 }/storage/v1/object/public/post-Image/default-post-image.png?t=2024-06-05T08%3A49%3A47.575Z`;
 

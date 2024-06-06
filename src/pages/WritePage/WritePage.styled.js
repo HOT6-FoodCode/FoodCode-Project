@@ -27,6 +27,7 @@ const StRestaurantName = styled.input`
   font-size: 15px;
   border-radius: 30px;
   border: 1px solid gray;
+  font-family: 'Nanum Gothic';
 `;
 const StDescription = styled.textarea`
   padding: 20px;
@@ -58,10 +59,10 @@ const StButtonDiv = styled.div`
 const StButton = styled.button`
   border-radius: 26px;
   border: none;
-  color: #194A95;
+  color: #194a95;
   font-weight: bolder;
   font-size: 15px;
-  background: #EEEAE1;
+  background: #eeeae1;
   padding: 10px 25px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -71,6 +72,13 @@ const StButton = styled.button`
   }
 `;
 export {
-  StButton, StButtonDiv, StDescription, StForm, StInputForm, StNickname, StRestaurantName, StTopForm, StWriteWrapper
+  StButton,
+  StButtonDiv,
+  StDescription,
+  StForm,
+  StInputForm,
+  StNickname,
+  StRestaurantName,
+  StTopForm,
+  StWriteWrapper
 };
-

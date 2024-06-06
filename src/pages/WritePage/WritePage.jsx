@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import api from '../../api';
+import { postImageDefault } from '../../api/supabaseAPI';
 import ImageUpload from '../../components/writepage/ImageUpload';
 import StarRating from '../../components/writepage/StarRating';
 import {
@@ -19,7 +21,7 @@ function WritePage() {
   const [post, setPost] = useState({
     title: '',
     content: '',
-    image: '',
+    image: postImageDefault,
     rating: 0
   });
   const user = useSelector((state) => state.auth.user);
@@ -29,6 +31,11 @@ function WritePage() {
 
   const handlerAdd = async (e) => {
     e.preventDefault();
+    // 유효성 검사
+    if (!post.title || !post.content || !post.rating) {
+      toast.error('모든 필드를 입력해주세요.');
+      return;
+    }
     try {
       await api.posts.createPost({ userId: user.id, ...post });
       navigator(-1);
