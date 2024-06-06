@@ -1,3 +1,4 @@
+import LazyLoad from 'react-lazyload';
 import { Link } from 'react-router-dom';
 import api from '../../../api/api';
 import { postImageDefault } from '../../../api/supabaseAPI';
@@ -10,9 +11,11 @@ const PostItem = ({ postId, image, title, content, rating }) => {
   };
 
   return (
-    <Link to={{pathname: `/post/${postId}`}}>
+    <Link to={{ pathname: `/post/${postId}` }}>
       <PostCard onClick={handleClick}>
-        <CardImage src={image ?? `${postImageDefault}`} alt={title} />
+        <LazyLoad style={{ height: '200px' }} width={380} offset={186} once>
+          <CardImage src={image ?? `${postImageDefault}`} alt={title} />
+        </LazyLoad>
         <ContentWrapDiv>
           <Title>{title}</Title>
           <Content>{content}</Content>

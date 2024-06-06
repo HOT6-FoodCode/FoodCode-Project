@@ -4,7 +4,6 @@ import FollowIcon from '../../assets/icons/follow.svg';
 import RecentIcon from '../../assets/icons/recent.svg';
 import TrendingIcon from '../../assets/icons/trending.svg';
 import LinkButton from '../../components/common/LinkButton';
-import PostList from '../../components/posts/PostList';
 
 function MainPage() {
   const location = useLocation();
@@ -23,7 +22,9 @@ function MainPage() {
         <LinkButton className={isActive('/recent') ? 'active' : ''} to="/recent" label="최신" icon={RecentIcon} />
         <LinkButton className={isActive('/follow') ? 'active' : ''} to="/follow" label="팔로우" icon={FollowIcon} />
       </StrLinkWrapDiv>
-      <StrDiv>{location.pathname === '/' ? <PostList sorting="trending" /> : <Outlet />}</StrDiv>
+      <StrDiv>
+        <Outlet />
+      </StrDiv>
     </MainContainer>
   );
 }
