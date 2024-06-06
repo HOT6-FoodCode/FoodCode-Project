@@ -1,10 +1,12 @@
+import React from 'react';
 import LazyLoad from 'react-lazyload';
 import { Link } from 'react-router-dom';
 import api from '../../../api/api';
 import { postImageDefault } from '../../../api/supabaseAPI';
 import { CardImage, Content, ContentWrapDiv, PostCard, Rating, Title } from './PostItem.styled';
 
-const PostItem = ({ postId, image, title, content, rating }) => {
+// 컴포넌트 이름을 추가하여 함수 선언식으로 정의합니다.
+function PostItem({ postId, image, title, content, rating }) {
   const handleClick = () => {
     console.log('선택된 postId', postId);
     api.posts.incrementViewCount(postId);
@@ -26,6 +28,6 @@ const PostItem = ({ postId, image, title, content, rating }) => {
       </PostCard>
     </Link>
   );
-};
+}
 
-export default PostItem;
+export default React.memo(PostItem);

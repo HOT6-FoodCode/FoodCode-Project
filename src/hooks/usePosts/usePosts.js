@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import api from '../../api';
 import sortPosts from '../../utils/sortPosts';
 
-const POSTS_PER_PAGE = 12;
+const POSTS_PER_PAGE = 6;
 
 const usePosts = (sorting) => {
   const [allPosts, setAllPosts] = useState([]);
