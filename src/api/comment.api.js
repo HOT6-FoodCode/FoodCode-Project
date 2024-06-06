@@ -63,33 +63,41 @@ class CommentsAPI {
       throw new Error(`Failed to create comment: ${error.message}`);
     }
   }
+  async editComment(commentId, updatedText) {
+    try {
+      if (typeof updatedText !== 'object' || !updatedText.commentText) {
+        throw new Error('Invalid updated text format');
+      }
 
-  // 수정 필요
-  // async deleteComment(commentId) {
-  //   try {
-  //     const { error } = await supabase.from('comments').delete().eq('id', commentId);
+      const { commentText, created_at } = updatedText;
 
-  //     if (error) throw error;
-  //   } catch (error) {
-  //     throw new Error(`Failed to delete comment: ${error.message}`);
-  //   }
-  // }
+      const { data, error } = await supabase
+        .from('comments')
+        .update({ comment: commentText, created_at })
+        .eq('id', commentId);
 
-  // async editComment(commentId, updatedComment) {
-  //   try {
-  //       const { commentText, created_at } = updatedComment;
-  //       const { error } = await supabase
-  //           .from('comments')
-  //           .update({ comment: commentText, created_at })
-  //           .eq('id', commentId);
+      if (error) {
+        throw error;
+      }
 
-  //       if (error) {
-  //           throw error;
-  //       }
-  //   } catch (error) {
-  //       throw new Error(`Failed to edit comment: ${error.message}`);
-  //   }
-  // }
+      return data;
+    } catch (error) {
+      throw new Error(`Failed to edit comment: ${error.message}`);
+    }
+  }
+  async deleteComment(commentId) {
+    try {
+      const { error } = await supabase.from('comments').delete().eq('id', commentId);
+
+      if (error) {
+        throw error;
+      }
+
+      return true; // 삭제 성공을 나타내는 값 반환
+    } catch (error) {
+      throw new Error(`Failed to delete comment: ${error.message}`);
+    }
+  }
 }
 
 export default CommentsAPI;
