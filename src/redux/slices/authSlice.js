@@ -25,6 +25,7 @@ export const signIn = createAsyncThunk('auth/signIn', async ({ email, password }
 export const signOut = createAsyncThunk('auth/signOut', async (_, { rejectWithValue }) => {
   try {
     await api.auth.signOut();
+    localStorage.removeItem('supabase.auth.token');
   } catch (error) {
     return rejectWithValue(error.message);
   }
@@ -74,6 +75,7 @@ const authSlice = createSlice({
       .addCase(signOut.fulfilled, (state) => {
         state.status = 'succeeded'; // 로그아웃 성공 상태
         state.user = null; // 유저 정보 제거
+        localStorage.removeItem('supabase.auth.token'); // 토큰 제거
       })
       .addCase(signOut.rejected, (state, action) => {
         state.status = 'failed'; // 로그아웃 실패 상태
