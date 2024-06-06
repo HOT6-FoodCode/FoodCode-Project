@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUp } from '../../../redux/slices/authSlice';
-import loginPerson from '../../../assets/icons/user-large-solid.svg';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import loginEmail from '../../../assets/icons/envelope-regular.svg';
 import loginPassword from '../../../assets/icons/unlock-keyhole-solid.svg';
-import { useNavigate } from 'react-router-dom';
+import loginPerson from '../../../assets/icons/user-large-solid.svg';
+import { signUp } from '../../../redux/slices/authSlice';
 import { getUserErrorMessage } from '../../auth/getUserErrorMessage';
 import {
   StErrorMsg,
@@ -49,15 +50,18 @@ const SignUpForm = () => {
   const handleSignUp = async (event) => {
     event.preventDefault();
     try {
+      if (!email || !password || !nickname) {
+        toast.error('모든 필드를 입력해주세요.');
+        return;
+      }
       await dispatch(signUp({ email, password, nickname })).unwrap();
       setNickname('');
       setPassword('');
       setEmail('');
-      alert('회원가입이 완료되었습니다.');
+      toast.warn('회원가입이 완료되었습니다.');
       navigate('/');
     } catch (error) {
-      event.preventDefault();
-      console.error('회원가입 중 오류 발생:', error.message || error);
+      toast.error(getUserErrorMessage(error));
     }
   };
 

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { postImageDefault } from '../../api/supabaseAPI';
 import uploadIcon from '../../assets/upload.png';
 
 const ImageUpload = ({ image, setImage }) => {
@@ -10,17 +11,15 @@ const ImageUpload = ({ image, setImage }) => {
         setImage(reader.result);
       };
       reader.readAsDataURL(file);
+    } else {
+      setImage(postImageDefault);
     }
   };
 
   return (
     <StImageGroup>
       <StPreviewWrapper>
-        {image ? (
-          <StPreviewImage src={image} alt="uploaded" />
-        ) : (
-          <StUploadIcon src={uploadIcon} alt="upload" />
-        )}
+        {image ? <StPreviewImage src={image} alt="uploaded" /> : <StUploadIcon src={uploadIcon} alt="upload" />}
       </StPreviewWrapper>
       <StInputWrapper>
         <StUploadLabel htmlFor="input-file">
@@ -36,11 +35,11 @@ export default ImageUpload;
 
 const StImageGroup = styled.div`
   display: flex;
-    align-items: center;
-    flex-direction: column;
-    width: 300px;
-    margin-right: 30px;
-    gap: 20px;
+  align-items: center;
+  flex-direction: column;
+  width: 300px;
+  margin-right: 30px;
+  gap: 20px;
 `;
 
 const StPreviewWrapper = styled.div`
@@ -50,7 +49,6 @@ const StPreviewWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  
 `;
 
 const StPreviewImage = styled.img`
