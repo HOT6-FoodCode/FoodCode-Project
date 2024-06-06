@@ -23,7 +23,7 @@ function WritePage() {
   const [post, setPost] = useState({
     title: '',
     content: '',
-    images: '',
+    image: '',
     rating: 0
   });
 
@@ -45,13 +45,8 @@ function WritePage() {
 
   return (
     <StWriteWrapper>
-      <ImageUpload images={post.images} setImages={(images) => setPost({ ...post, images })} />
-
       <StDiv>
-        <StNickname>
-          <h2>{post.nickname}</h2>
-        </StNickname>
-
+        <ImageUpload image={post.image} setImage={(image) => setPost({ ...post, image })} />
         <StInputForm>
           <StTopForm>
             <StRestaurantName

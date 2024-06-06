@@ -1,50 +1,42 @@
 import styled from 'styled-components';
 import uploadIcon from '../../assets/upload.png';
 
-function ImageUpload({ images, setImages }) {
-  const handleAddImages = (e) => {
-    const { files } = e.target;
-    const uploadFile = files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(uploadFile);
-    reader.onloadend = () => {
-      setImages(reader.result);
-    };
+function ImageUpload({ image, setImage }) {
+  const handleAddImage = (event) => {
+    const imageFile = event.target.files[0];
+    const imageUrl = URL.createObjectURL(imageFile);
+    setImage(imageUrl);
   };
 
-  // X버튼 클릭 시 이미지 삭제
+  // 이미지 삭제
   const handleDeleteImage = () => {
-    setImages(null);
+    setImage('');
   };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <StImageUpload>
-        {images ? (
-          <>
-            <StDeleteBtn>
-              <StDeleteImage onClick={handleDeleteImage} />
-            </StDeleteBtn>
-            <StPreviewImage src={images} alt={'upload-img'} img="img" />
-          </>
-        ) : (
-          <label htmlFor="input-file" style={{ cursor: 'pointer' }}>
-            <StUploadBtn src={uploadIcon} />
-            <input
-              type="file"
-              id="input-file"
-              accept="image/*"
-              style={{ display: 'none' }}
-              onChange={(e) => handleAddImages(e, images, setImages)}
-            />
-          </label>
-        )}
-      </StImageUpload>
-
-      <h5 style={{ fontSize: '14px', color: 'gray', margin: '10px' }}>* 이미지는 1장 올려주세요</h5>
+      <StImageGroup>
+        <StImageUpload>
+          {image ? (
+            <>
+              <StDeleteBtn>
+                <StDeleteImage onClick={handleDeleteImage} />
+              </StDeleteBtn>
+              <StPreviewImage src={image} alt={`uploaded-image`} />
+            </>
+          ) : (
+            <label htmlFor="input-file" style={{ cursor: 'pointer' }}>
+              <StUploadBtn src={uploadIcon} />
+              <input type="file" id="input-file" style={{ display: 'none' }} onChange={handleAddImage} />
+            </label>
+          )}
+        </StImageUpload>
+      </StImageGroup>
+      <h5 style={{ fontSize: '14px', color: 'gray', margin: '10px' }}>* 이미지는 최대 1장까지 가능합니다</h5>
     </div>
   );
 }
+
 export default ImageUpload;
 
 const StImageUpload = styled.div`
@@ -58,20 +50,24 @@ const StImageUpload = styled.div`
   align-items: center;
   position: relative;
 `;
+
 const StUploadBtn = styled.img`
   max-width: 100px;
   max-height: 100px;
 `;
+
 const StPreviewImage = styled.img`
   max-width: 100%;
   max-height: 100%;
   object-fit: cover;
 `;
+
 const StDeleteBtn = styled.div`
   position: absolute;
   top: 5px;
   right: 5px;
 `;
+
 const StDeleteImage = styled.svg.attrs({
   viewBox: '0 0 24 24',
   children: (

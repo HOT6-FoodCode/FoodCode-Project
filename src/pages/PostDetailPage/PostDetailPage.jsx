@@ -26,13 +26,13 @@ const PostDetailPage = () => {
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
-  const { images: initialImages, title, content, rating } = location.state || {};
+  const { image: initialImage, title, content, rating } = location.state || {};
 
   const [post, setPost] = useState(null);
   const [editedPost, setEditedPost] = useState({
     title: title || '',
     content: content || '',
-    images: initialImages || '',
+    image: initialImage || '',
     rating: rating || 0
   });
 
@@ -41,11 +41,12 @@ const PostDetailPage = () => {
       try {
         const fetchedPost = await api.posts.getPost(postId);
         setPost(fetchedPost);
+        console.log('fetchedPost', fetchedPost[0].image);
         setEditedPost({
-          title: fetchedPost.title || '',
-          content: fetchedPost.content || '',
-          images: fetchedPost.images || '',
-          rating: fetchedPost.rating || 0
+          title: fetchedPost[0].title || '',
+          content: fetchedPost[0].content || '',
+          image: fetchedPost[0].image || '',
+          rating: fetchedPost[0].rating || 0
         });
       } catch (error) {
         console.error('Failed to fetch post:', error);
@@ -97,14 +98,14 @@ const PostDetailPage = () => {
       <StWriteWrapper>
         {isOwner ? (
           <ImageUpload
-            images={editedPost.images.length > 0 ? editedPost.images : [postImageDefault]}
-            setImages={(images) => setEditedPost({ ...editedPost, images })}
+            image={editedPost.image.length > 0 ? editedPost.image : [postImageDefault]}
+            setImage={(image) => setEditedPost({ ...editedPost, image })}
           />
         ) : (
           <StImageWrapper>
             <div>
-              {editedPost.images.length > 0 ? (
-                editedPost.images.map((image, index) => <StImage key={index} src={image} alt={`Image ${index}`} />)
+              {editedPost.image.length > 0 ? (
+                <StImage src={editedPost.image} alt={editedPost.image} />
               ) : (
                 <StImage src={postImageDefault} alt="Default" />
               )}
