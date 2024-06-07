@@ -71,3 +71,74 @@
 - **조현경**: 마이 페이지 기능 (사용자가 작성한 글 및 팔로우한 사람의 글 조회)
 
 =======
+
+```
+FoodCode-Project
+├─ src
+│  ├─ .prettierrc
+│  ├─ api
+│  │  ├─ api.js
+│  │  ├─ auth.api.js
+│  │  ├─ comment.api.js
+│  │  ├─ follow.api.js
+│  │  ├─ index.js
+│  │  ├─ post.api.js
+│  │  ├─ supabaseAPI.js
+│  │  └─ user.api.js
+│  ├─ App.jsx
+│  ├─ assets
+│  │  ├─ icons
+│  │  ├─ logo.png
+│  │  ├─ react.svg
+│  │  └─ upload.png
+│  ├─ components
+│  │  ├─ auth
+│  │  ├─ Comment
+│  │  ├─ common
+│  │  │  ├─ FollowButton
+│  │  │  └─ LinkButton
+│  │  ├─ posts
+│  │  │  ├─ PostEdit
+│  │  │  ├─ PostForm
+│  │  │  ├─ PostItem
+│  │  │  └─ PostList
+│  │  ├─ ui
+│  │  │  ├─ LoginForm
+│  │  │  ├─ SignUpForm
+│  │  │  └─ UserInfo
+│  │  └─ writepage
+│  ├─ contexts
+│  ├─ hooks
+│  │  ├─ useDropdown
+│  │  └─ usePosts
+│  ├─ index.css
+│  ├─ layouts
+│  │  ├─ common
+│  │  │  ├─ Footer
+│  │  │  ├─ Header
+│  │  │  └─ Skeleton
+│  │  ├─ Layout.jsx
+│  │  └─ MainLayout
+│  ├─ main.jsx
+│  ├─ pages
+│  │  ├─ Comment
+│  │  ├─ LoginPage
+│  │  ├─ MainPage
+│  │  ├─ MyPage
+│  │  ├─ PostDetailPage
+│  │  └─ WritePage
+│  ├─ redux
+│  │  ├─ config
+│  │  └─ slices
+│  │     ├─ authSlice.js
+│  │     ├─ commentsSlice.js
+│  │     ├─ followSlice.js
+│  │     ├─ postsSlice.js
+│  │     └─ userSlice.js
+│  ├─ router
+│  │  └─ router.jsx
+│  └─ utils
+│     └─ sortPosts.js
+
+
+```

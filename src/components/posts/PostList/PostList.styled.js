@@ -30,11 +30,21 @@ const StButtonDiv = styled.div`
 
 const Message = styled.div`
   display: flex;
+  width: 100vh;
+  height: 75vh;
   justify-content: center;
   align-items: center;
-  height: 50vh;
-  font-size: 18px;
-  color: #333;
-`;
+  text-align: center;
 
+  p {
+    padding: 20px;
+
+    background-color: #bbd3eb;
+    color: #194a95;
+    border: 1px solid #194a95;
+    border-radius: 4px;
+
+    font-size: 16px;
+  }
+`;
 export { Message, PostGrid, StButton, StButtonDiv };

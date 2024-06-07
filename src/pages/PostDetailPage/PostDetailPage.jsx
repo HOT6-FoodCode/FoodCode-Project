@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api';
 import { postImageDefault } from '../../api/supabaseAPI';
+import Comment from '../../components/Comment/Comment';
 import FollowButton from '../../components/common/FollowButton';
 import ImageUpload from '../../components/writepage/ImageUpload';
 import StarRating from '../../components/writepage/StarRating';
-import Comment from '../Comment/Comment';
 import {
   StButton,
   StButtonDiv,
