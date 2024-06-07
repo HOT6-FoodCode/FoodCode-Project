@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../../api';
 import { postImageDefault } from '../../api/supabaseAPI';
 import ImageUpload from '../../components/writepage/ImageUpload';
 import StarRating from '../../components/writepage/StarRating';
+import { fetchPosts } from '../../redux/slices/postsSlice';
 import { StNotLogInView, StNotLogInViewText } from '../MyPage/MyPage.styled';
 import {
   StButton,
@@ -26,8 +27,9 @@ function WritePage() {
     rating: 0
   });
   const user = useSelector((state) => state.auth.user);
-  // 이미지 상대경로 저장
+  const dispatch = useDispatch();
   const navigator = useNavigate();
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
 
   if (!user) {
     return (
@@ -43,22 +45,23 @@ function WritePage() {
 
   const handlerAdd = async (e) => {
     e.preventDefault();
-    // 유효성 검사
     if (!post.title || !post.content || !post.rating) {
       toast.error('모든 필드를 입력해주세요.');
       return;
     }
     try {
       await api.posts.createPost({ userId: user.id, ...post });
+      dispatch(fetchPosts());
+      setRefreshTrigger(!refreshTrigger);
       navigator(-1);
     } catch (error) {
-      console.error('Failed to edit post:', error);
+      console.error('Failed to create post:', error);
     }
   };
+
   return (
     <StWriteWrapper>
       <ImageUpload image={post.image} setImage={(image) => setPost({ ...post, image })} />
-
       <StForm>
         <StInputForm>
           <StTopForm>
@@ -77,7 +80,6 @@ function WritePage() {
             onChange={(e) => setPost({ ...post, content: e.target.value })}
           />
         </StInputForm>
-
         <StButtonDiv>
           <StButton onClick={handlerAdd}>등록하기</StButton>
         </StButtonDiv>

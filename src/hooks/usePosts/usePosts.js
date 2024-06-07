@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import { selectFollowerIds, selectFollowingIds } from '../../redux/slices/followSlice';
+import { fetchPosts } from '../../redux/slices/postsSlice';
 import sortPosts from '../../utils/sortPosts';
 
 const POSTS_PER_PAGE = 6;
@@ -15,12 +15,19 @@ const selectPostsData = createSelector(
     posts,
     user,
     followingIds,
-    followerIds // 추가
+    followerIds
   })
 );
 
-const usePosts = (sorting) => {
-  const { posts, user, followingIds, followerIds } = useSelector(selectPostsData);
+const usePosts = (sorting, refreshTrigger) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log('App useEffect for fetchPosts triggered.');
+    dispatch(fetchPosts());
+  }, [dispatch, refreshTrigger]);
+
+  const { posts, user, followerIds } = useSelector(selectPostsData);
 
   const [page, setPage] = useState(1);
 
@@ -57,12 +64,10 @@ const usePosts = (sorting) => {
   }, []);
 
   const totalPosts = useMemo(() => {
-    console.log(followingIds);
-    console.log(followerIds);
     if (sorting === 'myPost') return myPosts.length;
     if (sorting === 'follow') return followingPosts.length;
     return posts.length;
-  }, [sorting, myPosts, followingPosts, posts, followingIds, followerIds]);
+  }, [sorting, myPosts, followingPosts, posts]);
 
   return { visiblePosts, loadMorePosts, totalPosts };
 };
