@@ -6,7 +6,7 @@ import Comment from '../../components/Comment/Comment';
 import FollowButton from '../../components/common/FollowButton';
 import ImageUpload from '../../components/writepage/ImageUpload';
 import StarRating from '../../components/writepage/StarRating';
-import { deletePost, editPost, fetchPosts } from '../../redux/slices/postsSlice'; // Import Redux actions
+import { deletePost, editPost, fetchPostById } from '../../redux/slices/postsSlice';
 import {
   StButton,
   StButtonDiv,
@@ -26,7 +26,7 @@ import {
 const PostDetailPage = () => {
   const { postId } = useParams();
   const user = useSelector((state) => state.auth.user);
-  const post = useSelector((state) => state.posts.posts.find((post) => post.id === postId));
+  const post = useSelector((state) => state.posts.currentPost); // 특정 포스트 상태 가져오기
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [editedPost, setEditedPost] = useState({
@@ -38,7 +38,7 @@ const PostDetailPage = () => {
 
   useEffect(() => {
     if (postId) {
-      dispatch(fetchPosts(postId))
+      dispatch(fetchPostById(postId))
         .unwrap()
         .then((fetchedPost) => {
           setEditedPost({
@@ -76,7 +76,7 @@ const PostDetailPage = () => {
 
   const handleGoBack = (event) => {
     event.preventDefault();
-    const confirmed = confirm('뒤로 가시겠습니까?');
+    const confirmed = window.confirm('뒤로 가시겠습니까?');
     if (confirmed) {
       navigate(-1);
     }

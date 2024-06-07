@@ -21,12 +21,19 @@ export const editPost = createAsyncThunk('posts/editPost', async ({ postId, upda
   return { postId, ...updatedPost };
 });
 
+// 새로 추가: getPost thunk
+export const fetchPostById = createAsyncThunk('posts/fetchPostById', async (postId) => {
+  const post = await api.posts.getPost(postId);
+  return post;
+});
+
 const postsSlice = createSlice({
   name: 'posts',
   initialState: {
     posts: [],
     loading: false,
-    error: null
+    error: null,
+    currentPost: null // 추가: 특정 포스트를 위한 상태
   },
   extraReducers: (builder) => {
     builder
@@ -53,6 +60,20 @@ const postsSlice = createSlice({
         if (index !== -1) {
           state.posts[index] = { ...state.posts[index], ...action.payload };
         }
+      })
+      // 추가: fetchPostById에 대한 처리
+      .addCase(fetchPostById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.currentPost = null;
+      })
+      .addCase(fetchPostById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentPost = action.payload;
+      })
+      .addCase(fetchPostById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   }
 });
