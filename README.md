@@ -132,8 +132,6 @@ yarn start
   }
   ```
 
-  <br/>
-
 - **Response**:
 
   ```json
@@ -163,8 +161,6 @@ yarn start
     "password": "password123"
   }
   ```
-
-  <br/>
 
 - **Response**:
 
@@ -287,8 +283,6 @@ yarn start
   }
   ```
 
-  <br/>
-
 - **Response**:
 
   ```json
@@ -326,8 +320,6 @@ yarn start
     "rating": 4
   }
   ```
-
-  <br/>
 
 - **Response**:
 
@@ -394,8 +386,6 @@ yarn start
   }
   ```
 
-  <br/>
-
 - **Response**:
 
   ```json
@@ -426,8 +416,6 @@ yarn start
     "commentText": "수정된 댓글 내용"
   }
   ```
-
-  <br/>
 
 - **Response**:
 
@@ -498,8 +486,6 @@ yarn start
   }
   ```
 
-  <br/>
-
 - **Response**:
 
   ```json
@@ -561,8 +547,6 @@ yarn start
     "profilePictureFile": "file"
   }
   ```
-
-  <br/>
 
 - **Response**:
 
