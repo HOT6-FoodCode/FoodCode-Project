@@ -3,7 +3,22 @@ import api from '../../api';
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   const posts = await api.posts.getAllPosts();
-  return posts;
+  return posts.filter((post) => post !== null && post !== undefined);
+});
+
+export const createPost = createAsyncThunk('posts/createPost', async (post) => {
+  const createdPost = await api.posts.createPost(post);
+  return createdPost;
+});
+
+export const updatePost = createAsyncThunk('posts/updatePost', async ({ postId, updatedPost }) => {
+  await api.posts.editPost(postId, updatedPost);
+  return { postId, updatedPost };
+});
+
+export const deletePost = createAsyncThunk('posts/deletePost', async (postId) => {
+  await api.posts.deletePost(postId);
+  return postId;
 });
 
 const postsSlice = createSlice({
@@ -26,6 +41,18 @@ const postsSlice = createSlice({
       .addCase(fetchPosts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(createPost.fulfilled, (state, action) => {
+        state.posts.push(action.payload);
+      })
+      .addCase(updatePost.fulfilled, (state, action) => {
+        const index = state.posts.findIndex((post) => post.id === action.payload.postId);
+        if (index !== -1) {
+          state.posts[index] = { ...state.posts[index], ...action.payload.updatedPost };
+        }
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.posts = state.posts.filter((post) => post.id !== action.payload);
       });
   }
 });
