@@ -1,44 +1,39 @@
 import { useSelector } from 'react-redux';
 import usePosts from '../../../hooks/usePosts/usePosts';
 import Skeleton from '../../../layouts/common/Skeleton';
-import { selectFollowerIds } from '../../../redux/slices/followSlice';
+
 import PostItem from '../PostItem';
 import { Message, PostGrid, StButton, StButtonDiv } from './PostList.styled';
 
-const PostList = ({ sorting, refreshTrigger }) => {
-  const { visiblePosts, loadMorePosts, totalPosts } = usePosts(sorting, refreshTrigger);
+const PostList = ({ sorting }) => {
+  const { visiblePosts, loadMorePosts, totalPosts } = usePosts(sorting);
   const loading = useSelector((state) => state.posts.loading);
   const user = useSelector((state) => state.auth.user);
-  const followerIds = useSelector(selectFollowerIds);
+  const followerIds = useSelector((state) => state.follow.followerIds);
 
-  if (!user && sorting === 'follow') {
-    return (
-      <Message>
-        <p>로그인이 필요합니다. 로그인을 해주세요.</p>
-      </Message>
-    );
-  }
-
-  if (sorting === 'follow' && (!followerIds || followerIds.length === 0)) {
-    return (
-      <Message>
-        <p>팔로우한 사용자가 없습니다. 다른 사용자를 팔로우해보세요.</p>
-      </Message>
-    );
-  }
-
-  if (sorting === 'myPost' && (!visiblePosts || visiblePosts.length === 0)) {
-    if (loading) {
+  
+  if (!user) {
+    if (sorting === 'follow') {
       return (
         <Message>
-          <p>로딩 중입니다...</p>
+          <p>로그인이 필요합니다. 로그인을 해주세요.</p>
         </Message>
       );
     }
+    if (sorting === 'myPost') {
+      return (
+        <Message>
+          <p>작성한 게시물이 없습니다. 게시글을 작성해 주세요!</p>
+        </Message>
+      );
+    }
+  }
 
+  
+  if (sorting === 'follow' && user && (!followerIds || followerIds.length === 0)) {
     return (
-      <Message style={{ height: '50vh' }}>
-        <p>작성한 게시물이 없습니다. 게시글을 작성해 주세요!</p>
+      <Message>
+        <p>팔로우한 사용자가 없습니다. 다른 사용자를 팔로우해보세요.</p>
       </Message>
     );
   }
