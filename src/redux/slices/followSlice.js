@@ -87,11 +87,11 @@ const followSlice = createSlice({
       })
       .addCase(toggleFollowUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        const { followingId } = action.payload;
-        if (action.payload.action === 'follow') {
-          state.followingIds.push(followingId);
+        const { followingId, action: followAction } = action.payload;
+        if (followAction === 'follow') {
+          state.followerIds.push(followingId);
         } else {
-          state.followingIds = state.followingIds.filter((id) => id !== followingId);
+          state.followerIds = state.followerIds.filter((id) => id !== followingId);
         }
       })
       .addCase(toggleFollowUser.rejected, (state, action) => {

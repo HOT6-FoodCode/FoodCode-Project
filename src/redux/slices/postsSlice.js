@@ -26,7 +26,18 @@ export const editPost = createAsyncThunk('posts/editPost', async ({ postId, upda
   return { postId, ...updatedPost };
 });
 
-// 새로 추가: getPost thunk
+export const getFollowingPosts = createAsyncThunk(
+  'posts/getFollowingPosts',
+  async (followerIds, { rejectWithValue }) => {
+    try {
+      const followingPosts = await api.posts.getFollowingPosts(followerIds);
+      return followingPosts;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const fetchPostById = createAsyncThunk('posts/fetchPostById', async (postId) => {
   const post = await api.posts.getPost(postId);
   return post;
@@ -38,7 +49,7 @@ const postsSlice = createSlice({
     posts: [],
     loading: false,
     error: null,
-    currentPost: null // 추가: 특정 포스트를 위한 상태
+    currentPost: null
   },
   extraReducers: (builder) => {
     builder
@@ -66,7 +77,6 @@ const postsSlice = createSlice({
           state.posts[index] = { ...state.posts[index], ...action.payload };
         }
       })
-      // 추가: fetchPostById에 대한 처리
       .addCase(fetchPostById.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -77,6 +87,18 @@ const postsSlice = createSlice({
         state.currentPost = action.payload;
       })
       .addCase(fetchPostById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getFollowingPosts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getFollowingPosts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.followingPosts = action.payload;
+      })
+      .addCase(getFollowingPosts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

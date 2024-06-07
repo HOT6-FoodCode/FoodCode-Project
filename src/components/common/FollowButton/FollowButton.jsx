@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import api from '../../../api';
-import { toggleFollowUser } from '../../../redux/slices/followSlice';
+import { fetchFollowerIds, toggleFollowUser } from '../../../redux/slices/followSlice';
 import StFollowBtn from './FollowButton.styled';
 
 function FollowButton({ followerId }) {
@@ -53,12 +53,13 @@ function FollowButton({ followerId }) {
         const result = await dispatch(toggleFollowUser({ followingId, followerId })).unwrap();
         setIsFollowing(result.action === 'follow');
         toast.success(result.action === 'follow' ? '팔로우되었습니다.' : '언팔로우 되었습니다.');
+
+        await dispatch(fetchFollowerIds(followingId));
       } catch (error) {
         toast.error('팔로우 상태를 변경할 수 없습니다.');
       }
     } else {
       toast.error('사용자 또는 팔로워 ID가 정의되지 않았습니다.');
-      // console.log 팝업으로 바꿀 예정
     }
   };
   if (!user) {

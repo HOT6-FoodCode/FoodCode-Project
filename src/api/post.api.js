@@ -1,5 +1,4 @@
-import { supabase } from "./supabaseAPI";
-
+import { supabase } from './supabaseAPI';
 
 class PostsAPI {
   async getAllPosts() {
@@ -15,12 +14,12 @@ class PostsAPI {
       throw new Error(`Failed to fetch posts: ${error.message}`);
     }
   }
-  async getFollowingPosts(userIdArray) {
+  async getFollowingPosts(followerIds) {
     try {
       let fetchedPosts = [];
 
       //  배열로 순회해서 follower_id에 해당하는 게시글  가져오기
-      for (const userId of userIdArray) {
+      for (const userId of followerIds) {
         const { data, error } = await supabase.from('posts').select('*').eq('user_id', userId);
 
         if (error) {
@@ -56,7 +55,7 @@ class PostsAPI {
       if (error) {
         throw error;
       }
-      console.log("data입니다.",data);
+      console.log('data입니다.', data);
       return data[0];
     } catch (error) {
       throw new Error(`Failed to fetch my posts: ${error.message}`);

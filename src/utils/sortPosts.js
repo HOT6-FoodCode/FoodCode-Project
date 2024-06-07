@@ -1,11 +1,17 @@
 const sortPosts = (posts, sorting) => {
-  let sortedPosts = [...posts];
-  if (sorting === 'recent') {
-    sortedPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-  } else {
-    sortedPosts.sort((a, b) => b.views * 0.5 + b.rating * 1.5 - (a.views * 0.5 + a.rating * 1.5));
+  if (!Array.isArray(posts)) {
+    // posts가 배열이 아닌 경우 빈 배열로 초기화
+    posts = [];
   }
-  return sortedPosts;
+  switch (sorting) {
+    case 'recent':
+      return [...posts].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    case 'trending':
+      return [...posts].sort((a, b) => b.views - a.views);
+
+    default:
+      return posts;
+  }
 };
 
 export default sortPosts;
