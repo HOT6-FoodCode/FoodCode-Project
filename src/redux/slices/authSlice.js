@@ -53,9 +53,8 @@ const authSlice = createSlice({
       .addCase(signUp.pending, (state) => {
         state.status = 'loading'; // 회원가입 요청 중 상태
       })
-      .addCase(signUp.fulfilled, (state, action) => {
+      .addCase(signUp.fulfilled, (state) => {
         state.status = 'succeeded'; // 회원가입 성공 상태
-        state.user = action.payload; // 유저 정보 저장
       })
       .addCase(signUp.rejected, (state, action) => {
         state.status = 'failed'; // 회원가입 실패 상태

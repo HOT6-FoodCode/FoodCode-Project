@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import api from '../../../api/api';
-import { userDataUpdate } from '../../../redux/slices/userSlice';
 import { profileDefaultUrl } from '../../../api/supabaseAPI';
+import { userDataUpdate } from '../../../redux/slices/userSlice';
 import {
   StUserContents,
   StUserImgUpdateDiv,
