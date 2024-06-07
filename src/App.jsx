@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getUser } from './redux/slices/authSlice';
 import { fetchFollowerIds } from './redux/slices/followSlice';
 import { fetchPosts } from './redux/slices/postsSlice';
 import router from './router/router';
@@ -14,6 +15,7 @@ function App() {
   useEffect(() => {
     console.log('App useEffect for fetchPosts triggered.');
     dispatch(fetchPosts());
+    dispatch(getUser());
   }, [dispatch]);
 
   useEffect(() => {
