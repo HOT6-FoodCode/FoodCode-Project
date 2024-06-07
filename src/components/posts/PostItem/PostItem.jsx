@@ -13,7 +13,7 @@ function PostItem({ postId, image, title, content, rating }) {
   };
 
   return (
-    <Link to={{ pathname: `/post/${postId}` }}>
+    <Link to={{ pathname: `/post/${postId}`, state: { title, content, rating, image } }}>
       <PostCard onClick={handleClick}>
         <LazyLoad style={{ height: '200px' }} width={380} offset={186} once>
           <CardImage src={image ?? `${postImageDefault}`} alt={title} />

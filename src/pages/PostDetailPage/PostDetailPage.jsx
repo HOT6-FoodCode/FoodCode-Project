@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { useNavigate, useParams } from 'react-router-dom';
+
 import { postImageDefault } from '../../api/supabaseAPI';
 import Comment from '../../components/Comment/Comment';
 import FollowButton from '../../components/common/FollowButton';
 import ImageUpload from '../../components/writepage/ImageUpload';
 import StarRating from '../../components/writepage/StarRating';
+
 import { deletePost, editPost, fetchPosts } from '../../redux/slices/postsSlice'; // Import Redux actions
+
 import {
   StButton,
   StButtonDiv,
@@ -24,16 +28,20 @@ import {
 } from './PostDetailPage.styled';
 
 const PostDetailPage = () => {
+  const location = useLocation();
   const { postId } = useParams();
+  const { title, content, rating, image } = location.state || {};
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const post = useSelector((state) => state.posts.posts.find((post) => post.id === postId));
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [editedPost, setEditedPost] = useState({
-    title: '',
-    content: '',
-    image: '',
-    rating: 0
+    title: title || '',
+    content: content || '',
+    image: image || '',
+    rating: rating || 0
   });
 
   useEffect(() => {
@@ -51,13 +59,17 @@ const PostDetailPage = () => {
         .catch((error) => {
           console.error('Failed to fetch post:', error);
         });
+
     }
   }, [dispatch, postId]);
+
 
   const handleUpdate = async (event) => {
     event.preventDefault();
     try {
+
       await dispatch(editPost({ postId, updatedPost: editedPost })).unwrap();
+
       navigate('/');
     } catch (error) {
       console.error('Failed to edit post:', error);
@@ -67,7 +79,9 @@ const PostDetailPage = () => {
   const handleDelete = async (event) => {
     event.preventDefault();
     try {
+
       await dispatch(deletePost(postId)).unwrap();
+
       navigate('/');
     } catch (error) {
       console.error('Failed to delete post:', error);
@@ -76,7 +90,7 @@ const PostDetailPage = () => {
 
   const handleGoBack = (event) => {
     event.preventDefault();
-    const confirmed = confirm('뒤로 가시겠습니까?');
+    const confirmed = window.confirm('뒤로 가시겠습니까?');
     if (confirmed) {
       navigate(-1);
     }

@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { fetchPosts } from '../../redux/slices/postsSlice'; // Ensure this action fetches posts from an API and populates the Redux store
+
 
 import { createSelector } from 'reselect';
 import { selectFollowerIds, selectFollowingIds } from '../../redux/slices/followSlice';
+import { fetchPosts } from '../../redux/slices/postsSlice';
 import sortPosts from '../../utils/sortPosts';
 
 const POSTS_PER_PAGE = 6;
@@ -20,8 +23,10 @@ const selectPostsData = createSelector(
   })
 );
 
+
 const usePosts = (sorting) => {
   const dispatch = useDispatch();
+
   const { posts, user, followerIds } = useSelector(selectPostsData);
 
   const [page, setPage] = useState(1);
@@ -60,10 +65,12 @@ const usePosts = (sorting) => {
   }, []);
 
   const totalPosts = useMemo(() => {
+
     if (sorting === 'myPost' && user) return myPosts.length;
     if (sorting === 'follow' && user) return followingPosts.length;
     return posts.length;
   }, [sorting, myPosts, followingPosts, posts, user]);
+
 
   return { visiblePosts, loadMorePosts, totalPosts };
 };
