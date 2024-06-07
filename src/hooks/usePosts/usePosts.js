@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPosts } from '../../redux/slices/postsSlice'; // Ensure this action fetches posts from an API and populates the Redux store
 
 import { createSelector } from 'reselect';
 import { selectFollowerIds, selectFollowingIds } from '../../redux/slices/followSlice';
@@ -15,18 +16,20 @@ const selectPostsData = createSelector(
     posts,
     user,
     followingIds,
-    followerIds // 추가
+    followerIds
   })
 );
 
 const usePosts = (sorting) => {
-  const { posts, user, followingIds, followerIds } = useSelector(selectPostsData);
+  const dispatch = useDispatch();
+  const { posts, user, followerIds } = useSelector(selectPostsData);
 
   const [page, setPage] = useState(1);
 
   useEffect(() => {
+    dispatch(fetchPosts());
     setPage(1);
-  }, [sorting]);
+  }, [dispatch, sorting]);
 
   const myPosts = useMemo(() => {
     return user ? posts.filter((post) => post.user_id === user.id) : [];
@@ -38,9 +41,9 @@ const usePosts = (sorting) => {
 
   const visiblePosts = useMemo(() => {
     let postsToShow;
-    if (sorting === 'myPost') {
+    if (sorting === 'myPost' && user) {
       postsToShow = myPosts;
-    } else if (sorting === 'follow') {
+    } else if (sorting === 'follow' && user) {
       postsToShow = followingPosts;
     } else {
       postsToShow = posts;
@@ -50,19 +53,17 @@ const usePosts = (sorting) => {
     const startIndex = (page - 1) * POSTS_PER_PAGE;
     const endIndex = startIndex + POSTS_PER_PAGE;
     return sortedPosts.slice(0, endIndex);
-  }, [sorting, myPosts, followingPosts, posts, page]);
+  }, [sorting, myPosts, followingPosts, posts, page, user]);
 
   const loadMorePosts = useCallback(() => {
     setPage((prev) => prev + 1);
   }, []);
 
   const totalPosts = useMemo(() => {
-    console.log(followingIds);
-    console.log(followerIds);
-    if (sorting === 'myPost') return myPosts.length;
-    if (sorting === 'follow') return followingPosts.length;
+    if (sorting === 'myPost' && user) return myPosts.length;
+    if (sorting === 'follow' && user) return followingPosts.length;
     return posts.length;
-  }, [sorting, myPosts, followingPosts, posts, followingIds, followerIds]);
+  }, [sorting, myPosts, followingPosts, posts, user]);
 
   return { visiblePosts, loadMorePosts, totalPosts };
 };

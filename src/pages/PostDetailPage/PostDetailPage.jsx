@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import api from '../../api';
 import { postImageDefault } from '../../api/supabaseAPI';
 import Comment from '../../components/Comment/Comment';
 import FollowButton from '../../components/common/FollowButton';
 import ImageUpload from '../../components/writepage/ImageUpload';
 import StarRating from '../../components/writepage/StarRating';
+import { deletePost, editPost, fetchPosts } from '../../redux/slices/postsSlice'; // Import Redux actions
 import {
   StButton,
   StButtonDiv,
@@ -26,8 +26,9 @@ import {
 const PostDetailPage = () => {
   const { postId } = useParams();
   const user = useSelector((state) => state.auth.user);
+  const post = useSelector((state) => state.posts.posts.find((post) => post.id === postId));
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [post, setPost] = useState(null);
   const [editedPost, setEditedPost] = useState({
     title: '',
     content: '',
@@ -36,28 +37,27 @@ const PostDetailPage = () => {
   });
 
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const fetchedPost = await api.posts.getPost(postId);
-        setPost(fetchedPost);
-        setEditedPost({
-          title: fetchedPost.title || '',
-          content: fetchedPost.content || '',
-          image: fetchedPost.image || '',
-          rating: fetchedPost.rating || 0
+    if (postId) {
+      dispatch(fetchPosts(postId))
+        .unwrap()
+        .then((fetchedPost) => {
+          setEditedPost({
+            title: fetchedPost.title || '',
+            content: fetchedPost.content || '',
+            image: fetchedPost.image || '',
+            rating: fetchedPost.rating || 0
+          });
+        })
+        .catch((error) => {
+          console.error('Failed to fetch post:', error);
         });
-      } catch (error) {
-        console.error('Failed to fetch post:', error);
-      }
-    };
-
-    fetchPost();
-  }, [postId]);
+    }
+  }, [dispatch, postId]);
 
   const handleUpdate = async (event) => {
     event.preventDefault();
     try {
-      await api.posts.editPost(postId, editedPost);
+      await dispatch(editPost({ postId, updatedPost: editedPost })).unwrap();
       navigate('/');
     } catch (error) {
       console.error('Failed to edit post:', error);
@@ -67,7 +67,7 @@ const PostDetailPage = () => {
   const handleDelete = async (event) => {
     event.preventDefault();
     try {
-      await api.posts.deletePost(postId);
+      await dispatch(deletePost(postId)).unwrap();
       navigate('/');
     } catch (error) {
       console.error('Failed to delete post:', error);
@@ -81,8 +81,8 @@ const PostDetailPage = () => {
       navigate(-1);
     }
   };
-  const userId = post ? post.user_id : null;
 
+  const userId = post ? post.user_id : null;
   const isOwner = user && user.id === userId;
 
   return (
@@ -92,7 +92,7 @@ const PostDetailPage = () => {
           <ImageUpload image={editedPost.image} setImage={(image) => setEditedPost({ ...editedPost, image })} />
         ) : (
           <StImageWrapper>
-            <StImage src={editedPost.image || postImageDefault} alt="Post Image" />
+            <StImage src={post?.image || postImageDefault} alt="Post Image" />
           </StImageWrapper>
         )}
         <StForm>
