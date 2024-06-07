@@ -6,19 +6,9 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   return posts.filter((post) => post !== null && post !== undefined);
 });
 
-export const createPost = createAsyncThunk('posts/createPost', async (post) => {
-  const createdPost = await api.posts.createPost(post);
-  return createdPost;
-});
-
 export const updatePost = createAsyncThunk('posts/updatePost', async ({ postId, updatedPost }) => {
   await api.posts.editPost(postId, updatedPost);
   return { postId, updatedPost };
-});
-
-export const deletePost = createAsyncThunk('posts/deletePost', async (postId) => {
-  await api.posts.deletePost(postId);
-  return postId;
 });
 
 export const createPost = createAsyncThunk('posts/createPost', async (post) => {
@@ -36,12 +26,30 @@ export const editPost = createAsyncThunk('posts/editPost', async ({ postId, upda
   return { postId, ...updatedPost };
 });
 
+export const getFollowingPosts = createAsyncThunk(
+  'posts/getFollowingPosts',
+  async (followerIds, { rejectWithValue }) => {
+    try {
+      const followingPosts = await api.posts.getFollowingPosts(followerIds);
+      return followingPosts;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchPostById = createAsyncThunk('posts/fetchPostById', async (postId) => {
+  const post = await api.posts.getPost(postId);
+  return post;
+});
+
 const postsSlice = createSlice({
   name: 'posts',
   initialState: {
     posts: [],
     loading: false,
-    error: null
+    error: null,
+    currentPost: null
   },
   extraReducers: (builder) => {
     builder
@@ -58,7 +66,6 @@ const postsSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(createPost.fulfilled, (state, action) => {
-
         state.posts.unshift(action.payload);
       })
       .addCase(deletePost.fulfilled, (state, action) => {
@@ -69,7 +76,31 @@ const postsSlice = createSlice({
         if (index !== -1) {
           state.posts[index] = { ...state.posts[index], ...action.payload };
         }
-
+      })
+      .addCase(fetchPostById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.currentPost = null;
+      })
+      .addCase(fetchPostById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentPost = action.payload;
+      })
+      .addCase(fetchPostById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getFollowingPosts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getFollowingPosts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.followingPosts = action.payload;
+      })
+      .addCase(getFollowingPosts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   }
 });

@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { postImageDefault } from '../../api/supabaseAPI';
 import Comment from '../../components/Comment/Comment';
 import FollowButton from '../../components/common/FollowButton';
 import ImageUpload from '../../components/writepage/ImageUpload';
 import StarRating from '../../components/writepage/StarRating';
-
-import { deletePost, editPost, fetchPosts } from '../../redux/slices/postsSlice'; // Import Redux actions
-
+import { deletePost, editPost, fetchPostById } from '../../redux/slices/postsSlice';
 import {
   StButton,
   StButtonDiv,
@@ -31,9 +29,8 @@ const PostDetailPage = () => {
   const location = useLocation();
   const { postId } = useParams();
   const { title, content, rating, image } = location.state || {};
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const post = useSelector((state) => state.posts.posts.find((post) => post.id === postId));
+  const post = useSelector((state) => state.posts.currentPost); // 특정 포스트 상태 가져오기
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -46,7 +43,7 @@ const PostDetailPage = () => {
 
   useEffect(() => {
     if (postId) {
-      dispatch(fetchPosts(postId))
+      dispatch(fetchPostById(postId))
         .unwrap()
         .then((fetchedPost) => {
           setEditedPost({
@@ -59,15 +56,12 @@ const PostDetailPage = () => {
         .catch((error) => {
           console.error('Failed to fetch post:', error);
         });
-
     }
   }, [dispatch, postId]);
-
 
   const handleUpdate = async (event) => {
     event.preventDefault();
     try {
-
       await dispatch(editPost({ postId, updatedPost: editedPost })).unwrap();
 
       navigate('/');
@@ -79,7 +73,6 @@ const PostDetailPage = () => {
   const handleDelete = async (event) => {
     event.preventDefault();
     try {
-
       await dispatch(deletePost(postId)).unwrap();
 
       navigate('/');

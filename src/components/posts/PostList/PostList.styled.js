@@ -26,6 +26,7 @@ const StButton = styled.button`
 const StButtonDiv = styled.div`
   display: flex;
   justify-content: center;
+  flex-direction: column;
 `;
 
 const Message = styled.div`
@@ -47,4 +48,11 @@ const Message = styled.div`
     font-size: 16px;
   }
 `;
-export { Message, PostGrid, StButton, StButtonDiv };
+
+const StWrapDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`;
+export { Message, PostGrid, StButton, StButtonDiv, StWrapDiv };

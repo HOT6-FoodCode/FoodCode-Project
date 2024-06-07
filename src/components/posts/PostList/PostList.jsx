@@ -1,22 +1,28 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import usePosts from '../../../hooks/usePosts/usePosts';
 import Skeleton from '../../../layouts/common/Skeleton';
 
-
-
+import { useEffect } from 'react';
+import { selectFollowerIds } from '../../../redux/slices/followSlice';
+import { getFollowingPosts } from '../../../redux/slices/postsSlice';
 import PostItem from '../PostItem';
-import { Message, PostGrid, StButton, StButtonDiv } from './PostList.styled';
+import { Message, PostGrid, StButton, StButtonDiv, StWrapDiv } from './PostList.styled';
 
-const PostList = ({ sorting, refreshTrigger }) => {
-  const { visiblePosts, loadMorePosts, totalPosts } = usePosts(sorting, refreshTrigger);
+const PostList = ({ sorting }) => {
+  const dispatch = useDispatch();
+  const followerIds = useSelector(selectFollowerIds);
+
+  useEffect(() => {
+    if (sorting === 'follow') {
+      dispatch(getFollowingPosts(followerIds));
+    }
+  }, [dispatch, sorting, followerIds]);
+  const { visiblePosts, loadMorePosts, totalPosts } = usePosts(sorting);
   const loading = useSelector((state) => state.posts.loading);
   const user = useSelector((state) => state.auth.user);
-  const followerIds = useSelector((state) => state.follow.followerIds);
-
 
   if (!user) {
     if (sorting === 'follow') {
-
       return (
         <Message>
           <p>로그인이 필요합니다. 로그인을 해주세요.</p>
@@ -45,7 +51,7 @@ const PostList = ({ sorting, refreshTrigger }) => {
       {loading ? (
         <Skeleton length={6} />
       ) : (
-        <>
+        <StWrapDiv>
           <PostGrid>
             {visiblePosts.map((post) => (
               <PostItem
@@ -63,7 +69,7 @@ const PostList = ({ sorting, refreshTrigger }) => {
               <StButton onClick={loadMorePosts}>더보기</StButton>
             </StButtonDiv>
           )}
-        </>
+        </StWrapDiv>
       )}
     </>
   );
