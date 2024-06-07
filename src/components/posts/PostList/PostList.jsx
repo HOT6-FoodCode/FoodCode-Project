@@ -2,17 +2,21 @@ import { useSelector } from 'react-redux';
 import usePosts from '../../../hooks/usePosts/usePosts';
 import Skeleton from '../../../layouts/common/Skeleton';
 
+
+
 import PostItem from '../PostItem';
 import { Message, PostGrid, StButton, StButtonDiv } from './PostList.styled';
 
-const PostList = ({ sorting }) => {
-  const { visiblePosts, loadMorePosts, totalPosts } = usePosts(sorting);
+const PostList = ({ sorting, refreshTrigger }) => {
+  const { visiblePosts, loadMorePosts, totalPosts } = usePosts(sorting, refreshTrigger);
   const loading = useSelector((state) => state.posts.loading);
   const user = useSelector((state) => state.auth.user);
   const followerIds = useSelector((state) => state.follow.followerIds);
 
+
   if (!user) {
     if (sorting === 'follow') {
+
       return (
         <Message>
           <p>로그인이 필요합니다. 로그인을 해주세요.</p>
