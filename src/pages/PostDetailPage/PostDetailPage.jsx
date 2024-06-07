@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { postImageDefault } from '../../api/supabaseAPI';
 import Comment from '../../components/Comment/Comment';
@@ -29,7 +29,6 @@ const PostDetailPage = () => {
   const location = useLocation();
   const { postId } = useParams();
   const { title, content, rating, image } = location.state || {};
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const post = useSelector((state) => state.posts.currentPost); // 특정 포스트 상태 가져오기
   const dispatch = useDispatch();
@@ -84,7 +83,6 @@ const PostDetailPage = () => {
 
   const handleGoBack = (event) => {
     event.preventDefault();
-    const confirmed = window.confirm('뒤로 가시겠습니까?');
     const confirmed = window.confirm('뒤로 가시겠습니까?');
     if (confirmed) {
       navigate(-1);
