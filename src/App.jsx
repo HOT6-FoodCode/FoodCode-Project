@@ -12,10 +12,13 @@ function App() {
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    console.log('App useEffect triggered. Current user:', user);
+    console.log('App useEffect for fetchPosts triggered.');
     dispatch(fetchPosts());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (user) {
-      console.log('Dispatching fetchFollowingIds with userId:', user.id);
+      console.log('App useEffect for fetchFollowerIds triggered. User ID:', user.id);
       dispatch(fetchFollowerIds(user.id));
     }
   }, [user, dispatch]);
