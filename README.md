@@ -77,47 +77,18 @@ FoodCode-Project
 ├─ src
 │  ├─ .prettierrc
 │  ├─ api
-│  │  ├─ api.js
-│  │  ├─ auth.api.js
-│  │  ├─ comment.api.js
-│  │  ├─ follow.api.js
-│  │  ├─ index.js
-│  │  ├─ post.api.js
-│  │  ├─ supabaseAPI.js
-│  │  └─ user.api.js
 │  ├─ App.jsx
 │  ├─ assets
-│  │  ├─ icons
-│  │  ├─ logo.png
-│  │  ├─ react.svg
-│  │  └─ upload.png
 │  ├─ components
 │  │  ├─ auth
 │  │  ├─ Comment
 │  │  ├─ common
-│  │  │  ├─ FollowButton
-│  │  │  └─ LinkButton
-│  │  ├─ posts
-│  │  │  ├─ PostEdit
-│  │  │  ├─ PostForm
-│  │  │  ├─ PostItem
-│  │  │  └─ PostList
 │  │  ├─ ui
-│  │  │  ├─ LoginForm
-│  │  │  ├─ SignUpForm
-│  │  │  └─ UserInfo
-│  │  └─ writepage
 │  ├─ contexts
 │  ├─ hooks
-│  │  ├─ useDropdown
-│  │  └─ usePosts
 │  ├─ index.css
 │  ├─ layouts
 │  │  ├─ common
-│  │  │  ├─ Footer
-│  │  │  ├─ Header
-│  │  │  └─ Skeleton
-│  │  ├─ Layout.jsx
 │  │  └─ MainLayout
 │  ├─ main.jsx
 │  ├─ pages
@@ -130,15 +101,9 @@ FoodCode-Project
 │  ├─ redux
 │  │  ├─ config
 │  │  └─ slices
-│  │     ├─ authSlice.js
-│  │     ├─ commentsSlice.js
-│  │     ├─ followSlice.js
-│  │     ├─ postsSlice.js
-│  │     └─ userSlice.js
 │  ├─ router
-│  │  └─ router.jsx
 │  └─ utils
-│     └─ sortPosts.js
+
 
 
 ```
