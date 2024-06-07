@@ -1,11 +1,18 @@
-import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import usePosts from '../../../hooks/usePosts/usePosts';
 import Skeleton from '../../../layouts/common/Skeleton';
+
+import { selectFollowerIds } from '../../../redux/slices/followSlice';
 import PostItem from '../PostItem';
-import { Message, PostGrid } from './PostList.styled';
+import { Message, PostGrid, StButton, StButtonDiv } from './PostList.styled';
 
 const PostList = ({ sorting }) => {
-  const { visiblePosts, loading, loadMorePosts, user, followingIds, totalPosts } = usePosts(sorting);
+  const { visiblePosts, loadMorePosts, totalPosts } = usePosts(sorting);
+  const loading = useSelector((state) => state.posts.loading);
+  const user = useSelector((state) => state.auth.user);
+  const followerIds = useSelector(selectFollowerIds);
+
+  console.log(followerIds);
 
   if (!user && sorting === 'follow') {
     return (
@@ -15,7 +22,7 @@ const PostList = ({ sorting }) => {
     );
   }
 
-  if (sorting === 'follow' && followingIds.length === 0) {
+  if (sorting === 'follow' && (!followerIds || followerIds.length === 0)) {
     return (
       <Message>
         <p>팔로우한 사용자가 없습니다. 다른 사용자를 팔로우해보세요.</p>
@@ -24,7 +31,6 @@ const PostList = ({ sorting }) => {
   }
 
   if (sorting === 'myPost' && visiblePosts.length === 0) {
-
     if (loading) {
       return (
         <Message>
@@ -69,18 +75,4 @@ const PostList = ({ sorting }) => {
   );
 };
 
-// ... 스타일 컴포넌트 코드 ...
-
 export default PostList;
-
-const StButton = styled.button`
-  padding: 20px;
-  border: 1px solid #ccc;
-  margin-top: 20px;
-  cursor: pointer;
-  width: 100px;
-`;
-const StButtonDiv = styled.div`
-  display: flex;
-  justify-content: center;
-`;

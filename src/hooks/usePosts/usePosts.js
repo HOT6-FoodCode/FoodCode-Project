@@ -1,57 +1,40 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import api from '../../api';
+
+import { createSelector } from 'reselect';
+import { selectFollowerIds, selectFollowingIds } from '../../redux/slices/followSlice';
 import sortPosts from '../../utils/sortPosts';
 
 const POSTS_PER_PAGE = 6;
+const selectPosts = (state) => state.posts.posts;
+const selectUser = (state) => state.auth.user;
+
+const selectPostsData = createSelector(
+  [selectPosts, selectUser, selectFollowingIds, selectFollowerIds],
+  (posts, user, followingIds, followerIds) => ({
+    posts,
+    user,
+    followingIds,
+    followerIds // 추가
+  })
+);
 
 const usePosts = (sorting) => {
-  const [allPosts, setAllPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { posts, user, followingIds, followerIds } = useSelector(selectPostsData);
+
   const [page, setPage] = useState(1);
-  const [followingIds, setFollowingIds] = useState([]);
-  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    const getPosts = async () => {
-      setLoading(true);
-      try {
-        const fetchedPosts = await api.posts.getAllPosts();
-        setAllPosts(fetchedPosts);
-      } catch (error) {
-        console.error('Failed to fetch posts:', error);
-        setAllPosts([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getPosts();
-  }, []);
-
-  useEffect(() => {
-    const getFollowingIds = async () => {
-      if (user) {
-        try {
-          const ids = await api.follow.getFollowingIds(user.id);
-          setFollowingIds(ids);
-        } catch (error) {
-          console.error('Failed to fetch following IDs:', error);
-          setFollowingIds([]);
-        }
-      }
-    };
-
-    getFollowingIds();
-  }, [user]);
+    setPage(1);
+  }, [sorting]);
 
   const myPosts = useMemo(() => {
-    return user ? allPosts.filter((post) => post.user_id === user.id) : [];
-  }, [user, allPosts]);
+    return user ? posts.filter((post) => post.user_id === user.id) : [];
+  }, [user, posts]);
 
   const followingPosts = useMemo(() => {
-    return allPosts.filter((post) => followingIds.includes(post.user_id));
-  }, [allPosts, followingIds]);
+    return posts.filter((post) => followerIds?.includes(post.user_id) || false);
+  }, [posts, followerIds]);
 
   const visiblePosts = useMemo(() => {
     let postsToShow;
@@ -60,23 +43,28 @@ const usePosts = (sorting) => {
     } else if (sorting === 'follow') {
       postsToShow = followingPosts;
     } else {
-      postsToShow = allPosts;
+      postsToShow = posts;
     }
 
-    return sortPosts(postsToShow, sorting).slice(0, page * POSTS_PER_PAGE);
-  }, [sorting, myPosts, followingPosts, allPosts, page]);
+    const sortedPosts = sortPosts(postsToShow, sorting);
+    const startIndex = (page - 1) * POSTS_PER_PAGE;
+    const endIndex = startIndex + POSTS_PER_PAGE;
+    return sortedPosts.slice(0, endIndex);
+  }, [sorting, myPosts, followingPosts, posts, page]);
 
   const loadMorePosts = useCallback(() => {
     setPage((prev) => prev + 1);
   }, []);
 
   const totalPosts = useMemo(() => {
+    console.log(followingIds);
+    console.log(followerIds);
     if (sorting === 'myPost') return myPosts.length;
     if (sorting === 'follow') return followingPosts.length;
-    return allPosts.length;
-  }, [sorting, myPosts, followingPosts, allPosts]);
+    return posts.length;
+  }, [sorting, myPosts, followingPosts, posts, followingIds, followerIds]);
 
-  return { visiblePosts, loading, loadMorePosts, user, followingIds, totalPosts };
+  return { visiblePosts, loadMorePosts, totalPosts };
 };
 
 export default usePosts;
