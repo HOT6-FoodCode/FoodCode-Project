@@ -6,19 +6,9 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   return posts.filter((post) => post !== null && post !== undefined);
 });
 
-export const createPost = createAsyncThunk('posts/createPost', async (post) => {
-  const createdPost = await api.posts.createPost(post);
-  return createdPost;
-});
-
 export const updatePost = createAsyncThunk('posts/updatePost', async ({ postId, updatedPost }) => {
   await api.posts.editPost(postId, updatedPost);
   return { postId, updatedPost };
-});
-
-export const deletePost = createAsyncThunk('posts/deletePost', async (postId) => {
-  await api.posts.deletePost(postId);
-  return postId;
 });
 
 export const createPost = createAsyncThunk('posts/createPost', async (post) => {
