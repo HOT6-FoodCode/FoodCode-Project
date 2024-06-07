@@ -5,7 +5,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getUser } from './redux/slices/authSlice';
 import { fetchFollowerIds } from './redux/slices/followSlice';
-import { fetchPosts } from './redux/slices/postsSlice';
 import router from './router/router';
 
 function App() {
@@ -14,7 +13,6 @@ function App() {
 
   useEffect(() => {
     console.log('App useEffect for fetchPosts triggered.');
-    dispatch(fetchPosts());
     dispatch(getUser());
   }, [dispatch]);
 

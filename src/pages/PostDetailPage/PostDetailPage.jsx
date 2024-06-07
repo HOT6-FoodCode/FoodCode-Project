@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import api from '../../api';
 import { postImageDefault } from '../../api/supabaseAPI';
 import Comment from '../../components/Comment/Comment';
 import FollowButton from '../../components/common/FollowButton';
 import ImageUpload from '../../components/writepage/ImageUpload';
 import StarRating from '../../components/writepage/StarRating';
+import { deletePost, updatePost } from '../../redux/slices/postsSlice';
 import {
   StButton,
   StButtonDiv,
@@ -24,15 +25,19 @@ import {
 } from './PostDetailPage.styled';
 
 const PostDetailPage = () => {
+  const location = useLocation();
   const { postId } = useParams();
+  const { title, content, rating, image } = location.state || {};
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
   const [editedPost, setEditedPost] = useState({
-    title: '',
-    content: '',
-    image: '',
-    rating: 0
+    title: title || '',
+    content: content || '',
+    image: image || '',
+    rating: rating || 0
   });
 
   useEffect(() => {
@@ -52,12 +57,13 @@ const PostDetailPage = () => {
     };
 
     fetchPost();
-  }, [postId]);
+  }, [postId, dispatch]);
 
   const handleUpdate = async (event) => {
     event.preventDefault();
     try {
-      await api.posts.editPost(postId, editedPost);
+      await dispatch(updatePost({ postId, updatedPost: editedPost }));
+      setRefreshTrigger(!refreshTrigger);
       navigate('/');
     } catch (error) {
       console.error('Failed to edit post:', error);
@@ -67,7 +73,8 @@ const PostDetailPage = () => {
   const handleDelete = async (event) => {
     event.preventDefault();
     try {
-      await api.posts.deletePost(postId);
+      await dispatch(deletePost(postId));
+      setRefreshTrigger(!refreshTrigger);
       navigate('/');
     } catch (error) {
       console.error('Failed to delete post:', error);
@@ -76,13 +83,13 @@ const PostDetailPage = () => {
 
   const handleGoBack = (event) => {
     event.preventDefault();
-    const confirmed = confirm('뒤로 가시겠습니까?');
+    const confirmed = window.confirm('뒤로 가시겠습니까?');
     if (confirmed) {
       navigate(-1);
     }
   };
-  const userId = post ? post.user_id : null;
 
+  const userId = post ? post.user_id : null;
   const isOwner = user && user.id === userId;
 
   return (

@@ -1,18 +1,15 @@
 import { useSelector } from 'react-redux';
 import usePosts from '../../../hooks/usePosts/usePosts';
 import Skeleton from '../../../layouts/common/Skeleton';
-
 import { selectFollowerIds } from '../../../redux/slices/followSlice';
 import PostItem from '../PostItem';
 import { Message, PostGrid, StButton, StButtonDiv } from './PostList.styled';
 
-const PostList = ({ sorting }) => {
-  const { visiblePosts, loadMorePosts, totalPosts } = usePosts(sorting);
+const PostList = ({ sorting, refreshTrigger }) => {
+  const { visiblePosts, loadMorePosts, totalPosts } = usePosts(sorting, refreshTrigger);
   const loading = useSelector((state) => state.posts.loading);
   const user = useSelector((state) => state.auth.user);
   const followerIds = useSelector(selectFollowerIds);
-
-  console.log(followerIds);
 
   if (!user && sorting === 'follow') {
     return (
@@ -30,7 +27,7 @@ const PostList = ({ sorting }) => {
     );
   }
 
-  if (sorting === 'myPost' && visiblePosts.length === 0) {
+  if (sorting === 'myPost' && (!visiblePosts || visiblePosts.length === 0)) {
     if (loading) {
       return (
         <Message>
